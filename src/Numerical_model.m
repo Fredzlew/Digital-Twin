@@ -112,7 +112,7 @@ for j = 1:5
 end % end normalization
 
 %... Save results in *.mat file .................
-%save('modelprop','K','M','Us','omegas');
+save('modelprop','K','M');
 
 % plotting the mode shapes
 x = [0, H];
@@ -124,7 +124,7 @@ for i=1:length(omegas)
     hold on
     plot(phi(:,i),x,'-m')
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
