@@ -15,7 +15,8 @@ Fn5e = 11.60;  % 5th natural frequency
 
 %######## from this point onwards do not edit the script ##################
 addpath('.\OMAtoolsA1_5\Signal processing');
-y  = dlmread(FullInFName,'',7,0); % read accelaration responses from text file
+data  = dlmread(FullInFName,'',7,0); % read accelaration responses from text file
+y = data(:,2:6)/1000;
 
 Nf = Nf1 + 1;
 Ns = 2 * Nf1;

@@ -1,11 +1,9 @@
 clc; clear; close all;
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
-rng(1) % Set global random seed
-addpath('C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\Experimental_data\Anela')
-FullInFName = 'data_1_2_1.txt'; % Loading displacement data
-f = dlmread(FullInFName,'',7,1)'; % Read data from file
-f = f(1:5,1:10000)/1000; % Converting mm to m
+%rng(1) % Set global random seed
+data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
+f = data(2:6,1:10000)/1000; % Converting mm to m
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 
 M=filename.M; % Mass matrix
