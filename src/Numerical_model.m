@@ -1,5 +1,5 @@
 % parameters
-
+clc; clear; close all;
 %    column with lumbed masses     
 %         
 %        o <-- H(5),m(5)
@@ -33,7 +33,7 @@ end
 g = 9.81; % [m/s^2]
 I = 4*1/12*b*h^3; % moment of inertia of 4 columns [m^4]
 E = 210*10^9; % [Pa]
-EI = E*I; % [kN*m^2]
+EI = E*I; % [N*m^2]
 
 % storage height for each floor [m]
 L(1) = H(1);

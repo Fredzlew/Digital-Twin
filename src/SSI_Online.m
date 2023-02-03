@@ -5,10 +5,14 @@ clc; clear; close all;
 data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
 f = data(2:6,1:10000)/1000; % Converting mm to m
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+omega_min = 1.70; % Minimum natural frequency
+zeta_min = 0.015; % Minimum threshold for desired damping ratio
+alpha = zeta_min*omega_min; % Rayleigh damping coefficient
+beta = zeta_min/omega_min; % Rayleigh damping coefficient
 
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
-C=0.1*M+0.1*(K/1000); % Damping matrix using Rayleigh damping
+C=alpha*M+beta*K; % Damping matrix using Rayleigh damping
 %f=2*randn(2,10000); %Generating 10000 measurements from 2 floors
 fs=100; % Sampling frequency (1/dt)
 
@@ -79,21 +83,21 @@ plot(t,x2(2,:)); xlabel('Time (sec)');  ylabel('DSP2+Noise');
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
 output=x2; % Displacements
-ncols=7000; % More than 2/3*number of samples
-nrows=600; % More than 20*number of sensors
+ncols=5000; % More than 2/3*number of samples
+nrows=100; % More than 20*number of sensors
 cut=10;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
 
 %Plot real and identified first modes to compare between them
 %--------------------------------------------------------------------------
 figure;
-plot([0 ; -Vectors(:,1)],'r*-');
+plot([0 ; Vectors(:,1)],[0 1 2 3 4 5],'r*-');
 hold on
-plot([0  ;Result.Parameters.ModeShape(:,1)],'go-.');
+plot([0  ;Result.Parameters.ModeShape(:,1)],[0 1 2 3 4 5],'go-.');
 hold on
-plot([0 ; -Vectors(:,2)],'b^--');
+plot([0 ; -Vectors(:,2)],[0 1 2 3 4 5],'b^--');
 hold on
-plot([0  ;Result.Parameters.ModeShape(:,2)],'mv-');
+plot([0  ;Result.Parameters.ModeShape(:,2)],[0 1 2 3 4 5],'mv-');
 hold off
 title('Real and Identified Mode Shapes');
 legend('Mode 1 (Real)','Mode 1 (Identified using SSI)','Mode 2 (Real)','Mode 2 (Identified using SSI)');
