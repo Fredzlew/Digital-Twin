@@ -2,7 +2,6 @@ clc;
 clear all;
 close all;
 
-FullInFName = 'data_1_2_1.txt'; % here you specify the file name and folder of your data file (1st test)
 dt = 0.01; % here you specify the sampling interval
 Nf1 = 2^12; % here you specify the number of frequency lines (a radix 2 number, i.e., Nf1=2^n, where n is a natural number)
 
@@ -14,9 +13,10 @@ Fn4e = 10.12;  % 4th natural frequency
 Fn5e = 11.60;  % 5th natural frequency
 
 %######## from this point onwards do not edit the script ##################
-addpath('.\OMAtoolsA1_5\Signal processing');
-data  = dlmread(FullInFName,'',7,0); % read accelaration responses from text file
-y = data(:,2:6)/1000;
+% addpath('.\OMAtoolsA1_5\Signal processing');
+data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
+ys = (data(2:6,:)/1000)'; % Converting mm to m
+y = [ys(:,5),ys(:,4),ys(:,3),ys(:,2),ys(:,1)]; % Swap columns due to sensor
 
 Nf = Nf1 + 1;
 Ns = 2 * Nf1;
@@ -64,11 +64,11 @@ Fn5 = f(idF5);
 
 % Natural frequnecies
 
-sprintf('1st Natural Frequency: %0.4f', Fn1)
-sprintf('2nd Natural Frequency: %0.4f', Fn2)
-sprintf('3rd Natural Frequency: %0.4f', Fn3)
-sprintf('4th Natural Frequency: %0.4f', Fn4)
-sprintf('5th Natural Frequency: %0.4f', Fn5)
+% sprintf('1st Natural Frequency: %0.4f', Fn1)
+% sprintf('2nd Natural Frequency: %0.4f', Fn2)
+% sprintf('3rd Natural Frequency: %0.4f', Fn3)
+% sprintf('4th Natural Frequency: %0.4f', Fn4)
+% sprintf('5th Natural Frequency: %0.4f', Fn5)
 
 % Mode shape vectors
 
@@ -81,25 +81,26 @@ Vn5 = abs(ModeShapes(:,idF5)).*cos(angle(ModeShapes(:,idF5)));
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 
 % plotting the mode shapes
-% x = [0 filename.H];
-% phi = [zeros(1,length(U)); U];
-% fig = figure;
-% fig.Position=[100 100 1600 700];
-% for i=1:nm
-%     subplot(1,nm,i)
-%     hold on
-%     plot(phi(:,i),x,'-m')
-%     plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
-%     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-% %     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
-%     xline(0.0,'--')
-%     xlim([-1.1,1.1])
-%     ylim([0,x(end)])
-% end
-% 
-% han=axes(fig,'visible','off'); 
-% han.Title.Visible='on';
-% han.XLabel.Visible='on';
-% han.YLabel.Visible='on';
-% ylabel(han,'Height [m]','FontSize',14);
-% xlabel(han,'Deflection [-]','FontSize',14);
+x = [0 filename.H];
+phi = [zeros(1,length(filename.U)); filename.U];
+MSV = [-Vn1,-Vn2,-Vn3,-Vn4,-Vn5];
+fig = figure;
+fig.Position=[100 100 1600 700];
+for i=1:length(Uf)
+    subplot(1,length(Uf),i)
+    hold on
+    plot(phi(:,i),x,'-m')
+    plot([0  ;MSV(:,i)],x,'go-.');
+    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    xline(0.0,'--')
+    xlim([-1.1,1.1])
+    ylim([0,x(end)])
+end
+
+han=axes(fig,'visible','off'); 
+han.Title.Visible='on';
+han.XLabel.Visible='on';
+han.YLabel.Visible='on';
+ylabel(han,'Height [m]','FontSize',14);
+xlabel(han,'Deflection [-]','FontSize',14);

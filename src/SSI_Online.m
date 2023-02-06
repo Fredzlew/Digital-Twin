@@ -3,7 +3,8 @@ clc; clear; close all;
 %--------------------------------------------------------------------------
 %rng(1) % Set global random seed
 data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
-f = data(2:6,1:10000)/1000; % Converting mm to m
+fss = data(2:6,1:10000)/1000; % Converting mm to m
+f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 omega_min = 1.70; % Minimum natural frequency
 zeta_min = 0.015; % Minimum threshold for desired damping ratio
