@@ -80,11 +80,12 @@ x2=x;%+0.01*randn(2,10000);
 
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
-Y=x2;
-ncols=9000;    %more than 2/3 of No. of data
-nrows=100;     %more than 20 * number of modes
+nm = 10; %Number of modes
+Y=x2; %Displacements
+ncols=4/5*length(f);    %more than 2/3 of No. of data
+nrows=10*nm;     %more than 20 * number of modes
 inputs=1;     
-cut=10;        %Identify 5 modes
+cut=2*nm;        %Identify 5 modes
 shift=10;      %Adjust EMAC sensitivity
 EMAC_option=1; %EMAC is calculated only from observability matrix
 
@@ -93,20 +94,44 @@ EMAC_option=1; %EMAC is calculated only from observability matrix
 
 %Plot real and identified first modes to compare between them
 %--------------------------------------------------------------------------
-figure;
-plot([0 ; Vectors(:,1)],[0 1 2 3 4 5],'b*-');
-hold on
-plot([0  ;Result.Parameters.ModeShape(:,1)],[0 1 2 3 4 5],'r*-.');
-hold on
-plot([0 ; -Vectors(:,2)],[0 1 2 3 4 5],'g*--');
-hold on
-plot([0  ;Result.Parameters.ModeShape(:,3)],[0 1 2 3 4 5],'k*:');
-hold off
-title('Real and Identified Mode Shapes');
-legend('Mode 1 (Real)','Mode 1 (Identified using ERA)','Mode 2 (Real)','Mode 2 (Identified using ERA)');
-xlabel('Amplitude');
-ylabel('Floor');
-grid on;
+% figure;
+% plot([0 ; Vectors(:,1)],[0 1 2 3 4 5],'b*-');
+% hold on
+% plot([0  ;Result.Parameters.ModeShape(:,1)],[0 1 2 3 4 5],'r*-.');
+% hold on
+% plot([0 ; -Vectors(:,2)],[0 1 2 3 4 5],'g*--');
+% hold on
+% plot([0  ;Result.Parameters.ModeShape(:,3)],[0 1 2 3 4 5],'k*:');
+% hold off
+% title('Real and Identified Mode Shapes');
+% legend('Mode 1 (Real)','Mode 1 (Identified using ERA)','Mode 2 (Real)','Mode 2 (Identified using ERA)');
+% xlabel('Amplitude');
+% ylabel('Floor');
+% grid on;
+
+% plotting the mode shapes
+x = [0 filename.H];
+phi = [zeros(1,length(Vectors)); Vectors];
+fig = figure;
+fig.Position=[100 100 1600 700];
+for i=1:length(wn)
+    subplot(1,length(wn),i)
+    hold on
+    plot(phi(:,i),x,'-m')
+    plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
+    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    xline(0.0,'--')
+    xlim([-1.1,1.1])
+    ylim([0,x(end)])
+end
+
+han=axes(fig,'visible','off'); 
+han.Title.Visible='on';
+han.XLabel.Visible='on';
+han.YLabel.Visible='on';
+ylabel(han,'Height [m]','FontSize',14);
+xlabel(han,'Deflection [-]','FontSize',14);
 
 %Display real and Identified natural frequencies and damping ratios
 %--------------------------------------------------------------------------
