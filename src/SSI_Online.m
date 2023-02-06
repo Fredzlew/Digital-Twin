@@ -82,10 +82,11 @@ x2=x;%+0.05*randn(2,10000);
 
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
+nm = 5; %number of modes
 output=x2; % Displacements
-ncols=8000; % More than 2/3*number of samples
-nrows=200; % More than 20*number of sensors
-cut=10;  % cut=4 -> 2 modes, cut=10 -> 5 modes
+ncols=4/5*length(f); % More than 2/3*number of samples
+nrows=50*nm; % More than 20*number of sensors
+cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
 
 %Plot real and identified first modes to compare between them
@@ -95,8 +96,8 @@ x = [0 filename.H];
 phi = [zeros(1,length(Vectors)); Vectors];
 fig = figure;
 fig.Position=[100 100 1600 700];
-for i=1:length(wn)
-    subplot(1,length(wn),i)
+for i=1:nm
+    subplot(1,nm,i)
     hold on
     plot(phi(:,i),x,'-m')
     plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
