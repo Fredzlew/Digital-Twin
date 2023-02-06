@@ -61,6 +61,7 @@ Fn2 = f(idF2);
 Fn3 = f(idF3);
 Fn4 = f(idF4);
 Fn5 = f(idF5);
+fn = [Fn1,Fn2,Fn3,Fn4,Fn5];
 
 % Natural frequnecies
 
@@ -96,6 +97,10 @@ for i=1:length(Uf)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
+    if i==1
+        legend('Numerical','Approximation','Location','northwest')
+    else
+    end
 end
 
 han=axes(fig,'visible','off'); 
