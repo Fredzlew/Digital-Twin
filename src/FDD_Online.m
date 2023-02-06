@@ -8,17 +8,17 @@ filename = load('modelprop.mat'); % Loads mass, stiffness matrices, height and m
 
 % plotting the mode shapes from numerical and FDD to compare
 nm = 5; % number of modes
-x = [0, H];
-phi = [zeros(1,length(U)); U];
+x = [0, filename.H];
+phi = -[zeros(1,length(filename.U)); filename.U];
 fig = figure;
 fig.Position=[100 100 1600 700];
 for i=1:nm
     subplot(1,nm,i)
     hold on
     plot(phi(:,i),x,'-b')
-    plot(phi_FDD(:,i),x,'-g')
-    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-    plot(phi_FDD(2:end,i),x(2:end),'b.','markersize',30)
+    plot([0;phi_FDD(:,i)],x,'-g')
+%     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+%     plot([0;phi_FDD(2:end,i)],x(2:end),'b.','markersize',30)
 %     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
