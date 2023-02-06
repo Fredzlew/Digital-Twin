@@ -22,9 +22,23 @@ fs=100; % Sampling frequency (1/dt)
 
 n=size(f,1);
 dt=1/fs; %sampling rate
-[Vectors, Values]=eig(K,M);
+[Us, Values]=eig(K,M);
 Freq=sqrt(diag(Values))/(2*pi); % undamped natural frequency
 steps=size(f,2);
+
+% normalizing mode shapes
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        Vectors(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
 
 Mn=diag(Vectors'*M*Vectors); % uncoupled mass
 Cn=diag(Vectors'*C*Vectors); % uncoupled damping
@@ -75,6 +89,22 @@ cut=nm*2;  %Identify 2 modes
 [Result2]=DSI(output,input,fs,cut);   %DSI
 [Result3]=DSSI(output,input,fs,cut);  %DSSI
 
+% normalizing SSI mode shapes
+Us = Result.Parameters.ModeShape;
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        phi_SSI(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
+
+
 %Plot real and identified first modes to compare between them
 %--------------------------------------------------------------------------
 
@@ -86,15 +116,29 @@ fig.Position=[100 100 1600 700];
 for i=1:nm
     subplot(1,nm,i)
     hold on
-    plot(phi(:,i),x,'-m')
-    plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
-    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
-    xline(0.0,'--')
-    xlim([-1.1,1.1])
-    ylim([0,x(end)])
+    if i == 5
+        plot(phi(:,i),x,'-m')
+        plot([0  ;-phi_SSI(:,i)],x,'go-.');
+        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+        title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        xline(0.0,'--')
+        xlim([-1.1,1.1])
+        ylim([0,x(end)])
+    else
+        plot(phi(:,i),x,'-m')
+        plot([0  ;phi_SSI(:,i)],x,'go-.');
+        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+        title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        xline(0.0,'--')
+        xlim([-1.1,1.1])
+        ylim([0,x(end)])
+        if i==1
+            legend('Numerical','Approximation','Location','northwest')
+        else
+        end
+    end
 end
-
+sgtitle('Numerical vs SSI Online','FontSize',20) 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';

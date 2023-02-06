@@ -20,9 +20,23 @@ fs=100; % Sampling frequency (1/dt)
 
 n=size(f,1);
 dt=1/fs; %sampling rate
-[Vectors, Values]=eig(K,M);
+[Us, Values]=eig(K,M);
 Freq=sqrt(diag(Values))/(2*pi); % undamped natural frequency
 steps=size(f,2);
+
+% normalizing mode shapes
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        Vectors(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
 
 Mn=diag(Vectors'*M*Vectors); % uncoupled mass
 Cn=diag(Vectors'*C*Vectors); % uncoupled damping
@@ -80,10 +94,10 @@ x2=x;%+0.01*randn(2,10000);
 
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
-nm = 10; %Number of modes
+nm = 5; %Number of modes
 Y=x2; %Displacements
 ncols=4/5*length(f);    %more than 2/3 of No. of data
-nrows=10*nm;     %more than 20 * number of modes
+nrows=10*2*nm/5+1;     %more than 20 * number of modes
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
 shift=10;      %Adjust EMAC sensitivity
@@ -91,6 +105,20 @@ EMAC_option=1; %EMAC is calculated only from observability matrix
 
 [Result]=ERA(Y,fs,ncols,nrows,inputs,cut,shift,EMAC_option);  %ERA
 
+% normalizing SSI mode shapes
+Us = Result.Parameters.ModeShape;
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        phi_ERA(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
 
 %Plot real and identified first modes to compare between them
 %--------------------------------------------------------------------------
@@ -118,7 +146,7 @@ for i=1:length(wn)
     subplot(1,length(wn),i)
     hold on
     plot(phi(:,i),x,'-m')
-    plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
+    plot([0  ;phi_ERA(:,i)],x,'go-.');
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
 %     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')

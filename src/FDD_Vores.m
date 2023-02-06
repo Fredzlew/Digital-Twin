@@ -81,19 +81,32 @@ Vn5 = abs(ModeShapes(:,idF5)).*cos(angle(ModeShapes(:,idF5)));
 % Loading modelprop for real mode shapes
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 
+% normalizing FDD mode shapes
+Us = [Vn1,Vn2,Vn3,Vn4,Vn5];
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        phi_FDD(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
 % plotting the mode shapes
 x = [0 filename.H];
 phi = [zeros(1,length(filename.U)); filename.U];
-MSV = [-Vn1,-Vn2,-Vn3,-Vn4,-Vn5];
 fig = figure;
 fig.Position=[100 100 1600 700];
 for i=1:length(Uf)
     subplot(1,length(Uf),i)
     hold on
     plot(phi(:,i),x,'-m')
-    plot([0  ;MSV(:,i)],x,'go-.');
+    plot([0  ;phi_FDD(:,i)],x,'go-.');
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
@@ -103,6 +116,7 @@ for i=1:length(Uf)
     end
 end
 
+sgtitle('Numerical vs FDD Vores','FontSize',20) 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';

@@ -124,12 +124,13 @@ for i=1:length(omegas)
     hold on
     plot(phi(:,i),x,'-m')
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
+    
 end
-
+sgtitle('Numerical','FontSize',20) 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';
