@@ -17,25 +17,23 @@ C=alpha*M+beta*K; % Damping matrix using Rayleigh damping
 fs=100; % Sampling frequency (1/dt)
 
 %Apply modal superposition to get response
-%--------------------------------------------------------------------------
 
-n=size(f,1); % Number of floors/sensors
+n=size(f,1);
 dt=1/fs; %sampling rate
-[Vectors, Values]=eig(K,M); % Solving eigenvalueproblem (undamped)
-Freq=sqrt(diag(Values))/(2*pi); % Undamped natural frequency
-steps=size(f,2); % Number of samples
+[Vectors, Values]=eig(K,M);
+Freq=sqrt(diag(Values))/(2*pi); % undamped natural frequency
+steps=size(f,2);
 
-% Then the natural frequencies, including damping are calculated
 Mn=diag(Vectors'*M*Vectors); % uncoupled mass
 Cn=diag(Vectors'*C*Vectors); % uncoupled damping
 Kn=diag(Vectors'*K*Vectors); % uncoupled stifness
-wn=sqrt(diag(Values)); % Undamped natural frequencies
+wn=sqrt(diag(Values));
 zeta=Cn./(sqrt(2.*Mn.*Kn));  % damping ratio
-wd=wn.*sqrt(1-zeta.^2); % Damped natural frequencies
+wd=wn.*sqrt(1-zeta.^2);
 
-fn=Vectors'*f; % generalized input force matrix (Modal load)
+fn=Vectors'*f; % generalized input force matrix
 
-t=[0:dt:dt*steps-dt]; % Time for each measurement
+t=[0:dt:dt*steps-dt];
 
 for i=1:1:n
     
@@ -43,26 +41,26 @@ for i=1:1:n
     hd(i,:)=(1/(Mn(i)*wd(i))).*(-zeta(i).*wn(i).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)+wd(i).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t)); %transfer function of velocity
     hdd(i,:)=(1/(Mn(i)*wd(i))).*((zeta(i).*wn(i))^2.*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)-zeta(i).*wn(i).*wd(i).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t)-wd(i).*((zeta(i).*wn(i)).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t))-wd(i)^2.*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)); %transfer function of acceleration
     
-    qq=conv(fn(i,:),h(i,:))*dt; % modal displacement
-    qqd=conv(fn(i,:),hd(i,:))*dt; % modal velocity
-    qqdd=conv(fn(i,:),hdd(i,:))*dt; % modal acceleration
+    qq=conv(fn(i,:),h(i,:))*dt;
+    qqd=conv(fn(i,:),hd(i,:))*dt;
+    qqdd=conv(fn(i,:),hdd(i,:))*dt;
     
-    q(i,:)=qq(1:steps); % Picking the displacements within the time frame
-    qd(i,:)=qqd(1:steps); % Picking the velocities within the time frame
-    qdd(i,:)=qqdd(1:steps); % Picking the accelerations within the time frame
+    q(i,:)=qq(1:steps); % modal displacement
+    qd(i,:)=qqd(1:steps); % modal velocity
+    qdd(i,:)=qqdd(1:steps); % modal acceleration
        
 end
 
-x=Vectors*q; % Real displacements
-v=Vectors*qd; % Real velocities
-a=Vectors*qdd; % Real accelerations
+x=Vectors*q; %displacement
+v=Vectors*qd; %vecloity
+a=Vectors*qdd; %vecloity
 
 %Add noise to excitation and response
 %--------------------------------------------------------------------------
-f2=f;%+0.05*randn(2,10000);
-a2=a;%+0.05*randn(2,10000);
-v2=v;%+0.05*randn(2,10000);
-x2=x;%+0.05*randn(2,10000);
+f2=f;%+0.01*randn(2,10000);
+a2=a;%+0.01*randn(2,10000);
+v2=v;%+0.01*randn(2,10000);
+x2=x;%+0.01*randn(2,10000);
 
 %Plot displacement of first floor without and with noise
 %--------------------------------------------------------------------------
@@ -82,38 +80,42 @@ x2=x;%+0.05*randn(2,10000);
 
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
-output=x2; % Displacements
-ncols=9000; % More than 2/3*number of samples
-nrows=100; % More than 20*number of sensors
-cut=10;  % cut=4 -> 2 modes, cut=10 -> 5 modes
-[Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
+Y=x2;
+ncols=9000;    %more than 2/3 of No. of data
+nrows=100;     %more than 20 * number of modes
+inputs=1;     
+cut=10;        %Identify 5 modes
+shift=10;      %Adjust EMAC sensitivity
+EMAC_option=1; %EMAC is calculated only from observability matrix
+
+[Result]=ERA(Y,fs,ncols,nrows,inputs,cut,shift,EMAC_option);  %ERA
+
 
 %Plot real and identified first modes to compare between them
 %--------------------------------------------------------------------------
 figure;
-plot([0 ; Vectors(:,1)],[0 1 2 3 4 5],'r*-');
+plot([0 ; Vectors(:,1)],[0 1 2 3 4 5],'b*-');
 hold on
-plot([0  ;Result.Parameters.ModeShape(:,1)],[0 1 2 3 4 5],'go-.');
+plot([0  ;Result.Parameters.ModeShape(:,1)],[0 1 2 3 4 5],'r*-.');
 hold on
-plot([0 ; -Vectors(:,2)],[0 1 2 3 4 5],'b^--');
+plot([0 ; -Vectors(:,2)],[0 1 2 3 4 5],'g*--');
 hold on
-plot([0  ;Result.Parameters.ModeShape(:,2)],[0 1 2 3 4 5],'mv-');
+plot([0  ;Result.Parameters.ModeShape(:,3)],[0 1 2 3 4 5],'k*:');
 hold off
 title('Real and Identified Mode Shapes');
-legend('Mode 1 (Real)','Mode 1 (Identified using SSI)','Mode 2 (Real)','Mode 2 (Identified using SSI)');
+legend('Mode 1 (Real)','Mode 1 (Identified using ERA)','Mode 2 (Real)','Mode 2 (Identified using ERA)');
 xlabel('Amplitude');
 ylabel('Floor');
 grid on;
-daspect([1 1 1]);
 
 %Display real and Identified natural frequencies and damping ratios
 %--------------------------------------------------------------------------
-disp('Real and Identified Natural Drequencies and Damping Ratios of the First Mode'); 
+disp('Real and Identified Natural Drequencies and Damping Ratios of the First Mode'); disp('');
 disp(strcat('Real: Frequency=',num2str(Freq(1)),'Hz',' Damping Ratio=',num2str(zeta(1)*100),'%'));
-disp(strcat('SSI: Frequency=',num2str(Result.Parameters.NaFreq(1)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(1)),'%'));
-disp(strcat('CMI of The Identified Mode=',num2str(Result.Indicators.CMI(1)),'%'));
-disp('-----------')
-disp('Real and Identified Natural Drequencies and Damping Ratios of the Second Mode');
+disp(strcat('ERA: Frequency=',num2str(Result.Parameters.NaFreq(1)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(1)),'%'));
+disp(strcat('CMI=',num2str(Result.Indicators.CMI(1))));
+
+disp('Real and Identified Natural Drequencies and Damping Ratios of the Second Mode'); disp('');
 disp(strcat('Real: Frequency=',num2str(Freq(2)),'Hz',' Damping Ratio=',num2str(zeta(2)*100),'%'));
-disp(strcat('SSI: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
-disp(strcat('CMI of The Identified Mode=',num2str(Result.Indicators.CMI(2)),'%'));
+disp(strcat('ERA: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
+disp(strcat('CMI=',num2str(Result.Indicators.CMI(2))));
