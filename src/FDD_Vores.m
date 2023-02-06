@@ -77,14 +77,29 @@ Vn2 = abs(ModeShapes(:,idF2)).*cos(angle(ModeShapes(:,idF2)));
 Vn3 = abs(ModeShapes(:,idF3)).*cos(angle(ModeShapes(:,idF3)));
 Vn4 = abs(ModeShapes(:,idF4)).*cos(angle(ModeShapes(:,idF4)));
 Vn5 = abs(ModeShapes(:,idF5)).*cos(angle(ModeShapes(:,idF5)));
+% Loading modelprop for real mode shapes
+filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 
-sprintf('1st Mode Shape Vector:')
-Vn1
-sprintf('2nd Mode Shape Vector:')
-Vn2
-sprintf('3rd Mode Shape Vector:')
-Vn3
-sprintf('4th Mode Shape Vector:')
-Vn4
-sprintf('5th Mode Shape Vector:')
-Vn5
+% plotting the mode shapes
+% x = [0 filename.H];
+% phi = [zeros(1,length(U)); U];
+% fig = figure;
+% fig.Position=[100 100 1600 700];
+% for i=1:nm
+%     subplot(1,nm,i)
+%     hold on
+%     plot(phi(:,i),x,'-m')
+%     plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
+%     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+% %     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+%     xline(0.0,'--')
+%     xlim([-1.1,1.1])
+%     ylim([0,x(end)])
+% end
+% 
+% han=axes(fig,'visible','off'); 
+% han.Title.Visible='on';
+% han.XLabel.Visible='on';
+% han.YLabel.Visible='on';
+% ylabel(han,'Height [m]','FontSize',14);
+% xlabel(han,'Deflection [-]','FontSize',14);

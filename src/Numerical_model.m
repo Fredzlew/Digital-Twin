@@ -112,7 +112,7 @@ for j = 1:5
 end % end normalization
 
 %... Save results in *.mat file .................
-save('.\data\modelprop.mat','K','M','H');
+save('.\data\modelprop.mat','K','M','H','U');
 
 % plotting the mode shapes
 x = [0, H];
