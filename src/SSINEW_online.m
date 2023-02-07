@@ -1,4 +1,5 @@
 clc; clear; close all;
+addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
 

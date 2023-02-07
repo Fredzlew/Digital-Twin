@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all;
-
+addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 dt = 0.01; % here you specify the sampling interval
 Nf1 = 2^12; % here you specify the number of frequency lines (a radix 2 number, i.e., Nf1=2^n, where n is a natural number)
 

@@ -1,4 +1,5 @@
 clc; clear; close all;
+addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
 %rng(1) % Set global random seed
@@ -95,7 +96,7 @@ x2=x;%+0.01*randn(2,10000);
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
 nm = 5; %Number of modes
-Y=x2; %Displacements
+Y=f; %Displacements
 ncols=4/5*length(f);    %more than 2/3 of No. of data
 nrows=20*2*nm/5+1;     %more than 20 * number of modes
 inputs=1;     
@@ -142,18 +143,32 @@ x = [0 filename.H];
 phi = [zeros(1,length(Vectors)); Vectors];
 fig = figure;
 fig.Position=[100 100 1600 700];
-for i=1:length(wn)
-    subplot(1,length(wn),i)
+for i=1:nm
+    subplot(1,nm,i)
     hold on
-    plot(phi(:,i),x,'-m')
-    plot([0  ;phi_ERA(:,i)],x,'go-.');
-    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-%     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
-    xline(0.0,'--')
-    xlim([-1.1,1.1])
-    ylim([0,x(end)])
+    if i == 4
+        plot(phi(:,i),x,'-m')
+        plot([0  ;-phi_ERA(:,i)],x,'go-.');
+        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+        title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        xline(0.0,'--')
+        xlim([-1.1,1.1])
+        ylim([0,x(end)])
+    else
+        plot(phi(:,i),x,'-m')
+        plot([0  ;phi_ERA(:,i)],x,'go-.');
+        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+        title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        xline(0.0,'--')
+        xlim([-1.1,1.1])
+        ylim([0,x(end)])
+        if i==1
+            legend('Numerical','Approximation','Location','northwest')
+        else
+        end
+    end
 end
-
+sgtitle('Numerical vs SSI Online','FontSize',20) 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';

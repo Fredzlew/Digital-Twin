@@ -1,5 +1,6 @@
 % parameters
 clc; clear; close all;
+addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %    column with lumbed masses     
 %         
 %        o <-- H(5),m(5)
