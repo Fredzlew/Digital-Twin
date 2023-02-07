@@ -4,7 +4,8 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %--------------------------------------------------------------------------
 %rng(1) % Set global random seed
 data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
-f = data(2:6,1:10000)/1000; % Converting mm to m
+fss = data(2:6,1:10000)/1000; % Converting mm to m
+f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 omega_min = 1.70; % Minimum natural frequency
 zeta_min = 0.015; % Minimum threshold for desired damping ratio
@@ -39,43 +40,43 @@ for j = 1:5
     end
 end % end normalization
 
-Mn=diag(Vectors'*M*Vectors); % uncoupled mass
-Cn=diag(Vectors'*C*Vectors); % uncoupled damping
-Kn=diag(Vectors'*K*Vectors); % uncoupled stifness
-wn=sqrt(diag(Values));
-zeta=Cn./(sqrt(2.*Mn.*Kn));  % damping ratio
-wd=wn.*sqrt(1-zeta.^2);
-
-fn=Vectors'*f; % generalized input force matrix
-
-t=[0:dt:dt*steps-dt];
-
-for i=1:1:n
-    
-    h(i,:)=(1/(Mn(i)*wd(i))).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t); %transfer function of displacement
-    hd(i,:)=(1/(Mn(i)*wd(i))).*(-zeta(i).*wn(i).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)+wd(i).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t)); %transfer function of velocity
-    hdd(i,:)=(1/(Mn(i)*wd(i))).*((zeta(i).*wn(i))^2.*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)-zeta(i).*wn(i).*wd(i).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t)-wd(i).*((zeta(i).*wn(i)).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t))-wd(i)^2.*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)); %transfer function of acceleration
-    
-    qq=conv(fn(i,:),h(i,:))*dt;
-    qqd=conv(fn(i,:),hd(i,:))*dt;
-    qqdd=conv(fn(i,:),hdd(i,:))*dt;
-    
-    q(i,:)=qq(1:steps); % modal displacement
-    qd(i,:)=qqd(1:steps); % modal velocity
-    qdd(i,:)=qqdd(1:steps); % modal acceleration
-       
-end
-
-x=Vectors*q; %displacement
-v=Vectors*qd; %vecloity
-a=Vectors*qdd; %vecloity
-
-%Add noise to excitation and response
-%--------------------------------------------------------------------------
-f2=f;%+0.01*randn(2,10000);
-a2=a;%+0.01*randn(2,10000);
-v2=v;%+0.01*randn(2,10000);
-x2=x;%+0.01*randn(2,10000);
+% Mn=diag(Vectors'*M*Vectors); % uncoupled mass
+% Cn=diag(Vectors'*C*Vectors); % uncoupled damping
+% Kn=diag(Vectors'*K*Vectors); % uncoupled stifness
+% wn=sqrt(diag(Values));
+% zeta=Cn./(sqrt(2.*Mn.*Kn));  % damping ratio
+% wd=wn.*sqrt(1-zeta.^2);
+% 
+% fn=Vectors'*f; % generalized input force matrix
+% 
+% t=[0:dt:dt*steps-dt];
+% 
+% for i=1:1:n
+%     
+%     h(i,:)=(1/(Mn(i)*wd(i))).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t); %transfer function of displacement
+%     hd(i,:)=(1/(Mn(i)*wd(i))).*(-zeta(i).*wn(i).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)+wd(i).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t)); %transfer function of velocity
+%     hdd(i,:)=(1/(Mn(i)*wd(i))).*((zeta(i).*wn(i))^2.*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)-zeta(i).*wn(i).*wd(i).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t)-wd(i).*((zeta(i).*wn(i)).*exp(-zeta(i)*wn(i)*t).*cos(wd(i)*t))-wd(i)^2.*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t)); %transfer function of acceleration
+%     
+%     qq=conv(fn(i,:),h(i,:))*dt;
+%     qqd=conv(fn(i,:),hd(i,:))*dt;
+%     qqdd=conv(fn(i,:),hdd(i,:))*dt;
+%     
+%     q(i,:)=qq(1:steps); % modal displacement
+%     qd(i,:)=qqd(1:steps); % modal velocity
+%     qdd(i,:)=qqdd(1:steps); % modal acceleration
+%        
+% end
+% 
+% x=Vectors*q; %displacement
+% v=Vectors*qd; %vecloity
+% a=Vectors*qdd; %vecloity
+% 
+% %Add noise to excitation and response
+% %--------------------------------------------------------------------------
+% f2=f;%+0.01*randn(2,10000);
+% a2=a;%+0.01*randn(2,10000);
+% v2=v;%+0.01*randn(2,10000);
+% x2=x;%+0.01*randn(2,10000);
 
 %Plot displacement of first floor without and with noise
 %--------------------------------------------------------------------------
@@ -168,7 +169,7 @@ for i=1:nm
         end
     end
 end
-sgtitle('Numerical vs SSI Online','FontSize',20) 
+sgtitle('Numerical vs ERA Online','FontSize',20) 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';
@@ -179,11 +180,11 @@ xlabel(han,'Deflection [-]','FontSize',14);
 %Display real and Identified natural frequencies and damping ratios
 %--------------------------------------------------------------------------
 disp('Real and Identified Natural Drequencies and Damping Ratios of the First Mode'); disp('');
-disp(strcat('Real: Frequency=',num2str(Freq(1)),'Hz',' Damping Ratio=',num2str(zeta(1)*100),'%'));
+%disp(strcat('Real: Frequency=',num2str(Freq(1)),'Hz',' Damping Ratio=',num2str(zeta(1)*100),'%'));
 disp(strcat('ERA: Frequency=',num2str(Result.Parameters.NaFreq(1)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(1)),'%'));
 disp(strcat('CMI=',num2str(Result.Indicators.CMI(1))));
 
 disp('Real and Identified Natural Drequencies and Damping Ratios of the Second Mode'); disp('');
-disp(strcat('Real: Frequency=',num2str(Freq(2)),'Hz',' Damping Ratio=',num2str(zeta(2)*100),'%'));
+%disp(strcat('Real: Frequency=',num2str(Freq(2)),'Hz',' Damping Ratio=',num2str(zeta(2)*100),'%'));
 disp(strcat('ERA: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
 disp(strcat('CMI=',num2str(Result.Indicators.CMI(2))));
