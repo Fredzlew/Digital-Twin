@@ -13,7 +13,7 @@ beta = zeta_min/omega_min; % Rayleigh damping coefficient
 
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
-C=alpha*M+beta*K; % Damping matrix using Rayleigh damping
+C=0;%alpha*M+beta*K; % Damping matrix using Rayleigh damping
 %f=2*randn(2,10000); %Generating 10000 measurements from 2 floors
 fs=100; % Sampling frequency (1/dt)
 
@@ -22,9 +22,24 @@ fs=100; % Sampling frequency (1/dt)
 
 n=size(f,1); % Number of floors/sensors
 dt=1/fs; %sampling rate
-[Vectors, Values]=eig(K,M); % Solving eigenvalueproblem (undamped)
+[Us, Values]=eig(K,M); % Solving eigenvalueproblem (undamped)
 Freq=sqrt(diag(Values))/(2*pi); % Undamped natural frequency
 steps=size(f,2); % Number of samples
+
+% normalizing mode shapes
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        Vectors(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
+
 
 % Then the natural frequencies, including damping are calculated
 Mn=diag(Vectors'*M*Vectors); % uncoupled mass
@@ -89,7 +104,20 @@ ncols=4/5*length(f); % More than 2/3*number of samples
 nrows=50*nm; % More than 20*number of sensors
 cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
-
+% normalizing SSI mode shapes
+Us = Result.Parameters.ModeShape;
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:nm
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        phi_SSI(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
 %Plot real and identified first modes to compare between them
 %--------------------------------------------------------------------------
 % plotting the mode shapes
@@ -101,7 +129,7 @@ for i=1:nm
     subplot(1,nm,i)
     hold on
     plot(phi(:,i),x,'-m')
-    plot([0  ;Result.Parameters.ModeShape(:,i)],x,'go-.');
+    plot([0  ;phi_SSI(:,i)],x,'go-.');
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
 %     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')

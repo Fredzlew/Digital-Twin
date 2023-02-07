@@ -12,8 +12,8 @@ beta = zeta_min/omega_min; % Rayleigh damping coefficient
 
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
-C=alpha*M+beta*K; % Damping matrix using Rayleigh damping
-%f=2*randn(2,10000); %Generating 10000 measurements from 2 floors
+C=0;%alpha*M+beta*K; % Damping matrix using Rayleigh damping
+%f=2*randn(5,10000); %Generating 10000 measurements from 2 floors
 fs=100; % Sampling frequency (1/dt)
 
 %Apply modal superposition to get response
@@ -97,7 +97,7 @@ x2=x;%+0.01*randn(2,10000);
 nm = 5; %Number of modes
 Y=x2; %Displacements
 ncols=4/5*length(f);    %more than 2/3 of No. of data
-nrows=10*2*nm/5+1;     %more than 20 * number of modes
+nrows=20*2*nm/5+1;     %more than 20 * number of modes
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
 shift=10;      %Adjust EMAC sensitivity
@@ -109,7 +109,7 @@ EMAC_option=1; %EMAC is calculated only from observability matrix
 Us = Result.Parameters.ModeShape;
 MVec_x = max(Us); % start normalization
 mVec_x = min(Us);
-for j = 1:5
+for j = 1:nm
     if abs(MVec_x(j)) > abs(mVec_x(j))
         mxVec_x(j) = MVec_x(j);
     else
