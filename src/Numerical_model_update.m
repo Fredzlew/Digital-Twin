@@ -86,6 +86,11 @@ c1 = -c3; % randbetingelse for ingen flytning w(0)=0
 wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
 % lateral stiffness
 k2 = F./wL; % [N/m]
+
+% Change cost function to use correct natural frequencies
+% Define what OMA method is used
+MODE = 1; % 1=SSI, 2=ERA, 3=FDD
+
 % Define and minimize cost function
 Stiff = fminsearch(@costfunOMA,k2);
 % Define optimal stiffnesses
@@ -131,30 +136,77 @@ for j = 1:5
 end % end normalization
 
 %... Save results in *.mat file .................
-save('.\data\modelpropupdate.mat','K','M','H','U');
+if MODE==1
+    save('.\data\modelpropupdateSSI.mat','K','M','H','U');
+elseif MODE==2
+    save('.\data\modelpropupdateERA.mat','K','M','H','U');
+else
+    save('.\data\modelpropupdateFDD.mat','K','M','H','U');
+end
 
 % plotting the mode shapes
 x = [0, H];
 phi = [zeros(1,length(U)); U];
 fig = figure;
 fig.Position=[100 100 1600 700];
+if MODE==1
+    OMAphi = SSIphi;
+elseif MODE==2
+    OMAphi = ERAphi;
+else
+    OMAphi = FDDphi;
+end
 for i=1:length(omegas)
     subplot(1,length(omegas),i)
     hold on
     plot(phi(:,i),x,'-m')
+    plot([0  ;OMAphi(:,i)],x,'go-.');
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
-    
+    if i==1 && MODE==1
+        legend('Numerical','SSI','Location','northwest')
+    elseif i==1 && MODE==2
+        legend('Numerical','ERA','Location','northwest')
+    elseif i==1
+        legend('Numerical','FDD','Location','northwest')
+    end
 end
-sgtitle('Numerical','FontSize',20) 
+if MODE==1
+    sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
+elseif MODE==2
+    sgtitle('Numerical mode shapes, calibrated by ERA','FontSize',20)
+else
+    sgtitle('Numerical mode shapes, calibrated by FDD','FontSize',20)
+end
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';
 han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
+
+% Display accuracy of natural frequencies
+if MODE==1
+    OMAfreq=SSIFreq;
+elseif MODE==2
+    OMAfreq=ERAFreq;
+else
+    OMAfreq=FDDFreq;
+end
+disp(strcat('Frequency accuracy,1 : ',num2str(OMAfreq(1)/fn(1)*100),'%'));
+disp(strcat('Frequency accuracy,2 : ',num2str(OMAfreq(2)/fn(2)*100),'%'));
+disp(strcat('Frequency accuracy,3 : ',num2str(OMAfreq(3)/fn(3)*100),'%'));
+disp(strcat('Frequency accuracy,4 : ',num2str(OMAfreq(4)/fn(4)*100),'%'));
+disp(strcat('Frequency accuracy,5 : ',num2str(OMAfreq(5)/fn(5)*100),'%'));
+
+% Display accuracy of mode shapes
+% disp(strcat('Mode shape accuracy,1 : ',num2str(mean(abs(SSIphi(:,1))./abs(U(:,1)))*100),'%'));
+% disp(strcat('Mode shape accuracy,2 : ',num2str(mean(abs(SSIphi(:,2))./abs(U(:,2)))*100),'%'));
+% disp(strcat('Mode shape accuracy,3 : ',num2str(mean(abs(SSIphi(:,3))./abs(U(:,3)))*100),'%'));
+% disp(strcat('Mode shape accuracy,4 : ',num2str(mean(abs(SSIphi(:,4))./abs(U(:,4)))*100),'%'));
+% disp(strcat('Mode shape accuracy,5 : ',num2str(mean(abs(SSIphi(:,5))./abs(U(:,5)))*100),'%'));
 
 
