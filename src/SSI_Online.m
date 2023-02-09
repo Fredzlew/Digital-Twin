@@ -174,7 +174,7 @@ xlabel(han,'Deflection [-]','FontSize',14);
 % ylabel('Floor');
 % grid on;
 % daspect([1 1 1]);
-
+SSIFreq = Result.Parameters.NaFreq;
 %Display real and Identified natural frequencies and damping ratios
 %--------------------------------------------------------------------------
 disp('Real and Identified Natural Drequencies and Damping Ratios of the First Mode'); 
@@ -186,3 +186,5 @@ disp('Real and Identified Natural Drequencies and Damping Ratios of the Second M
 %disp(strcat('Real: Frequency=',num2str(Freq(2)),'Hz',' Damping Ratio=',num2str(zeta(2)*100),'%'));
 disp(strcat('SSI: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
 disp(strcat('CMI of The Identified Mode=',num2str(Result.Indicators.CMI(2)),'%'));
+
+save('.\data\SSImodal.mat','phi_SSI','SSIFreq');

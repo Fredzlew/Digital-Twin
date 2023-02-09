@@ -176,7 +176,7 @@ han.XLabel.Visible='on';
 han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
-
+ERAFreq = Result.Parameters.NaFreq;
 %Display real and Identified natural frequencies and damping ratios
 %--------------------------------------------------------------------------
 disp('Real and Identified Natural Drequencies and Damping Ratios of the First Mode'); disp('');
@@ -188,3 +188,5 @@ disp('Real and Identified Natural Drequencies and Damping Ratios of the Second M
 %disp(strcat('Real: Frequency=',num2str(Freq(2)),'Hz',' Damping Ratio=',num2str(zeta(2)*100),'%'));
 disp(strcat('ERA: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
 disp(strcat('CMI=',num2str(Result.Indicators.CMI(2))));
+
+save('.\data\ERAmodal.mat','phi_ERA','ERAFreq');
