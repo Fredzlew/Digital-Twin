@@ -86,15 +86,23 @@ c1 = -c3; % randbetingelse for ingen flytning w(0)=0
 wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
 % lateral stiffness
 k2 = F./wL; % [N/m]
+% Initial stiffness matrix
+% stiffness matrix
+for i = 1:4
+    Km(i,i) = k2(i)+k2(i+1);
+    Km(i,i+1) = -k2(i+1);
+    Km(i+1,i) = -k2(i+1);
+end
+Km(5,5) = k2(5);
 
 % Change cost function to use correct natural frequencies
 % Define what OMA method is used (also change data in costfunction)
 MODE = 1; % 1=SSI, 2=ERA, 3=FDD
 
 % Define and minimize cost function
-Stiff = fminsearch(@costfunOMA,k2); % SSI
-%Stiff = fminsearch(@costfunERA,k2); % ERA
-%Stiff = fminsearch(@costfunFDD,k2); % FDD
+Stiff = fminsearch(@costfunSSI,k2); % SSI
+% Stiff = fminsearch(@costfunERA,k2); % ERA
+% Stiff = fminsearch(@costfunFDD,k2); % FDD
 
 % Define optimal stiffnesses
 k = Stiff;
@@ -199,11 +207,21 @@ elseif MODE==2
 else
     OMAfreq=FDDFreq;
 end
-disp(strcat('Frequency accuracy,1 : ',num2str(OMAfreq(1)/fn(1)*100),'%'));
-disp(strcat('Frequency accuracy,2 : ',num2str(OMAfreq(2)/fn(2)*100),'%'));
-disp(strcat('Frequency accuracy,3 : ',num2str(OMAfreq(3)/fn(3)*100),'%'));
-disp(strcat('Frequency accuracy,4 : ',num2str(OMAfreq(4)/fn(4)*100),'%'));
-disp(strcat('Frequency accuracy,5 : ',num2str(OMAfreq(5)/fn(5)*100),'%'));
+disp(strcat('Frequency accuracy,1 : ',num2str(min(OMAfreq(1),fn(1))/max(OMAfreq(1),fn(1))*100),'%'));
+disp(strcat('Frequency accuracy,2 : ',num2str(min(OMAfreq(2),fn(2))/max(OMAfreq(2),fn(2))*100),'%'));
+disp(strcat('Frequency accuracy,3 : ',num2str(min(OMAfreq(3),fn(3))/max(OMAfreq(3),fn(3))*100),'%'));
+disp(strcat('Frequency accuracy,4 : ',num2str(min(OMAfreq(4),fn(4))/max(OMAfreq(4),fn(4))*100),'%'));
+disp(strcat('Frequency accuracy,5 : ',num2str(min(OMAfreq(5),fn(5))/max(OMAfreq(5),fn(5))*100),'%'));
+
+% Display stiffness matrices and changes in these
+disp('Original stiffness matrix [N/m]  : ')
+disp(strcat(num2str(Km)));
+disp('Calibrated stiffness matrix [N/m]  : ')
+disp(strcat(num2str(K)));
+disp('Changes in stiffness matrix [N/m] : ')
+disp(strcat(num2str(abs(abs(K)-abs(Km)))));
+disp('Total change in stiffness matrix [N/m] : ')
+disp(strcat(num2str(sum(sum(abs(abs(K)-abs(Km)))))));
 
 % Display accuracy of mode shapes
 % disp(strcat('Mode shape accuracy,1 : ',num2str(mean(abs(SSIphi(:,1))./abs(U(:,1)))*100),'%'));
@@ -211,5 +229,3 @@ disp(strcat('Frequency accuracy,5 : ',num2str(OMAfreq(5)/fn(5)*100),'%'));
 % disp(strcat('Mode shape accuracy,3 : ',num2str(mean(abs(SSIphi(:,3))./abs(U(:,3)))*100),'%'));
 % disp(strcat('Mode shape accuracy,4 : ',num2str(mean(abs(SSIphi(:,4))./abs(U(:,4)))*100),'%'));
 % disp(strcat('Mode shape accuracy,5 : ',num2str(mean(abs(SSIphi(:,5))./abs(U(:,5)))*100),'%'));
-
-
