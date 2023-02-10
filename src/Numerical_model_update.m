@@ -92,7 +92,10 @@ k2 = F./wL; % [N/m]
 MODE = 1; % 1=SSI, 2=ERA, 3=FDD
 
 % Define and minimize cost function
-Stiff = fminsearch(@costfunOMA,k2);
+Stiff = fminsearch(@costfunOMA,k2); % SSI
+%Stiff = fminsearch(@costfunERA,k2); % ERA
+%Stiff = fminsearch(@costfunFDD,k2); % FDD
+
 % Define optimal stiffnesses
 k = Stiff;
 % stiffness matrix
