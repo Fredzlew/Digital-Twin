@@ -88,7 +88,7 @@ wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
 k2 = F./wL; % [N/m]
 
 % Change cost function to use correct natural frequencies
-% Define what OMA method is used
+% Define what OMA method is used (also change data in costfunction)
 MODE = 1; % 1=SSI, 2=ERA, 3=FDD
 
 % Define and minimize cost function
