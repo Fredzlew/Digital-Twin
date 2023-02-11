@@ -1,4 +1,4 @@
-function J=costfunERA(k)
+function J=costfunERAfreq(k)
 % Mass matrix
 M = [2.3553        0         0         0         0
          0    2.3690         0         0         0
