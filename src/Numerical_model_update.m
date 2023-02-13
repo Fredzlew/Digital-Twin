@@ -6,8 +6,8 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %        o <-- H(5),m(5)
 %        |
 %        o <-- H(4),m(4)
-%        |
-%   y    o <-- H(3),m(3)
+%   y    |
+%   Ʌ    o <-- H(3),m(3)
 %  / \   |
 %   |    o <-- H(2),m(2)
 %   |    |
