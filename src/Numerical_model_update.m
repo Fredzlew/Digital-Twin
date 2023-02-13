@@ -97,15 +97,15 @@ Km(5,5) = k2(5);
 
 % Change cost function to use correct natural frequencies
 % Define what OMA method is used (also change data in costfunction)
-MODE = 1; % 1=SSI, 2=ERA, 3=FDD
+MODE = 3; % 1=SSI, 2=ERA, 3=FDD
 
 % Define and minimize cost function
-Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
+% Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
 % Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
 % Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
 % Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
 % Stiff = fminsearch(@costfunERAmode,k2); % ERA, mode shape
-% Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
+Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
 % Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
 % Stiff = fminsearch(@costfunERAfreqmode,k2); % ERA, frequency + mode shape
 % Stiff = fminsearch(@costfunFDDfreqmode,k2); % FDD, frequency + mode shape
