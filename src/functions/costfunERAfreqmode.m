@@ -1,12 +1,17 @@
-function J=costfunERAmode(k)
+function J=costfunERAfreqmode(k)
 % Mass matrix
 M = [2.3553        0         0         0         0
          0    2.3690         0         0         0
          0         0    2.3690         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
-% Normalized mode shapes from relevant OMA method 
-% SSI
+% Natural frequencies and normalized mode shapes from relevant OMA method 
+% ERA
+omegaOMA =  [10.0667;
+   31.4607;
+   49.1633;
+   63.2812;
+   72.8966];
 phiOMA =  [0.2932    0.7087    1.0000   -0.9625    0.4548
     0.6259    1.0000    0.2209    1.0000   -0.7618
     0.7899    0.4613   -0.8978    0.0153    1.0000
@@ -25,6 +30,8 @@ K(5,5) = k(5);
 omega = real(sqrt(diag(D)));
 % sort frequencies and mode shapes
 [~,iw] = sort(omega);
+% natural frequencies [rad/s]
+omegas = omega(iw);
 % mode shapes
 Us = U(:,iw);
 % normalization
@@ -40,5 +47,5 @@ for j = 1:5
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-J=sum(sum((abs(U)-abs(phiOMA)).^2));
+J=sum((omegas-omegaOMA).^2)*0.5+sum(sum((abs(U)-abs(phiOMA)).^2))*0.5;
 end

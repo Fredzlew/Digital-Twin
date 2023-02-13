@@ -40,5 +40,5 @@ for j = 1:5
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-J=sum(sum((U-phiOMA).^2));
+J=sum(sum((abs(U)-abs(phiOMA)).^2));
 end

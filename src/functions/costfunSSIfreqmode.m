@@ -1,17 +1,22 @@
-function J=costfunERAmode(k)
+function J=costfunSSIfreqmode(k)
 % Mass matrix
 M = [2.3553        0         0         0         0
          0    2.3690         0         0         0
          0         0    2.3690         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
-% Normalized mode shapes from relevant OMA method 
+% Natural frequencies and normalized mode shapes from relevant OMA method 
 % SSI
-phiOMA =  [0.2932    0.7087    1.0000   -0.9625    0.4548
-    0.6259    1.0000    0.2209    1.0000   -0.7618
-    0.7899    0.4613   -0.8978    0.0153    1.0000
-    0.9957   -0.3049   -0.4457   -0.9599   -0.9410
-    1.0000   -0.7915    0.6830    0.5690    0.4714];
+omegaOMA =  [10.3880;
+   31.5746;
+   49.6714;
+   63.5516;
+   72.9177];
+phiOMA =  [0.2939    0.7129    1.0000   -0.9947    0.4457
+    0.6249    1.0000    0.2185    1.0000   -0.8244
+    0.7927    0.4622   -0.8788    0.0171    1.0000
+    0.9963   -0.3065   -0.4272   -0.9361   -0.9710
+    1.0000   -0.7890    0.6735    0.5416    0.3842];
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);
@@ -25,6 +30,8 @@ K(5,5) = k(5);
 omega = real(sqrt(diag(D)));
 % sort frequencies and mode shapes
 [~,iw] = sort(omega);
+% natural frequencies [rad/s]
+omegas = omega(iw);
 % mode shapes
 Us = U(:,iw);
 % normalization
@@ -40,5 +47,5 @@ for j = 1:5
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-J=sum(sum((abs(U)-abs(phiOMA)).^2));
+J=sum((omegas-omegaOMA).^2)*0.5+sum(sum((abs(U)-abs(phiOMA)).^2))*0.5;
 end
