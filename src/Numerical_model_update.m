@@ -104,6 +104,8 @@ Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
 % Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
 % Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
 % Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
+% Stiff = fminsearch(@costfunERAmode,k2); % ERA, mode shape
+% Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
 
 % Define optimal stiffnesses
 k = Stiff;
