@@ -97,10 +97,10 @@ Km(5,5) = k2(5);
 
 % Change cost function to use correct natural frequencies
 % Define what OMA method is used (also change data in costfunction)
-MODE = 3; % 1=SSI, 2=ERA, 3=FDD
+MODE = 1; % 1=SSI, 2=ERA, 3=FDD
 
 % Define and minimize cost function
-% Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
+Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
 % Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
 % Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
 % Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
@@ -177,7 +177,13 @@ for i=1:length(omegas)
     subplot(1,length(omegas),i)
     hold on
     plot(phi(:,i),x,'-m')
-    plot([0  ;OMAphi(:,i)],x,'go-.');
+    if phi(2,i)*OMAphi(1,i) < 0 % Swap sign on mode shape
+        plot([0  ;-OMAphi(:,i)],x,'go-.');
+        plot(-OMAphi(1:end,i),x(2:end),'g.','markersize',30)
+    else
+        plot([0  ;OMAphi(:,i)],x,'go-.');
+        plot(OMAphi(1:end,i),x(2:end),'g.','markersize',30)
+    end
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
