@@ -253,3 +253,32 @@ disp(strcat(num2str(sum(sum(abs(abs(K)-abs(Km)))))));
 disp('----------------------------------------------------------------------')
 disp(strcat('Total mean accuracy (mode+freq) : ',num2str(mean([TOTacc*100,mean(min(OMAfreq,fn)./max(OMAfreq,fn)*100)])),'%'));
 disp('----------------------------------------------------------------------')
+
+% Histogram of the different stiffness from different OMA methods and cost
+% functions
+% Stiffnesses
+K_SSI_freq = [6259.3525,6182.6736,6679.9769,7579.0717,4016.2825];
+K_ERA_freq = [6710.4572,5363.6827,5569.9894,8039.6749,4816.2026];
+K_FDD_freq = [6322.7709,5997.1983,6490.1024,7738.5212,4168.6269];
+K_SSI_mode = [6583.7572,6437.9312,6684.1129,7230.6171,3830.8476];
+K_ERA_mode = [6557.7385,6419.7800,6640.9573,7223.8272,3847.3987];
+K_FDD_mode = [6677.7406,6432.6900,6642.5802,7227.1624,3869.3218];
+K_SSI_freq_mode = [6344.3278,6431.9967,6852.2047,7311.6168,3768.8334];
+K_ERA_freq_mode = [6189.0799,6341.3222,6853.1140,7358.7121,3725.9845];
+K_FDD_freq_mode = [6347.0535,6409.5619,6836.3663,7333.9437,3777.6936];
+
+% figure
+% h1 = histogram([]);
+% hold on
+% histogram([],h1.BinEdges)
+% histogram([],h1.BinEdges)
+% histogram([],h1.BinEdges)
+% hold off
+% 
+% % Add a legend
+% legend('A', 'C', 'G', 'T')
+% 
+% % Add title and axis labels
+% title('Histogram of nucleotide type distribution')
+% xlabel('Occurrences')
+% ylabel('Number of sequence reads')
