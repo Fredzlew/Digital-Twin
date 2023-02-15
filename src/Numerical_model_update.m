@@ -266,19 +266,20 @@ K_FDD_mode = [6677.7406,6432.6900,6642.5802,7227.1624,3869.3218];
 K_SSI_freq_mode = [6344.3278,6431.9967,6852.2047,7311.6168,3768.8334];
 K_ERA_freq_mode = [6189.0799,6341.3222,6853.1140,7358.7121,3725.9845];
 K_FDD_freq_mode = [6347.0535,6409.5619,6836.3663,7333.9437,3777.6936];
+y = [K_SSI_freq;K_ERA_freq;K_FDD_freq;K_SSI_mode;K_ERA_mode;K_FDD_mode;K_SSI_freq_mode;K_ERA_freq_mode;K_FDD_freq_mode];
+% Find value at each tip
+figure
+hold on
+b = bar(y,'stacked');
+for i = 1:size(y,2)
+    xtips = b(i).XEndPoints;
+    ytips = b(i).YEndPoints;
+    labels = string(b(i).YData);
+    text(xtips,ytips./1.1,labels,'HorizontalAlignment','center','VerticalAlignment','middle')
+end
+hold off
+legend('k1','k2','k3','k4','k5')
+title('Values of stiffness for different OMA methods and cost functions')
+xlabel('Method')
+ylabel('Stiffness [N/m]')
 
-% figure
-% h1 = histogram([]);
-% hold on
-% histogram([],h1.BinEdges)
-% histogram([],h1.BinEdges)
-% histogram([],h1.BinEdges)
-% hold off
-% 
-% % Add a legend
-% legend('A', 'C', 'G', 'T')
-% 
-% % Add title and axis labels
-% title('Histogram of nucleotide type distribution')
-% xlabel('Occurrences')
-% ylabel('Number of sequence reads')
