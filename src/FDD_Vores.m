@@ -5,36 +5,41 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 dt = 0.01; % here you specify the sampling interval
 Nf1 = 2^12; % here you specify the number of frequency lines (a radix 2 number, i.e., Nf1=2^n, where n is a natural number)
 
-% below you specify the 1st three natural frequencies identified from the (frequency domain) plots
-% Measured data
-% Fn1e = 1.65;   % 1st natural frequency
-% Fn2e = 5.03;   % 2nd natural frequency
-% Fn3e = 7.90;   % 3rd natural frequency
-% Fn4e = 10.12;  % 4th natural frequency
-% Fn5e = 11.60;  % 5th natural frequency
-
-% with simulated data
-Fn1e = 1.709;   % 1st natural frequency
-Fn2e = 5.072;   % 2nd natural frequency
-Fn3e = 7.947;   % 3rd natural frequency
-Fn4e = 10.077;  % 4th natural frequency
-Fn5e = 11.408;  % 5th natural frequency
 
 % data from numerical model
 filename = load('modelprop.mat');
-
+% the numerical model frequencies
 fnumerical = filename.fn;
 
 %######## from this point onwards do not edit the script ##################
 % addpath('.\OMAtoolsA1_5\Signal processing');
-% Measured data
-% data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
-% ys = (data(2:6,:)/1000)'; % Converting mm to m
-% y = [ys(:,5),ys(:,4),ys(:,3),ys(:,2),ys(:,1)]; % Swap columns due to sensor
-
-% Simulated data
-data_sim = load('data_sim.mat');
-y=data_sim.dis';
+% Measured data and Simulated data
+prompt = "Use FDD for measured or simulated data (1=measured, 2=simulated)? ";
+FDDdata = input(prompt);
+if FDDdata == 1
+    % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
+    % Frequencies with measured data
+    Fn1e = 1.65;   % 1st natural frequency
+    Fn2e = 5.03;   % 2nd natural frequency
+    Fn3e = 7.90;   % 3rd natural frequency
+    Fn4e = 10.12;  % 4th natural frequency
+    Fn5e = 11.60;  % 5th natural frequency
+    % measured data
+    data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
+    ys = (data(2:6,:)/1000)'; % Converting mm to m
+    y = [ys(:,5),ys(:,4),ys(:,3),ys(:,2),ys(:,1)]; % Swap columns due to sensor
+elseif FDDdata == 2
+    % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
+    % Frequencies with simulated data
+    Fn1e = 1.709;   % 1st natural frequency
+    Fn2e = 5.072;   % 2nd natural frequency
+    Fn3e = 7.947;   % 3rd natural frequency
+    Fn4e = 10.077;  % 4th natural frequency
+    Fn5e = 11.408;  % 5th natural frequency
+    % Simulated data
+    data_sim = load('data_sim.mat');
+    y=data_sim.dis';
+end
 
 Nf = Nf1 + 1;
 Ns = 2 * Nf1;
