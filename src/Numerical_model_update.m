@@ -298,4 +298,4 @@ yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','F
 zlabel('Stiffness [N/m]')
 
 % MAC plot of mode shapes
-mAc=MAC(OMAphi,U,MODE);
+mAc=MAC(OMAphi,U,MODE,[OMAfreq,fn]);
