@@ -1,4 +1,4 @@
-function MAC = crossMAC(modeShape1,modeShape2)
+function MAC = crossMAC(modeShape1,modeShape2,MODE,FREQ)
 % This Matlab script is to calculate and plot cross Modal Assurance Criterion
 % (MAC) based on the given mode shapes
 % Author: Liangliang Cheng, Postdoctoral researcher, Ghent University
@@ -32,8 +32,18 @@ for k = 1:length(barMAC)
 end
 colormap(jet);
 colorbar
-xlabel('Mode','fontsize',15)
-ylabel('Mode','fontsize',15)
-title('Modal Assurance Criterion','fontsize',15)
+if MODE==1
+    title('MAC - Numerical compared to SSI')
+elseif MODE==2
+    title('MAC - Numerical compared to ERA')
+else
+    title('MAC - Numerical compared to FDD')
+end
+xlabel('OMA frequencies [Hz]')
+ylabel('Numerical frequencies [Hz]')
+xticks([1,2,3,4,5])
+xticklabels(string(FREQ(:,1)'))
+yticks([1,2,3,4,5])
+yticklabels(string(FREQ(:,2)'))
 box on
 end

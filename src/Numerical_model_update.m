@@ -97,16 +97,16 @@ Km(5,5) = k2(5);
 
 % Change cost function to use correct natural frequencies
 % Define what OMA method is used (also change data in costfunction)
-MODE = 1; % 1=SSI, 2=ERA, 3=FDD
+MODE = 2; % 1=SSI, 2=ERA, 3=FDD
 
 % Define and minimize cost function
 % Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
-% Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
+Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
 % Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
 % Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
 % Stiff = fminsearch(@costfunERAmode,k2); % ERA, mode shape
 % Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
-Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
+% Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
 % Stiff = fminsearch(@costfunERAfreqmode,k2); % ERA, frequency + mode shape
 % Stiff = fminsearch(@costfunFDDfreqmode,k2); % FDD, frequency + mode shape
 
@@ -298,14 +298,23 @@ yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','F
 zlabel('Stiffness [N/m]')
 
 % CrossMAC plot of mode shapes
-mAc=MAC(OMAphi,U,MODE,[OMAfreq,fn]);
+mac=crossMAC(U,OMAphi,MODE,[OMAfreq,fn]);
+dmac = diag(mac);
 if MODE==1
     disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
-    disp(strcat(num2str(mAc)));
+    disp(strcat(num2str(mac)));
 elseif MODE==2
     disp('Modal Assurance Criterion between Numerical modeshapes and ERA  : ')
-    disp(strcat(num2str(mAc)));
+    disp(strcat(num2str(mac)));
 else
     disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
-    disp(strcat(num2str(mAc)));
+    disp(strcat(num2str(mac)));
 end
+disp('----------------------------------------------------------------------')
+disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),2 : ',num2str(dmac(2)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),3 : ',num2str(dmac(3)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
+disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
+disp('----------------------------------------------------------------------')
