@@ -299,3 +299,13 @@ zlabel('Stiffness [N/m]')
 
 % MAC plot of mode shapes
 mAc=MAC(OMAphi,U,MODE,[OMAfreq,fn]);
+if MODE==1
+    disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
+    disp(strcat(num2str(mAc)));
+elseif MODE==2
+    disp('Modal Assurance Criterion between Numerical modeshapes and ERA  : ')
+    disp(strcat(num2str(mAc)));
+else
+    disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
+    disp(strcat(num2str(mAc)));
+end
