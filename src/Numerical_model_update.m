@@ -297,7 +297,7 @@ yticks(xtips)
 yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)','Geometric Stiffness'})
 zlabel('Stiffness [N/m]')
 
-% MAC plot of mode shapes
+% CrossMAC plot of mode shapes
 mAc=MAC(OMAphi,U,MODE,[OMAfreq,fn]);
 if MODE==1
     disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
