@@ -147,4 +147,8 @@ han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
-save('.\data\FDDmodal.mat','phi_FDD','fn');
+if FDDdata == 1
+    save('.\data\FDDmodal.mat','phi_FDD','fn');
+elseif FDDdata == 2
+    save('.\data\FDDmodalsim.mat','phi_FDD','fn');
+end
