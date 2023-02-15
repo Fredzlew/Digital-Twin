@@ -97,18 +97,31 @@ Km(5,5) = k2(5);
 
 % Change cost function to use correct natural frequencies
 % Define what OMA method is used (also change data in costfunction)
-MODE = 2; % 1=SSI, 2=ERA, 3=FDD
-
+% MODE = 2; % 1=SSI, 2=ERA, 3=FDD
+prompt = "Which OMA is used (1=SSI, 2=ERA, 3=FDD)? ";
+MODE = input(prompt);
 % Define and minimize cost function
-% Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
-Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
-% Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
-% Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
-% Stiff = fminsearch(@costfunERAmode,k2); % ERA, mode shape
-% Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
-% Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
-% Stiff = fminsearch(@costfunERAfreqmode,k2); % ERA, frequency + mode shape
-% Stiff = fminsearch(@costfunFDDfreqmode,k2); % FDD, frequency + mode shape
+promptt = "Which costfun is used to find calibrated stiffness (1=SSIFreq, 2=ERAFreq, 3=FDDFreq, 4=SSImodes, 5=ERAmodes, 6=FDDmodes, 7=SSIFreqmodes, 8=ERAFreqmodes, 9=FDDFreqmodes )? ";
+Stif = input(promptt);
+if Stif == 1
+    Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
+elseif Stif == 2
+    Stiff = fminsearch(@costfunERAfreq,k2); % ERA, frequency
+elseif Stif == 3
+    Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
+elseif Stif == 4
+    Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
+elseif Stif == 5
+    Stiff = fminsearch(@costfunERAmode,k2); % ERA, mode shape
+elseif Stif == 6
+    Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
+elseif Stif == 7
+    Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
+elseif Stif == 8
+    Stiff = fminsearch(@costfunERAfreqmode,k2); % ERA, frequency + mode shape
+elseif Stif == 9
+    Stiff = fminsearch(@costfunFDDfreqmode,k2); % FDD, frequency + mode shape
+end
 
 % Define optimal stiffnesses
 k = Stiff;
