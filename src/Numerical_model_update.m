@@ -266,7 +266,7 @@ K_FDD_mode = [6677.7406,6432.6900,6642.5802,7227.1624,3869.3218];
 K_SSI_freq_mode = [6344.3278,6431.9967,6852.2047,7311.6168,3768.8334];
 K_ERA_freq_mode = [6189.0799,6341.3222,6853.1140,7358.7121,3725.9845];
 K_FDD_freq_mode = [6347.0535,6409.5619,6836.3663,7333.9437,3777.6936];
-y = [K_SSI_freq;K_ERA_freq;K_FDD_freq;K_SSI_mode;K_ERA_mode;K_FDD_mode;K_SSI_freq_mode;K_ERA_freq_mode;K_FDD_freq_mode];
+y = [K_SSI_freq;K_ERA_freq;K_FDD_freq;K_SSI_mode;K_ERA_mode;K_FDD_mode;K_SSI_freq_mode;K_ERA_freq_mode;K_FDD_freq_mode;k2];
 % Find value at each tip
 figure
 hold on
@@ -282,7 +282,7 @@ legend('k1','k2','k3','k4','k5')
 title('Values of stiffness for different OMA methods and cost functions')
 xlabel('Method')
 xticks(xtips)
-xticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)'})
+xticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)','Geometric Stiffness'})
 ylabel('Stiffness [N/m]')
 
 % 3D plot
@@ -294,5 +294,5 @@ title('Values of stiffness for different OMA methods and cost functions')
 xticks([1,2,3,4,5])
 xticklabels({'k1','k2','k3','k4','k5'})
 yticks(xtips)
-yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)'})
+yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)','Geometric Stiffness'})
 zlabel('Stiffness [N/m]')
