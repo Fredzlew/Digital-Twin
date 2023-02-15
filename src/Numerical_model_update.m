@@ -281,5 +281,18 @@ hold off
 legend('k1','k2','k3','k4','k5')
 title('Values of stiffness for different OMA methods and cost functions')
 xlabel('Method')
+xticks(xtips)
+xticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)'})
 ylabel('Stiffness [N/m]')
 
+% 3D plot
+figure
+bar3(y)
+title('Values of stiffness for different OMA methods and cost functions')
+%xlabel('ks')
+%ylabel('Method')
+xticks([1,2,3,4,5])
+xticklabels({'k1','k2','k3','k4','k5'})
+yticks(xtips)
+yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)'})
+zlabel('Stiffness [N/m]')
