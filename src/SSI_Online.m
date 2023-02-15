@@ -2,14 +2,19 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
-% Measurements
-data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
-fss = data(2:6,1:10000)/1000; % Converting mm to m
-f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
-
-% Simulated data
-data_sim = load('data_sim.mat');
-f = data_sim.dis(:,1:10000);
+% Choose of data
+prompt = "Use ERA for measured or simulated data (1=measured, 2=simulated)? ";
+ERAdata = input(prompt);
+if ERAdata == 1
+    % Measurements
+    data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
+    fss = data(2:6,1:10000)/1000; % Converting mm to m
+    f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
+elseif ERAdata == 2
+    % Simulated data
+    data_sim = load('data_sim.mat');
+    f = data_sim.dis(:,1:10000);
+end
 
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 omega_min = 1.70; % Minimum natural frequency
@@ -123,5 +128,8 @@ disp('Real and Identified Natural Drequencies and Damping Ratios of the Second M
 disp(strcat('SSI: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
 disp(strcat('CMI of The Identified Mode=',num2str(Result.Indicators.CMI(2)),'%'));
 
-% save('.\data\SSImodal.mat','phi_SSI','SSIFreq');
-% save('.\data\SSImodalsim.mat','phi_SSI','SSIFreq');
+if ERAdata == 1
+    save('.\data\SSImodal.mat','phi_SSI','SSIFreq');
+elseif ERAdata == 2
+    save('.\data\SSImodalsim.mat','phi_SSI','SSIFreq');
+end
