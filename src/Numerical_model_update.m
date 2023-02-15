@@ -296,3 +296,6 @@ xticklabels({'k1','k2','k3','k4','k5'})
 yticks(xtips)
 yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)','Geometric Stiffness'})
 zlabel('Stiffness [N/m]')
+
+% MAC plot of mode shapes
+mAc=MAC(OMAphi,U,MODE);
