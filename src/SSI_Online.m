@@ -100,6 +100,10 @@ end % end normalization
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
 nm = 5; %number of modes
+% using simulated data:
+data_sim = load('data_sim.mat');
+f = data_sim.dis(:,1:10000);
+
 output=f; % Displacements
 ncols=4/5*length(f); % More than 2/3*number of samples
 nrows=50*nm; % More than 20*number of sensors

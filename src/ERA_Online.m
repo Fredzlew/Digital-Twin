@@ -97,9 +97,12 @@ end % end normalization
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
 nm = 5; %Number of modes
+% using simulated data:
+data_sim = load('data_sim.mat');
+f = data_sim.dis(:,1:10000);
 Y=f; %Displacements
 ncols=4/5*length(f);    %more than 2/3 of No. of data
-nrows=20*2*nm/5+1;     %more than 20 * number of modes
+nrows=50*2*nm/5+1;     %more than 20 * number of modes
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
 shift=10;      %Adjust EMAC sensitivity
