@@ -1,5 +1,4 @@
 function [Result]=SSID(output,fs,ncols,nrows,cut)
-
 %Input:
 %output: output data of size (No. output channels, No. of data)
 %fs: Sampling frequency 

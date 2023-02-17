@@ -55,8 +55,8 @@ end % end normalization
 %--------------------------------------------------------------------------
 nm = 5; %number of modes
 output=f; % Displacements
-ncols=4/5*length(f); % More than 2/3*number of samples
-nrows=50*nm; % More than 20*number of sensors
+ncols=7400;%4/5*length(f); % More than 2/3*number of samples
+nrows=550;%50*nm; % More than 20*number of sensors
 cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
 

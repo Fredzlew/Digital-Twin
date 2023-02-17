@@ -50,8 +50,8 @@ end % end normalization
 %--------------------------------------------------------------------------
 nm = 5; %Number of modes
 Y=f; %Displacements
-ncols=4/5*length(f);    %more than 2/3 of No. of data
-nrows=50*2*nm/5+1;     %more than 20 * number of modes
+nrows=550;%112;%50*(2*nm/5)+1;     %more than 20 * number of modes
+ncols=7400;%7044;%4/5*size(f,2)-nrows-3;    %more than 2/3 of No. of data
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
 shift=10;      %Adjust EMAC sensitivity
