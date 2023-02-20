@@ -49,7 +49,8 @@ end % end normalization
 
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
-for i=100:10:1000 % Doesn't find 5 eigenvalues above 2600
+y=0;
+for i=2000:10:2600 % Doesn't find 5 eigenvalues above 2600.
     nm = 5; %Number of modes
     Y=f; %Displacements
     nrows=i;%112;%50*(2*nm/5)+1;     %more than 20 * number of modes
@@ -60,12 +61,22 @@ for i=100:10:1000 % Doesn't find 5 eigenvalues above 2600
     EMAC_option=1; %EMAC is calculated only from observability matrix
 
     [Result]=ERA(Y,fs,ncols,nrows,inputs,cut,shift,EMAC_option);  %ERA
-
-    OMAfreq(:,i/100) = Result.Parameters.NaFreq;
-    Acc(i/100) = min(sum(OMAfreq),sum(omegas))/max(sum(OMAfreq),sum(omegas));
+    y = y+1;
+    iv(y) = i;
+    OMAfreq = Result.Parameters.NaFreq;
+    for j = 1:length(Result.Parameters.NaFreq)
+        Acc(j,y) = min(OMAfreq(j),omegas(j))/max(OMAfreq(j),omegas(j));
+    end
 end
 figure
-plot(linspace(1,100,100),Acc)
-title('Convergence analysis of ERA')
-xlabel('Iteration')
+hold on
+plot(iv,Acc(1,:))
+plot(iv,Acc(2,:))
+plot(iv,Acc(3,:))
+plot(iv,Acc(4,:))
+plot(iv,Acc(5,:))
+hold off
+title('Convergence analysis of ERA based on natural frequencies')
+xlabel('Number of rows in Hankel matrix')
 ylabel('Accuracy')
+legend('f1','f2','f3','f4','f5')
