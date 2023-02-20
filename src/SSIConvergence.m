@@ -25,7 +25,7 @@ M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 C=0;%alpha*M+beta*K; % Damping matrix using Rayleigh damping
 fs=100; % Sampling frequency (1/dt)
-
+omegas = filename.fn;
 %Apply modal superposition to get response
 %--------------------------------------------------------------------------
 
@@ -53,18 +53,23 @@ end % end normalization
 
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
-for i=100:10:1000
+y=0;
+for i=100:10:4000
     nm = 5; %number of modes
     output=f; % Displacements
     ncols=7400;%4/5*length(f); % More than 2/3*number of samples
     nrows=i;%50*nm; % More than 20*number of sensors
     cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
     [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
-    OMAfreq(:,i/100) = Result.Parameters.NaFreq;
-    Acc(i/100) = min(sum(OMAfreq),sum(omegas))/max(sum(OMAfreq),sum(omegas));
+    y=y+1;
+    iv(y) = i;
+    OMAfreq(:,y) = Result.Parameters.NaFreq;
+    Diff(:,y) = [min(OMAfreq(1,y),omegas(1))/max(OMAfreq(1,y),omegas(1));min(OMAfreq(2,y),omegas(2))/max(OMAfreq(2,y),omegas(2));min(OMAfreq(3,y),omegas(3))/max(OMAfreq(3,y),omegas(3));min(OMAfreq(4,y),omegas(4))/max(OMAfreq(4,y),omegas(4));min(OMAfreq(5,y),omegas(5))/max(OMAfreq(5,y),omegas(5))]*100;
+    Acc(y) = sum(Diff(:,y));
 end
 figure
-plot(linspace(1,100,100),Acc)
-title('Convergence analysis of ERA')
-xlabel('Iteration')
+plot(iv,Diff)
+title('Convergence analysis of SSI')
+xlabel('Number of rows in hankel matrix')
 ylabel('Accuracy')
+legend('f1','f2','f3','f4','f5')
