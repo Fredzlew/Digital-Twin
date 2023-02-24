@@ -62,6 +62,9 @@ dtr = dt*r; % sampling interval after decimation
 
 for i=1:Nf
     [Uf,Sf,Vf] = svd(Gyy(:,:,i));
+    if i==1
+        disp(Uf)
+    end
     ModeShapes(:,i) = Uf(:,1);
     Sv(:,i) = diag(Sf);
 end
