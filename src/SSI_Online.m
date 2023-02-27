@@ -3,7 +3,7 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
 % Choose of data
-prompt = "Use ERA for measured or simulated data (1=measured, 2=simulated)? ";
+prompt = "Use SSI for measured or simulated data (1=measured, 2=simulated)? ";
 ERAdata = input(prompt);
 if ERAdata == 1
     % Measurements
