@@ -55,9 +55,9 @@ EI = E*I; % [N*m^2]
 EIL = [EI,L];
 
 % storage height for each floor [m]
-L(1) = H(1);
+Lh(1) = H(1);
 for i = 2:5
-    L(i) = H(i)-H(i-1);
+    Lh(i) = H(i)-H(i-1);
 end
 
 % lumbed masses [kg]
@@ -69,7 +69,7 @@ mf = mp + 2 * ml + mb; % total mass of 1 floor (plate + 2 lists and bolts)
 rho = 7850; % density column [kg/m^3]
 
 % total mass of frame [kg]
-m = mf+4*b*h*rho*[L(1) L(2) L(3) L(4) L(5)+Lt+t/2]; 
+m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
 %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
 % gravitational force on each floor [N] 
@@ -79,12 +79,12 @@ k0 = sqrt(P./(EI)); % parameter k in DE [1/m]
 F = 1; % imposed horizontal load [N] 
 % constants boundary conditions for a cantilever beam (homogen solution)
 c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
-c3 = c4.*(cos(k0.*L)-1)./sin(k0.*L); % randbetingelse for ingen moment w''(L)=0 
+c3 = c4.*(cos(k0.*Lh)-1)./sin(k0.*Lh); % randbetingelse for ingen moment w''(L)=0 
 %c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
 c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
 c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
 % deflection from imposed load
-wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
+wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
 % lateral stiffness
 k2 = F./wL; % [N/m]
 % Initial stiffness matrix
@@ -200,9 +200,9 @@ elseif (Stif == 13) || (Stif == 14) || (Stif == 15)
     g = 9.81; % [m/s^2]
     
     % storage height for each floor [m]
-    L(1) = H(1);
+    Lh(1) = H(1);
     for i = 2:5
-        L(i) = H(i)-H(i-1);
+        Lh(i) = H(i)-H(i-1);
     end
     
     % lumbed masses [kg]
