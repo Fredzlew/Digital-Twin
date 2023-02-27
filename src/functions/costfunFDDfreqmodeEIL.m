@@ -3,16 +3,10 @@ EI = EIL(1);
 L = EIL(2);
 % Natural frequencies and normalized mode shapes from relevant OMA method 
 % FDD
-omegaOMA =  [10.3544;
-   31.6000;
-   49.6243;
-   63.5835;
-   72.9024];
-phiOMA =  [0.3034    0.7332    1.0000    1.0000    0.4855
-    0.6137    1.0000    0.2127   -0.9640   -0.8445
-    0.7760    0.4656   -0.8404   -0.0218    1.0000
-    0.9744   -0.3042   -0.4059    0.9037   -0.9874
-    1.0000   -0.8046    0.6585   -0.5401    0.3962];
+data = load('FDDmodal.mat');
+FDDFreq = data.fn';
+omegaOMA = FDDFreq * 2 * pi;
+phiOMA = data.phi_FDD;
 
 % story heights [m] (from ground to mid floor)
 h = 1*10^-3; % short side of column [m]

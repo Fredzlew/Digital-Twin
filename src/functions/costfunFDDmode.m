@@ -7,11 +7,8 @@ M = [2.3553        0         0         0         0
          0         0         0         0    2.4467];
 % Normalized mode shapes from relevant OMA method 
 % FDD
-phiOMA =  [0.3034    0.7332    1.0000    1.0000    0.4855
-    0.6137    1.0000    0.2127   -0.9640   -0.8445
-    0.7760    0.4656   -0.8404   -0.0218    1.0000
-    0.9744   -0.3042   -0.4059    0.9037   -0.9874
-    1.0000   -0.8046    0.6585   -0.5401    0.3962];
+data = load('FDDmodal.mat');
+phiOMA = data.phi_FDD;
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);

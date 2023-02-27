@@ -7,11 +7,9 @@ M = [2.3553        0         0         0         0
          0         0         0         0    2.4467];
 % Natural frequencies from relevant OMA method 
 % ERA
-omegaOMA =  [10.0667;
-   31.4607;
-   49.1633;
-   63.2812;
-   72.8966];
+data = load('ERAmodal.mat');
+ERAFreq = data.ERAFreq;
+omegaOMA = ERAFreq * 2 * pi;
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);

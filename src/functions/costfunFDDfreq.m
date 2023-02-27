@@ -7,11 +7,9 @@ M = [2.3553        0         0         0         0
          0         0         0         0    2.4467];
 % Natural frequencies from relevant OMA method 
 % FDD
-omegaOMA =  [10.3544;
-   31.6000;
-   49.6243;
-   63.5835;
-   72.9024];
+data = load('FDDmodal.mat');
+FDDFreq = data.fn';
+omegaOMA = FDDFreq * 2 * pi;
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);

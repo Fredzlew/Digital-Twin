@@ -6,12 +6,9 @@ M = [2.3553        0         0         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
 % Normalized mode shapes from relevant OMA method 
-% SSI
-phiOMA =  [0.2932    0.7087    1.0000   -0.9625    0.4548
-    0.6259    1.0000    0.2209    1.0000   -0.7618
-    0.7899    0.4613   -0.8978    0.0153    1.0000
-    0.9957   -0.3049   -0.4457   -0.9599   -0.9410
-    1.0000   -0.7915    0.6830    0.5690    0.4714];
+% ERA
+data = load('ERAmodal.mat');
+phiOMA = data.phi_ERA;
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);

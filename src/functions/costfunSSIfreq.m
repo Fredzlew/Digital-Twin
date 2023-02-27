@@ -7,11 +7,9 @@ M = [2.3553        0         0         0         0
          0         0         0         0    2.4467];
 % Natural frequencies from relevant OMA method 
 % SSI
-omegaOMA =  [10.3880;
-   31.5746;
-   49.6714;
-   63.5516;
-   72.9177];
+data = load('SSImodal.mat');
+SSIFreq = data.SSIFreq;
+omegaOMA = SSIFreq * 2 * pi;
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);
