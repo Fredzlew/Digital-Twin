@@ -122,110 +122,110 @@ elseif Stif == 8
     Stiff = fminsearch(@costfunERAfreqmode,k2); % ERA, frequency + mode shape
 elseif Stif == 9
     Stiff = fminsearch(@costfunFDDfreqmode,k2); % FDD, frequency + mode shape
-% elseif Stif == 10
-%     Stiff = fminsearch(@costfunSSIfreqmodeEIL,EIL); % SSI, EI + L
-% elseif Stif == 11
-%     Stiff = fminsearch(@costfunERAfreqmodeEIL,EIL); % ERA, EI + L
-% elseif Stif == 12
-%     Stiff = fminsearch(@costfunFDDfreqmodeEIL,EIL); % FDD, EI + L
-% elseif Stif == 13
-%     Stiff = fminsearch(@costfunSSIfreqmodeEILJAN,EIL); % SSI (JAN), EI + L
-% elseif Stif == 14
-%     Stiff = fminsearch(@costfunERAfreqmodeEILJAN,EIL); % ERA (JAN), EI + L
-% elseif Stif == 15
-%     Stiff = fminsearch(@costfunFDDfreqmodeEILJAN,EIL); % FDD (JAN), EI + L
+elseif Stif == 10
+    Stiff = fminsearch(@costfunSSIfreqmodeEIL,EIL); % SSI, EI + L
+elseif Stif == 11
+    Stiff = fminsearch(@costfunERAfreqmodeEIL,EIL); % ERA, EI + L
+elseif Stif == 12
+    Stiff = fminsearch(@costfunFDDfreqmodeEIL,EIL); % FDD, EI + L
+elseif Stif == 13
+    Stiff = fminsearch(@costfunSSIfreqmodeEILJAN,EIL); % SSI (JAN), EI + L
+elseif Stif == 14
+    Stiff = fminsearch(@costfunERAfreqmodeEILJAN,EIL); % ERA (JAN), EI + L
+elseif Stif == 15
+    Stiff = fminsearch(@costfunFDDfreqmodeEILJAN,EIL); % FDD (JAN), EI + L
 end
-% 
-% if Stif == 10 || 11 || 12
-%     EI = Stiff(1);
-%     L = Stiff(2);
-%     Lb = 168/175*L; % column length at bottom [m]
-%     Lt = 75/175*L; % column length on top [m]
-% 
-%     % story heights [m] (from ground to mid floor)
-%     H(1) = Lb + t/2;
-%     for i = 2:5
-%         H(i) = H(i-1) + L + t;
-%     end
-% 
-%     % element properties
-%     g = 9.81; % [m/s^2]
-%     
-%     % storage height for each floor [m]
-%     L(1) = H(1);
-%     for i = 2:5
-%         L(i) = H(i)-H(i-1);
-%     end
-%     
-%     % lumbed masses [kg]
-%     ml = 0.134; % list
-%     mp = 1.906; % plate
-%     mb = 0.0160; % bolts
-%     mf = mp + 2 * ml + mb; % total mass of 1 floor (plate + 2 lists and bolts)
-%     % mf = 2.19; % floor (plate + 2 lists and bolts)
-%     rho = 7850; % density column [kg/m^3]
-%     
-%     % total mass of frame [kg]
-%     m = mf+4*b*h*rho*[L(1) L(2) L(3) L(4) L(5)+Lt+t/2]; 
-%     
-%     %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
-%     % gravitational force on each floor [N] 
-%     P = flip(cumsum(m))*g;
-%     
-%     k0 = sqrt(P./(EI)); % parameter k in DE [1/m]
-%     F = 1; % imposed horizontal load [N] 
-%     % constants boundary conditions for a cantilever beam (homogen solution)
-%     c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
-%     c3 = c4.*(cos(k0.*L)-1)./sin(k0.*L); % randbetingelse for ingen moment w''(L)=0 
-%     %c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
-%     c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
-%     c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
-%     % deflection from imposed load
-%     wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
-%     % lateral stiffness
-%     k = F./wL; % [N/m]
-% elseif Stif == 13 || 14 || 15
-%      EI = Stiff(1);
-%     L = Stiff(2);
-%     Lb = 168/175*L; % column length at bottom [m]
-%     Lt = 75/175*L; % column length on top [m]
-% 
-%     % story heights [m] (from ground to mid floor)
-%     H(1) = Lb + t/2;
-%     for i = 2:5
-%         H(i) = H(i-1) + L + t;
-%     end
-% 
-%     % element properties
-%     g = 9.81; % [m/s^2]
-%     
-%     % storage height for each floor [m]
-%     L(1) = H(1);
-%     for i = 2:5
-%         L(i) = H(i)-H(i-1);
-%     end
-%     
-%     % lumbed masses [kg]
-%     ml = 0.134; % list
-%     mp = 1.906; % plate
-%     mb = 0.0160; % bolts
-%     mf = mp + 2 * ml + mb; % total mass of 1 floor (plate + 2 lists and bolts)
-%     % mf = 2.19; % floor (plate + 2 lists and bolts)
-%     rho = 7850; % density column [kg/m^3]
-%     
-%     % total mass of frame [kg]
-%     m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
-%     
-%     kc = 12*EI/L^3;
-%     kg = 6/5*m*g/L;
-%     for i = 1:5
-%         k(i) = kc - (sum(kg(i+1:5)));
-%     end
-% elseif 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9 
-%     % Define optimal stiffness
-%     k = Stiff;
-% end
-k = Stiff;
+
+if (Stif == 10) || (Stif == 11) || (Stif == 12)
+    EI = Stiff(1);
+    L = Stiff(2);
+    Lb = 168/175*L; % column length at bottom [m]
+    Lt = 75/175*L; % column length on top [m]
+
+    % story heights [m] (from ground to mid floor)
+    H(1) = Lb + t/2;
+    for i = 2:5
+        H(i) = H(i-1) + L + t;
+    end
+
+    % element properties
+    g = 9.81; % [m/s^2]
+    
+    % storage height for each floor [m]
+    L(1) = H(1);
+    for i = 2:5
+        L(i) = H(i)-H(i-1);
+    end
+    
+    % lumbed masses [kg]
+    ml = 0.134; % list
+    mp = 1.906; % plate
+    mb = 0.0160; % bolts
+    mf = mp + 2 * ml + mb; % total mass of 1 floor (plate + 2 lists and bolts)
+    % mf = 2.19; % floor (plate + 2 lists and bolts)
+    rho = 7850; % density column [kg/m^3]
+    
+    % total mass of frame [kg]
+    m = mf+4*b*h*rho*[L(1) L(2) L(3) L(4) L(5)+Lt+t/2]; 
+    
+    %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
+    % gravitational force on each floor [N] 
+    P = flip(cumsum(m))*g;
+    
+    k0 = sqrt(P./(EI)); % parameter k in DE [1/m]
+    F = 1; % imposed horizontal load [N] 
+    % constants boundary conditions for a cantilever beam (homogen solution)
+    c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
+    c3 = c4.*(cos(k0.*L)-1)./sin(k0.*L); % randbetingelse for ingen moment w''(L)=0 
+    %c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
+    c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
+    c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
+    % deflection from imposed load
+    wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
+    % lateral stiffness
+    k = F./wL; % [N/m]
+elseif (Stif == 13) || (Stif == 14) || (Stif == 15)
+    EI = Stiff(1);
+    L = Stiff(2);
+    Lb = 168/175*L; % column length at bottom [m]
+    Lt = 75/175*L; % column length on top [m]
+
+    % story heights [m] (from ground to mid floor)
+    H(1) = Lb + t/2;
+    for i = 2:5
+        H(i) = H(i-1) + L + t;
+    end
+
+    % element properties
+    g = 9.81; % [m/s^2]
+    
+    % storage height for each floor [m]
+    L(1) = H(1);
+    for i = 2:5
+        L(i) = H(i)-H(i-1);
+    end
+    
+    % lumbed masses [kg]
+    ml = 0.134; % list
+    mp = 1.906; % plate
+    mb = 0.0160; % bolts
+    mf = mp + 2 * ml + mb; % total mass of 1 floor (plate + 2 lists and bolts)
+    % mf = 2.19; % floor (plate + 2 lists and bolts)
+    rho = 7850; % density column [kg/m^3]
+    
+    % total mass of frame [kg]
+    m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
+    
+    kc = 12*EI/L^3;
+    kg = 6/5*m*g/L;
+    for i = 1:5
+        k(i) = kc - (sum(kg(i+1:5)));
+    end
+elseif (Stif == 1) || (Stif == 2) || (Stif == 3) || (Stif == 4) || (Stif == 5) || (Stif == 6) || (Stif == 7) || (Stif == 8) || (Stif == 9) 
+    % Define optimal stiffness
+    k = Stiff;
+end
+
 % stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);
