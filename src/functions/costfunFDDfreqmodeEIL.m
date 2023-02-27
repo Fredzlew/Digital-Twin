@@ -1,18 +1,18 @@
-function J=costfunSSIfreqmodeEIL(EIL)
+function J=costfunFDDfreqmodeEIL(EIL)
 EI = EIL(1);
 L = EIL(2);
 % Natural frequencies and normalized mode shapes from relevant OMA method 
-% SSI
-omegaOMA =  [10.3880;
-   31.5746;
-   49.6714;
-   63.5516;
-   72.9177];
-phiOMA =  [0.2939    0.7129    1.0000   -0.9947    0.4457
-    0.6249    1.0000    0.2185    1.0000   -0.8244
-    0.7927    0.4622   -0.8788    0.0171    1.0000
-    0.9963   -0.3065   -0.4272   -0.9361   -0.9710
-    1.0000   -0.7890    0.6735    0.5416    0.3842];
+% FDD
+omegaOMA =  [10.3544;
+   31.6000;
+   49.6243;
+   63.5835;
+   72.9024];
+phiOMA =  [0.3034    0.7332    1.0000    1.0000    0.4855
+    0.6137    1.0000    0.2127   -0.9640   -0.8445
+    0.7760    0.4656   -0.8404   -0.0218    1.0000
+    0.9744   -0.3042   -0.4059    0.9037   -0.9874
+    1.0000   -0.8046    0.6585   -0.5401    0.3962];
 
 % story heights [m] (from ground to mid floor)
 h = 1*10^-3; % short side of column [m]
