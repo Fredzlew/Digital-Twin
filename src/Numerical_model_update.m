@@ -434,33 +434,33 @@ disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
 
 if Stif == 1
-    save('.\data\costfunupdateSSIfreq.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateSSIfreq.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 2
-    save('.\data\costfunupdateERAfreq.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateERAfreq.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 3
-    save('.\data\costfunupdateFDDfreq.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateFDDfreq.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 4
-    save('.\data\costfunupdateSSImode.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateSSImode.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 5
-    save('.\data\costfunupdateERAmode.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateERAmode.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 6
-    save('.\data\costfunupdateFDDmode.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateFDDmode.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 7
-    save('.\data\costfunupdateSSIfreqmode.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateSSIfreqmode.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 8
-    save('.\data\costfunupdateERAfreqmode.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateERAfreqmode.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 9
-    save('.\data\costfunupdateFDDfreqmode.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateFDDfreqmode.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 10
-    save('.\data\costfunupdateSSIfreqmodeEIL.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateSSIfreqmodeEIL.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 11
-    save('.\data\costfunupdateERAfreqmodeEIL.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateERAfreqmodeEIL.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 12
-    save('.\data\costfunupdateFDDfreqmodeEIL.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateFDDfreqmodeEIL.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 13
-    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 14
-    save('.\data\costfunupdateERAfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateERAfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 elseif Stif == 15
-    save('.\data\costfunupdateFDDfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','x','phi','k2');
+    save('.\data\costfunupdateFDDfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','x','phi','k2','H','U');
 end
