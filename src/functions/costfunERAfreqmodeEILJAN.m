@@ -1,18 +1,18 @@
-function J=costfunSSIfreqmodeEILJAN(EIL)
+function J=costfunERAfreqmodeEILJAN(EIL)
 EI = EIL(1);
 L = EIL(2);
 % Natural frequencies and normalized mode shapes from relevant OMA method 
-% SSI
-omegaOMA =  [10.3880;
-   31.5746;
-   49.6714;
-   63.5516;
-   72.9177];
-phiOMA =  [0.2939    0.7129    1.0000   -0.9947    0.4457
-    0.6249    1.0000    0.2185    1.0000   -0.8244
-    0.7927    0.4622   -0.8788    0.0171    1.0000
-    0.9963   -0.3065   -0.4272   -0.9361   -0.9710
-    1.0000   -0.7890    0.6735    0.5416    0.3842];
+% ERA
+omegaOMA =  [10.0667;
+   31.4607;
+   49.1633;
+   63.2812;
+   72.8966];
+phiOMA =  [0.2932    0.7087    1.0000   -0.9625    0.4548
+    0.6259    1.0000    0.2209    1.0000   -0.7618
+    0.7899    0.4613   -0.8978    0.0153    1.0000
+    0.9957   -0.3049   -0.4457   -0.9599   -0.9410
+    1.0000   -0.7915    0.6830    0.5690    0.4714];
 
 % story heights [m] (from ground to mid floor)
 h = 1*10^-3; % short side of column [m]
@@ -46,23 +46,11 @@ rho = 7850; % density column [kg/m^3]
 % total mass of frame [kg]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
-%%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
-% gravitational force on each floor [N] 
-P = flip(cumsum(m))*g;
-
-k0 = sqrt(P./(EI)); % parameter k in DE [1/m]
-F = 1; % imposed horizontal load [N] 
-% constants boundary conditions for a cantilever beam (homogen solution)
-c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
-c3 = c4.*(cos(k0.*Lh)-1)./sin(k0.*Lh); % randbetingelse for ingen moment w''(L)=0 
-%c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
-c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
-c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
-% deflection from imposed load
-wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
-% lateral stiffness
-k = F./wL; % [N/m]
-
+kc = 12*EI/L^3;
+kg = 6/5*m*g/L;
+for i = 1:5
+    k(i) = kc - (sum(kg(i+1:5)));
+end
 
 % stiffness matrix
 for i = 1:4
@@ -71,6 +59,7 @@ for i = 1:4
     K(i+1,i) = -k(i+1);
 end
 K(5,5) = k(5);
+
 % mass matrix 
 M = m.*eye(5);
 % Mass matrix

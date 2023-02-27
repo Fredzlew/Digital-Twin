@@ -128,7 +128,14 @@ elseif Stif == 11
     Stiff = fminsearch(@costfunERAfreqmodeEIL,EIL); % ERA, EI + L
 elseif Stif == 12
     Stiff = fminsearch(@costfunFDDfreqmodeEIL,EIL); % FDD, EI + L
+elseif Stif == 13
+    Stiff = fminsearch(@costfunSSIfreqmodeEILJAN,EIL); % SSI (JAN), EI + L
+elseif Stif == 14
+    Stiff = fminsearch(@costfunERAfreqmodeEILJAN,EIL); % ERA (JAN), EI + L
+elseif Stif == 15
+    Stiff = fminsearch(@costfunFDDfreqmodeEILJAN,EIL); % FDD (JAN), EI + L
 end
+
 if Stif == 10 || 11 || 12
     EI = Stiff(1);
     L = Stiff(2);
@@ -177,6 +184,43 @@ if Stif == 10 || 11 || 12
     wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
     % lateral stiffness
     k = F./wL; % [N/m]
+elseif Stif == 13 || 14 || 15
+     EI = Stiff(1);
+    L = Stiff(2);
+    Lb = 168/175*L; % column length at bottom [m]
+    Lt = 75/175*L; % column length on top [m]
+
+    % story heights [m] (from ground to mid floor)
+    H(1) = Lb + t/2;
+    for i = 2:5
+        H(i) = H(i-1) + L + t;
+    end
+
+    % element properties
+    g = 9.81; % [m/s^2]
+    
+    % storage height for each floor [m]
+    L(1) = H(1);
+    for i = 2:5
+        L(i) = H(i)-H(i-1);
+    end
+    
+    % lumbed masses [kg]
+    ml = 0.134; % list
+    mp = 1.906; % plate
+    mb = 0.0160; % bolts
+    mf = mp + 2 * ml + mb; % total mass of 1 floor (plate + 2 lists and bolts)
+    % mf = 2.19; % floor (plate + 2 lists and bolts)
+    rho = 7850; % density column [kg/m^3]
+    
+    % total mass of frame [kg]
+    m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
+    
+    kc = 12*EI/L^3;
+    kg = 6/5*m*g/L;
+    for i = 1:5
+        k(i) = kc - (sum(kg(i+1:5)));
+    end
 else
     % Define optimal stiffness
     k = Stiff;

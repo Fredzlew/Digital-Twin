@@ -46,23 +46,11 @@ rho = 7850; % density column [kg/m^3]
 % total mass of frame [kg]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
-%%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
-% gravitational force on each floor [N] 
-P = flip(cumsum(m))*g;
-
-k0 = sqrt(P./(EI)); % parameter k in DE [1/m]
-F = 1; % imposed horizontal load [N] 
-% constants boundary conditions for a cantilever beam (homogen solution)
-c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
-c3 = c4.*(cos(k0.*Lh)-1)./sin(k0.*Lh); % randbetingelse for ingen moment w''(L)=0 
-%c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
-c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
-c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
-% deflection from imposed load
-wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
-% lateral stiffness
-k = F./wL; % [N/m]
-
+kc = 12*EI/L^3;
+kg = 6/5*m*g/L;
+for i = 1:5
+    k(i) = kc - (sum(kg(i+1:5)));
+end
 
 % stiffness matrix
 for i = 1:4
@@ -71,6 +59,7 @@ for i = 1:4
     K(i+1,i) = -k(i+1);
 end
 K(5,5) = k(5);
+
 % mass matrix 
 M = m.*eye(5);
 % Mass matrix
