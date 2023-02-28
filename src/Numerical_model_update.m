@@ -71,6 +71,9 @@ rho = 7850; % density column [kg/m^3]
 % total mass of frame [kg]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
+prompttt = "Using analystic or Total inter-storey stiffness: (1=ANALYSTIC, 2=INTER-STOREY)? ";
+prop = input(prompttt);
+if prop == 1
 %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
 % gravitational force on each floor [N] 
 P = flip(cumsum(m))*g;
@@ -89,13 +92,19 @@ wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
 k2 = F./wL; % [N/m]
 % Initial stiffness matrix
 % stiffness matrix
+elseif prop == 2
+    kc = 12*EI/L^3;
+    kg = 6/5*m*g/L;
+    for i = 1:5
+        k2(i) = kc - (sum(kg(i+1:5)));
+    end
+end
 for i = 1:4
     Km(i,i) = k2(i)+k2(i+1);
     Km(i,i+1) = -k2(i+1);
     Km(i+1,i) = -k2(i+1);
 end
 Km(5,5) = k2(5);
-
 % Change cost function to use correct natural frequencies
 % Define what OMA method is used (also change data in costfunction)
 % MODE = 2; % 1=SSI, 2=ERA, 3=FDD
@@ -152,9 +161,9 @@ if (Stif == 10) || (Stif == 11) || (Stif == 12)
     g = 9.81; % [m/s^2]
     
     % storage height for each floor [m]
-    L(1) = H(1);
+    Lh(1) = H(1);
     for i = 2:5
-        L(i) = H(i)-H(i-1);
+        Lh(i) = H(i)-H(i-1);
     end
     
     % lumbed masses [kg]
@@ -166,7 +175,7 @@ if (Stif == 10) || (Stif == 11) || (Stif == 12)
     rho = 7850; % density column [kg/m^3]
     
     % total mass of frame [kg]
-    m = mf+4*b*h*rho*[L(1) L(2) L(3) L(4) L(5)+Lt+t/2]; 
+    m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
     
     %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
     % gravitational force on each floor [N] 
@@ -176,12 +185,12 @@ if (Stif == 10) || (Stif == 11) || (Stif == 12)
     F = 1; % imposed horizontal load [N] 
     % constants boundary conditions for a cantilever beam (homogen solution)
     c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
-    c3 = c4.*(cos(k0.*L)-1)./sin(k0.*L); % randbetingelse for ingen moment w''(L)=0 
+    c3 = c4.*(cos(k0.*Lh)-1)./sin(k0.*Lh); % randbetingelse for ingen moment w''(L)=0 
     %c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
     c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
     c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
     % deflection from imposed load
-    wL = c1 + c2.*k0.*L + c3.*cos(k0.*L) + c4.*sin(k0.*L); %[m]
+    wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
     % lateral stiffness
     k = F./wL; % [N/m]
 elseif (Stif == 13) || (Stif == 14) || (Stif == 15)
