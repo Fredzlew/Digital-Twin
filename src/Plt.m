@@ -10,9 +10,8 @@ omegas = filename.fn * 2 * pi;
 
 dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ
 K_SSI_freq = diag(dataSSIFreq.K)';
-H = dataSSIFreq.H;
 k2 = dataSSIFreq.k2;
-U = dataSSIFreq.U;
+
 
 dataERAFreq = load('costfunupdateERAfreq.mat'); % ERA FREQ
 K_ERA_freq = diag(dataERAFreq.K)';
@@ -108,6 +107,8 @@ if x == 1
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 2
     data = load('costfunupdateERAfreq.mat'); % ERA FREQ
     OMAphi = data.OMAphi;
@@ -115,6 +116,8 @@ elseif x == 2
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 3
     data = load('costfunupdateFDDfreq.mat'); % FDD FREQ
     OMAphi = data.OMAphi;
@@ -122,6 +125,8 @@ elseif x == 3
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 4
     data = load('costfunupdateSSImode.mat'); % SSI modes
     OMAphi = data.OMAphi;
@@ -129,6 +134,8 @@ elseif x == 4
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 5
     data = load('costfunupdateERAmode.mat'); % ERA modes
     OMAphi = data.OMAphi;
@@ -136,6 +143,8 @@ elseif x == 5
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 6
     data = load('costfunupdateFDDmode.mat'); % FDD modes
     OMAphi = data.OMAphi;
@@ -143,6 +152,8 @@ elseif x == 6
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 7
     data = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
     OMAphi = data.OMAphi;
@@ -150,6 +161,8 @@ elseif x == 7
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 8
     data = load('costfunupdateERAfreqmode.mat'); % ERA FREQ and modes
     OMAphi = data.OMAphi;
@@ -157,6 +170,8 @@ elseif x == 8
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 9
     data = load('costfunupdateFDDfreqmode.mat'); % FDD FREQ and modes
     OMAphi = data.OMAphi;
@@ -164,6 +179,8 @@ elseif x == 9
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 10 
     data = load('costfunupdateSSIfreqmodeEIL.mat'); % SSI EIL FREQ and modes
     OMAphi = data.OMAphi;
@@ -171,6 +188,8 @@ elseif x == 10
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 11
     data = load('costfunupdateERAfreqmodeEIL.mat'); % ERA EIL FREQ and modes
     OMAphi = data.OMAphi;
@@ -178,6 +197,8 @@ elseif x == 11
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 12
     data = load('costfunupdateFDDfreqmodeEIL.mat'); % FDD EIL FREQ and modes
     OMAphi = data.OMAphi;
@@ -185,6 +206,8 @@ elseif x == 12
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 13
     data = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
@@ -192,6 +215,8 @@ elseif x == 13
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 14
     data = load('costfunupdateERAfreqmodeEILJAN.mat'); % ERA EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
@@ -199,6 +224,8 @@ elseif x == 14
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 elseif x == 15
     data = load('costfunupdateFDDfreqmodeEILJAN.mat'); % FDD EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
@@ -206,6 +233,8 @@ elseif x == 15
     fn = data.fn;
     K = data.K;
     Km = data.Km;
+    U = data.U;
+    H = data.H;
 end
 
 % plotting the mode shapes
