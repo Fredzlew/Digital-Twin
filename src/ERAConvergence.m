@@ -50,7 +50,7 @@ end % end normalization
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
 y=0;
-for i=2000:10:2600 % Doesn't find 5 eigenvalues above 2600.
+for i=10:10:600 % Doesn't find 5 eigenvalues above 2600.
     nm = 5; %Number of modes
     Y=f; %Displacements
     nrows=i;%112;%50*(2*nm/5)+1;     %more than 20 * number of modes

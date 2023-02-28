@@ -3,7 +3,7 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
 % Choose of data
-prompt = "Use ERA for measured or simulated data (1=measured, 2=simulated)? ";
+prompt = "Use SSI for measured or simulated data (1=measured, 2=simulated)? ";
 ERAdata = input(prompt);
 if ERAdata == 1
     % Measurements
@@ -54,7 +54,7 @@ end % end normalization
 %Identify modal parameters using displacement with added uncertainty
 %--------------------------------------------------------------------------
 y=0;
-for i=100:10:4000
+for i=100:10:600
     nm = 5; %number of modes
     output=f; % Displacements
     ncols=7400;%4/5*length(f); % More than 2/3*number of samples
@@ -64,7 +64,7 @@ for i=100:10:4000
     y=y+1;
     iv(y) = i;
     OMAfreq(:,y) = Result.Parameters.NaFreq;
-    Diff(:,y) = [min(OMAfreq(1,y),omegas(1))/max(OMAfreq(1,y),omegas(1));min(OMAfreq(2,y),omegas(2))/max(OMAfreq(2,y),omegas(2));min(OMAfreq(3,y),omegas(3))/max(OMAfreq(3,y),omegas(3));min(OMAfreq(4,y),omegas(4))/max(OMAfreq(4,y),omegas(4));min(OMAfreq(5,y),omegas(5))/max(OMAfreq(5,y),omegas(5))]*100;
+    Diff(:,y) = [min(OMAfreq(1,y),omegas(1))/max(OMAfreq(1,y),omegas(1));min(OMAfreq(2,y),omegas(2))/max(OMAfreq(2,y),omegas(2));min(OMAfreq(3,y),omegas(3))/max(OMAfreq(3,y),omegas(3));min(OMAfreq(4,y),omegas(4))/max(OMAfreq(4,y),omegas(4));min(OMAfreq(5,y),omegas(5))/max(OMAfreq(5,y),omegas(5))];
     Acc(y) = sum(Diff(:,y));
 end
 figure
@@ -72,4 +72,5 @@ plot(iv,Diff)
 title('Convergence analysis of SSI')
 xlabel('Number of rows in hankel matrix')
 ylabel('Accuracy')
+ylim([0 1])
 legend('f1','f2','f3','f4','f5')
