@@ -50,7 +50,7 @@ wd=wn.*sqrt(1-zeta.^2);
 fn=Vectors'*f; % generalized input force matrix
 
 t=[0:dt:dt*steps-dt];
-
+%%
 for i=1:1:n
     
     h(i,:)=(1/(Mn(i)*wd(i))).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t); %transfer function of displacement
@@ -73,6 +73,7 @@ a=Vectors*qdd; %vecloity
 
 %Add noise to excitation and response
 %--------------------------------------------------------------------------
+rng(3)
 f2=f+0.05*randn(5,length(f));
 a2=a+0.05*randn(5,length(f));
 v2=v+0.05*randn(5,length(f));
@@ -80,7 +81,27 @@ dis=x+0.05*randn(5,length(f));
 
 save('.\data\data_sim.mat','dis');
 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initial conditions
-x0 = zeros(ndof+1,1);
+x0 = zeros(size(f,1),1);
 v0 = x0;
+
+% Number of time steps
+N = length(f)-1;
+
+% Average Acceleration
+gamma = 0.5;
+beta = 0.25;
+% Fox-Goodwin
+% gamma = 0.5;
+% beta = 1/12;
+
+% Newmark time integration
+[x_new,v_new,a_new,t_new] = newmark(K,C,M,x0,v0,...
+    dt,N,f,beta,gamma);
+
+% Add noise to response
+dis_new=x_new+0.05*randn(5,length(f));
+
+save('.\data\data_sim_newmark.mat','dis_new');

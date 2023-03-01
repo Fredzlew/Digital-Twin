@@ -3,7 +3,7 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
 % Choose of data
-prompt = "Use SSI for measured or simulated data (1=measured, 2=simulated)? ";
+prompt = "Use SSI for measured or simulated data (1=measured, 2=simulated(IRF), 3=simulated(Newmark))? ";
 ERAdata = input(prompt);
 if ERAdata == 1
     % Measurements
@@ -14,6 +14,10 @@ elseif ERAdata == 2
     % Simulated data
     data_sim = load('data_sim.mat');
     f = data_sim.dis(:,1:10000);
+elseif ERAdata == 3
+    % Simulated data
+    data_sim = load('data_sim_newmark.mat');
+    f = data_sim.dis_new(:,1:10000);
 end
 
 filename = load('modelprop.mat'); % Loads mass and stiffness matrices
@@ -84,27 +88,23 @@ fig.Position=[100 100 1600 700];
 for i=1:nm
     subplot(1,nm,i)
     hold on
-    if i == 4
-        plot(phi(:,i),x,'-m')
+    plot(phi(:,i),x,'-m')
+    if phi(2,i)*phi_SSI(1,i) < 0 % Swap sign on mode shape
         plot([0  ;-phi_SSI(:,i)],x,'go-.');
-        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-        title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
-        xline(0.0,'--')
-        xlim([-1.1,1.1])
-        ylim([0,x(end)])
+        plot(-phi_SSI(1:end,i),x(2:end),'g.','markersize',30)
     else
-        plot(phi(:,i),x,'-m')
         plot([0  ;phi_SSI(:,i)],x,'go-.');
-        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-        title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
-        xline(0.0,'--')
-        xlim([-1.1,1.1])
-        ylim([0,x(end)])
+        plot(phi_SSI(1:end,i),x(2:end),'g.','markersize',30)
+    end
+    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+    title(['f = ' num2str(Result.Parameters.NaFreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    xline(0.0,'--')
+    xlim([-1.1,1.1])
+    ylim([0,x(end)])
         if i==1
             legend('Numerical','Approximation','Location','northwest')
         else
         end
-    end
 end
 sgtitle('Numerical vs SSI Online','FontSize',20) 
 han=axes(fig,'visible','off'); 
@@ -132,4 +132,6 @@ if ERAdata == 1
     save('.\data\SSImodal.mat','phi_SSI','SSIFreq');
 elseif ERAdata == 2
     save('.\data\SSImodalsim.mat','phi_SSI','SSIFreq');
+elseif ERAdata == 3
+    save('.\data\SSImodalsim_newmark.mat','phi_SSI','SSIFreq');
 end

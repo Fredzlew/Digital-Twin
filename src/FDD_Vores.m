@@ -14,7 +14,7 @@ fnumerical = filename.fn;
 %######## from this point onwards do not edit the script ##################
 % addpath('.\OMAtoolsA1_5\Signal processing');
 % Measured data and Simulated data
-prompt = "Use FDD for measured or simulated data (1=measured, 2=simulated)? ";
+prompt = "Use FDD for measured or simulated data (1=measured, 2=simulated(IRF), 3=simulated(Newmark))? ";
 FDDdata = input(prompt);
 if FDDdata == 1
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
@@ -39,6 +39,17 @@ elseif FDDdata == 2
     % Simulated data
     data_sim = load('data_sim.mat');
     y=data_sim.dis';
+elseif FDDdata == 3
+    % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
+    % Frequencies with simulated data
+    Fn1e = 1.703;   % 1st natural frequency
+    Fn2e = 5.029;   % 2nd natural frequency
+    Fn3e = 7.788;   % 3rd natural frequency
+    Fn4e = 9.759;  % 4th natural frequency
+    Fn5e = 10.956;  % 5th natural frequency
+    % Simulated data
+    data_sim = load('data_sim_newmark.mat');
+    y=data_sim.dis_new';
 end
 
 Nf = Nf1 + 1;
@@ -63,7 +74,7 @@ dtr = dt*r; % sampling interval after decimation
 for i=1:Nf
     [Uf,Sf,Vf] = svd(Gyy(:,:,i));
     if i==1
-        disp(Uf)
+        %disp(Uf)
     end
     ModeShapes(:,i) = Uf(:,1);
     Sv(:,i) = diag(Sf);
