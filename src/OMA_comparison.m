@@ -32,7 +32,7 @@ FDDphi = FDD.phi_FDD;
 % Comparing the data
 % first all frequencies
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
-Freq = table(numFreq,SSIFreq,ERAFreq,FDDFreq,ERAFreqNew,...
+Freq = table(numFreq,SSIFreq,ERAFreq,FDDFreq,ERAFreq_new,...
     'RowNames',modes);
 disp('The frequencies out from simulated data  :')
 disp(Freq)
