@@ -79,3 +79,8 @@ v2=v+0.05*randn(5,length(f));
 dis=x+0.05*randn(5,length(f));
 
 save('.\data\data_sim.mat','dis');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% initial conditions
+x0 = zeros(ndof+1,1);
+v0 = x0;
