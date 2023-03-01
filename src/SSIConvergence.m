@@ -63,9 +63,13 @@ for i=100:10:600
     [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
     y=y+1;
     iv(y) = i;
-    OMAfreq(:,y) = Result.Parameters.NaFreq;
-    Diff(:,y) = [min(OMAfreq(1,y),omegas(1))/max(OMAfreq(1,y),omegas(1));min(OMAfreq(2,y),omegas(2))/max(OMAfreq(2,y),omegas(2));min(OMAfreq(3,y),omegas(3))/max(OMAfreq(3,y),omegas(3));min(OMAfreq(4,y),omegas(4))/max(OMAfreq(4,y),omegas(4));min(OMAfreq(5,y),omegas(5))/max(OMAfreq(5,y),omegas(5))];
-    Acc(y) = sum(Diff(:,y));
+    OMAfreq = Result.Parameters.NaFreq;
+    for j = 1:length(Result.Parameters.NaFreq)
+        Acc(j,y) = min(OMAfreq(j),omegas(j))/max(OMAfreq(j),omegas(j));
+    end
+%     OMAfreq(:,y) = Result.Parameters.NaFreq;
+%     Diff(:,y) = [min(OMAfreq(1,y),omegas(1))/max(OMAfreq(1,y),omegas(1));min(OMAfreq(2,y),omegas(2))/max(OMAfreq(2,y),omegas(2));min(OMAfreq(3,y),omegas(3))/max(OMAfreq(3,y),omegas(3));min(OMAfreq(4,y),omegas(4))/max(OMAfreq(4,y),omegas(4));min(OMAfreq(5,y),omegas(5))/max(OMAfreq(5,y),omegas(5))];
+%     Acc(y) = sum(Diff(:,y));
 end
 figure
 plot(iv,Diff)
