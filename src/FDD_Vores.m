@@ -165,4 +165,6 @@ if FDDdata == 1
     save('.\data\FDDmodal.mat','phi_FDD','fn');
 elseif FDDdata == 2
     save('.\data\FDDmodalsim.mat','phi_FDD','fn');
+elseif FDDdata == 3
+    save('.\data\FDDmodalsim_newmark.mat','phi_FDD','fn');
 end
