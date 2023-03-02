@@ -1,6 +1,6 @@
 % Looping over all cost functionsloop
-for loop = 1:15
 clc; clear; close all;
+for loop = 1:15
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %    column with lumbed masses     
 %         
@@ -73,7 +73,7 @@ rho = 7850; % density column [kg/m^3]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
 
-if loop == 1 || loop==2 || loop==3 || loop==4 || loop==5 || loop==6 || loop==7 || loop==8 || loop==9
+if loop == 1 || loop==2 || loop==3 || loop==4 || loop==5 || loop==6 || loop==7 || loop==8 || loop==9 || loop==10 || loop==11 || loop==12
 
 %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
 % gravitational force on each floor [N] 
@@ -93,7 +93,7 @@ wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
 k2 = F./wL; % [N/m]
 % Initial stiffness matrix
 % stiffness matrix
-elseif g == 13 || g == 14 || g == 15
+elseif loop == 13 || loop == 14 || loop == 15
     kc = 12*EI/L^3;
     kg = 6/5*m*g/L;
     for i = 1:5
@@ -110,10 +110,15 @@ Km(5,5) = k2(5);
 % Define what OMA method is used (also change data in costfunction)
 % MODE = 2; % 1=SSI, 2=ERA, 3=FDD
 prompt = "Which OMA is used (1=SSI, 2=ERA, 3=FDD)? ";
-MODE = input(prompt);
+if loop == 1 ||  loop==4 ||  loop==7 ||  loop==10 ||  loop == 13 
+    MODE = 1;
+elseif loop==2 || loop==5 || loop==8 || loop==11 || loop == 14 
+    MODE = 2;
+elseif loop==3 ||  loop==6 || loop==9 || loop==12 || loop == 15
+    MODE = 3;
+end
 % Define and minimize cost function
-promptt = "Which costfun is used to find calibrated stiffness (1=SSIFreq, 2=ERAFreq, 3=FDDFreq, 4=SSImodes, 5=ERAmodes, 6=FDDmodes, 7=SSIFreqmodes, 8=ERAFreqmodes, 9=FDDFreqmodes )? ";
-Stif = input(promptt);
+Stif = loop;
 if Stif == 1
     Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
 elseif Stif == 2
