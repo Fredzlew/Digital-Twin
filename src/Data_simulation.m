@@ -50,7 +50,7 @@ wd=wn.*sqrt(1-zeta.^2);
 fn=Vectors'*f; % generalized input force matrix
 
 t=[0:dt:dt*steps-dt];
-%%
+
 for i=1:1:n
     
     h(i,:)=(1/(Mn(i)*wd(i))).*exp(-zeta(i)*wn(i)*t).*sin(wd(i)*t); %transfer function of displacement
