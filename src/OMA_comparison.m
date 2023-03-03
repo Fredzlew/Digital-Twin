@@ -3,7 +3,7 @@ clear all;
 close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 % Loading the numerical model ad the simulated data
-num = load('modelprop.mat');
+num = load('modelprop_jan.mat');
 SSI = load('SSImodalsim.mat');
 SSI_new = load('SSImodalsim_newmark.mat');
 ERA = load('ERAmodalsim.mat');
@@ -48,14 +48,14 @@ disp('The frequencies out from simulated data  :')
 disp(Freq)
 
 modestot = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5';'Total'};
-q = 1;
+q = 100;
 for i = 1:5
-    SSIdiff1(i) = q - min(SSIFreq(i),numFreq(i))/max(SSIFreq(i),numFreq(i));
-    ERAdiff1(i) = q - min(ERAFreq(i),numFreq(i))/max(ERAFreq(i),numFreq(i));
-    FDDdiff1(i) = q - min(ERAFreq(i),numFreq(i))/max(ERAFreq(i),numFreq(i));
-    SSIdiff_new1(i) = q - min(SSIFreq_new(i),numFreq(i))/max(SSIFreq_new(i),numFreq(i));
-    ERAdiff_new1(i) = q - min(ERAFreq_new(i),numFreq(i))/max(ERAFreq_new(i),numFreq(i));
-    FDDdiff_new1(i) = q - min(FDDFreq_new(i),numFreq(i))/max(FDDFreq_new(i),numFreq(i));
+    SSIdiff1(i) = q - min(SSIFreq(i),numFreq(i))/max(SSIFreq(i),numFreq(i))*100;
+    ERAdiff1(i) = q - min(ERAFreq(i),numFreq(i))/max(ERAFreq(i),numFreq(i))*100;
+    FDDdiff1(i) = q - min(FDDFreq(i),numFreq(i))/max(FDDFreq(i),numFreq(i))*100;
+    SSIdiff_new1(i) = q - min(SSIFreq_new(i),numFreq(i))/max(SSIFreq_new(i),numFreq(i))*100;
+    ERAdiff_new1(i) = q - min(ERAFreq_new(i),numFreq(i))/max(ERAFreq_new(i),numFreq(i))*100;
+    FDDdiff_new1(i) = q - min(FDDFreq_new(i),numFreq(i))/max(FDDFreq_new(i),numFreq(i))*100;
 end
 SSIdiff = [SSIdiff1';sum(SSIdiff1)];
 ERAdiff = [ERAdiff1';sum(ERAdiff1)];
@@ -68,5 +68,5 @@ FDDdiff_new = [FDDdiff_new1';sum(FDDdiff_new1)];
 diff = table(SSIdiff,ERAdiff,FDDdiff,SSIdiff_new,ERAdiff_new,FDDdiff_new,...
     'RowNames',modestot);
 
-disp('Difference between numerical frequencies and OMA frequencies')
+disp('Difference between numerical frequencies and OMA frequencies [%]')
 disp(diff)

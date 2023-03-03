@@ -2,6 +2,15 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
+% Choose stiffness matrix
+prompttt = "Ricky and Johan's or Jan's stiffness matrix: (1=Ricky&Johan, 2=Jan)? ";
+prop = input(prompttt);
+if prop == 1
+    filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+elseif prop == 2
+    filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
+end
+
 % Choose of data
 prompt = "Use ERA for measured or simulated data (1=measured, 2=simulated(IRF), 3=simulated(Newmark))? ";
 ERAdata = input(prompt);
@@ -10,17 +19,25 @@ if ERAdata == 1
     data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
     fss = data(2:6,1:10000)/1000; % Converting mm to m
     f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
-elseif ERAdata == 2
+elseif ERAdata == 2 && prop == 1
     % Simulated data
     data_sim = load('data_sim.mat');
     f = data_sim.dis(:,1:10000);
-elseif ERAdata == 3
+elseif ERAdata == 2 && prop == 2
+    % Simulated data
+    data_sim = load('data_sim_jan.mat');
+    f = data_sim.dis(:,1:10000);
+elseif ERAdata == 3 && prop == 1
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
     f = data_sim.dis_new(:,1:10000);
+elseif ERAdata == 3 && prop == 2
+    % Simulated data
+    data_sim = load('data_sim_newmark_jan.mat');
+    f = data_sim.dis_new(:,1:10000);
 end
 
-filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+
 omega_min = 1.70; % Minimum natural frequency
 zeta_min = 0.015; % Minimum threshold for desired damping ratio
 alpha = zeta_min*omega_min; % Rayleigh damping coefficient

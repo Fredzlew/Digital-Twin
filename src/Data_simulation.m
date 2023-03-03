@@ -5,7 +5,13 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 % Set global random seed
 rng(2)
 
-filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+prompttt = "Ricky and Johan's or Jan's stiffness matrix: (1=Ricky&Johan, 2=Jan)? ";
+prop = input(prompttt);
+if prop == 1
+    filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+elseif prop == 2
+    filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
+end
 omega_min = 1.70; % Minimum natural frequency
 zeta_min = 0.015; % Minimum threshold for desired damping ratio
 alpha = zeta_min*omega_min; % Rayleigh damping coefficient
@@ -79,7 +85,12 @@ a2=a+0.05*randn(5,length(f));
 v2=v+0.05*randn(5,length(f));
 dis=x+0.05*randn(5,length(f));
 
-save('.\data\data_sim.mat','dis');
+if prop == 1
+    save('.\data\data_sim.mat','dis');
+elseif prop == 2
+    save('.\data\data_sim_jan.mat','dis');
+end
+
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,4 +115,8 @@ beta = 0.25;
 % Add noise to response
 dis_new=x_new+0.05*randn(5,length(f));
 
-save('.\data\data_sim_newmark.mat','dis_new');
+if prop == 1
+    save('.\data\data_sim_newmark.mat','dis_new');
+elseif prop == 2
+    save('.\data\data_sim_newmark_jan.mat','dis_new');
+end
