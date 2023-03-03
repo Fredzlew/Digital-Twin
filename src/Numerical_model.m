@@ -131,7 +131,7 @@ for i=1:length(omegas)
     ylim([0,x(end)])
     
 end
-sgtitle('Numerical','FontSize',20) 
+sgtitle('Numerical (Ricky and Johan)','FontSize',20) 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';
@@ -140,6 +140,76 @@ ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
 
+%% Numerical modal with (kc,kg) generated stiffness matrix
+% Constitutive stiffness
+kc = 12*EI./L.^3;
+% Geometric stiffness
+kg = 6/5*m*g./L;
 
+for i = 1:5
+    k(i) = kc(i) - (sum(kg(i+1:5)));
+end
 
+% stiffness matrix
+for i = 1:4
+    K(i,i) = k(i)+k(i+1);
+    K(i,i+1) = -k(i+1);
+    K(i+1,i) = -k(i+1);
+end
+K(5,5) = k(5);
 
+% eigenvalue problem
+[U,D] = eig(K,M);
+
+% natural frequencies from eigenvalues
+omega = real(sqrt(diag(D)));
+
+% sort frequencies and mode shapes
+[~,iw] = sort(omega);
+% natural frequencies [rad/s]
+omegas = omega(iw);
+% mode shapes
+Us = U(:,iw);
+% frequencies [Hz]
+fn = omegas./(2*pi);
+
+% normalization
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        U(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
+
+%... Save results in *.mat file .................
+save('.\data\modelprop_jan.mat','K','M','H','U','fn');
+
+% plotting the mode shapes
+x = [0, H];
+phi = [zeros(1,length(U)); U];
+fig = figure;
+fig.Position=[100 100 1600 700];
+for i=1:length(omegas)
+    subplot(1,length(omegas),i)
+    hold on
+    plot(phi(:,i),x,'-m')
+    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    xline(0.0,'--')
+    xlim([-1.1,1.1])
+    ylim([0,x(end)])
+    
+end
+sgtitle('Numerical (JAN)','FontSize',20) 
+han=axes(fig,'visible','off'); 
+han.Title.Visible='on';
+han.XLabel.Visible='on';
+han.YLabel.Visible='on';
+ylabel(han,'Height [m]','FontSize',14);
+xlabel(han,'Deflection [-]','FontSize',14);

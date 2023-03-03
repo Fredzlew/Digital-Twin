@@ -2,25 +2,42 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
+% Choose stiffness matrix
+prompttt = "Ricky and Johan's or Jan's stiffness matrix: (1=Ricky&Johan, 2=Jan)? ";
+prop = input(prompttt);
+if prop == 1
+    filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+elseif prop == 2
+    filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
+end
+
 % Choose of data
 prompt = "Use SSI for measured or simulated data (1=measured, 2=simulated(IRF), 3=simulated(Newmark))? ";
-ERAdata = input(prompt);
-if ERAdata == 1
+SSIdata = input(prompt);
+if SSIdata == 1
     % Measurements
     data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
     fss = data(2:6,1:10000)/1000; % Converting mm to m
     f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
-elseif ERAdata == 2
+elseif SSIdata == 2 && prop == 1
     % Simulated data
     data_sim = load('data_sim.mat');
     f = data_sim.dis(:,1:10000);
-elseif ERAdata == 3
+elseif SSIdata == 2 && prop == 2
+    % Simulated data
+    data_sim = load('data_sim_jan.mat');
+    f = data_sim.dis(:,1:10000);
+elseif SSIdata == 3 && prop == 1
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
     f = data_sim.dis_new(:,1:10000);
+elseif SSIdata == 3 && prop == 2
+    % Simulated data
+    data_sim = load('data_sim_newmark_jan.mat');
+    f = data_sim.dis_new(:,1:10000);
 end
 
-filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+
 omega_min = 1.70; % Minimum natural frequency
 zeta_min = 0.015; % Minimum threshold for desired damping ratio
 alpha = zeta_min*omega_min; % Rayleigh damping coefficient
@@ -60,7 +77,7 @@ end % end normalization
 nm = 5; %number of modes
 output=f; % Displacements
 ncols=7400;%4/5*length(f); % More than 2/3*number of samples
-nrows=600;%;%50*nm; % More than 20*number of sensors % Best at 3970, realsitic around 600
+nrows=5*512;%;%50*nm; % More than 20*number of sensors % Best at 3970, realsitic around 600
 cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
 
@@ -128,10 +145,10 @@ disp('Real and Identified Natural Drequencies and Damping Ratios of the Second M
 disp(strcat('SSI: Frequency=',num2str(Result.Parameters.NaFreq(2)),'Hz',' Damping Ratio=',num2str(Result.Parameters.DampRatio(2)),'%'));
 disp(strcat('CMI of The Identified Mode=',num2str(Result.Indicators.CMI(2)),'%'));
 
-if ERAdata == 1
+if SSIdata == 1
     save('.\data\SSImodal.mat','phi_SSI','SSIFreq');
-elseif ERAdata == 2
+elseif SSIdata == 2
     save('.\data\SSImodalsim.mat','phi_SSI','SSIFreq');
-elseif ERAdata == 3
+elseif SSIdata == 3
     save('.\data\SSImodalsim_newmark.mat','phi_SSI','SSIFreq');
 end

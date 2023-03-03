@@ -7,7 +7,13 @@ Nf1 = 2^12; % here you specify the number of frequency lines (a radix 2 number, 
 
 
 % data from numerical model
-filename = load('modelprop.mat');
+prompttt = "Ricky and Johan's or Jan's stiffness matrix: (1=Ricky&Johan, 2=Jan)? ";
+prop = input(prompttt);
+if prop == 1
+    filename = load('modelprop.mat'); % Loads mass and stiffness matrices
+elseif prop == 2
+    filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
+end
 % the numerical model frequencies
 fnumerical = filename.fn;
 
@@ -28,7 +34,7 @@ if FDDdata == 1
     data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
     ys = (data(2:6,:)/1000)'; % Converting mm to m
     y = [ys(:,5),ys(:,4),ys(:,3),ys(:,2),ys(:,1)]; % Swap columns due to sensor
-elseif FDDdata == 2
+elseif FDDdata == 2 && prop == 1
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
     Fn1e = 1.709;   % 1st natural frequency
@@ -39,7 +45,18 @@ elseif FDDdata == 2
     % Simulated data
     data_sim = load('data_sim.mat');
     y=data_sim.dis';
-elseif FDDdata == 3
+elseif FDDdata == 2 && prop == 2
+    % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
+    % Frequencies with simulated data
+    Fn1e = 1.746;   % 1st natural frequency
+    Fn2e = 5.188;   % 2nd natural frequency
+    Fn3e = 8.124;   % 3rd natural frequency
+    Fn4e = 10.303;  % 4th natural frequency
+    Fn5e = 11.652;  % 5th natural frequency
+    % Simulated data
+    data_sim = load('data_sim_jan.mat');
+    y=data_sim.dis';
+elseif FDDdata == 3 && prop == 1
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
     Fn1e = 1.703;   % 1st natural frequency
@@ -49,6 +66,17 @@ elseif FDDdata == 3
     Fn5e = 10.956;  % 5th natural frequency
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
+    y=data_sim.dis_new';
+elseif FDDdata == 3 && prop == 2
+    % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
+    % Frequencies with simulated data
+    Fn1e = 1.746;   % 1st natural frequency
+    Fn2e = 5.145;   % 2nd natural frequency
+    Fn3e = 7.953;   % 3rd natural frequency
+    Fn4e = 9.961;  % 4th natural frequency
+    Fn5e = 11.169;  % 5th natural frequency
+    % Simulated data
+    data_sim = load('data_sim_newmark_jan.mat');
     y=data_sim.dis_new';
 end
 
