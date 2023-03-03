@@ -71,7 +71,7 @@ end % end normalization
 %--------------------------------------------------------------------------
 nm = 5; %Number of modes
 Y=f; %Displacements
-nrows=600;%112;%50*(2*nm/5)+1; Best at 2000, realistic around 600
+nrows=5*512;%112;%50*(2*nm/5)+1; Best at 2000, realistic around 600
 ncols=7400;%7044;%4/5*size(f,2)-nrows-3;    %more than 2/3 of No. of data
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
