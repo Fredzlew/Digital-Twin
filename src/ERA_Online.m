@@ -71,7 +71,7 @@ end % end normalization
 %--------------------------------------------------------------------------
 nm = 5; %Number of modes
 Y=f; %Displacements
-nrows=5*512;%112;%50*(2*nm/5)+1; Best at 2000, realistic around 600
+nrows=200*5;%112;%50*(2*nm/5)+1; Best at 2000, realistic around 600
 ncols=7400;%7044;%4/5*size(f,2)-nrows-3;    %more than 2/3 of No. of data
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
@@ -149,3 +149,6 @@ elseif ERAdata == 2
 elseif ERAdata == 3
     save('.\data\ERAmodalsim_newmark.mat','phi_ERA','ERAFreq');
 end
+
+disp(filename.fn)
+disp(Result.Parameters.NaFreq)
