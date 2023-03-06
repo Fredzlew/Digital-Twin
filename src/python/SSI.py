@@ -6,7 +6,13 @@ import seaborn as sns
 from scipy import signal
 import matplotlib.pyplot as plt
 import PyOMA as oma
+from matplotlib.backend_bases import MouseButton
+# Create a figure and a set of subplots
+fig,ax = plt.subplots()
 
+# Function to print mouse click event coordinates
+def onclick(event):
+   print([event.xdata, event.ydata])
 
 # ======== PRE-PROCESSING =====================================================
 # To open a .txt file create a variable containing the path to the file
@@ -47,16 +53,19 @@ filtdata = signal.filtfilt(_b, _a, data,axis=0) # filtered data
 """
 # ======== ANALYSIS ===========================================================
 # Run FDD
-FDD = oma.FDDsvp(data,  fs)
+#FDD = oma.FDDsvp(data,  fs)
 # FDD = FDDsvp(filtdata,  fs)
 
 # Define list/array with the peaks identified from the plot
-FreQ = [1.64794921875,	5.029296875,	7.89794921875,	10.11962890625,	11.602783203125] # identified peaks
-
+#FreQ = [1.64794921875,	5.029296875,	7.89794921875,	10.11962890625,	11.602783203125] # identified peaks
+# Bind the button_press_event with the onclick() method
+fig.canvas.mpl_connect('button_press_event', onclick)
 # Run SSI
 br = 15
-SSIcov= oma.SSIcovStaDiag(data, fs, br)
+SSIcov = oma.SSIcovStaDiag(data, fs, br)
 
+# Frequencies ccoming from the stability diagram
+FreQ = [1.65612, 5.02666, 7.90311, 10.1157, 11.5903]
 # Extract the modal properties
 Res_SSIcov = oma.SSIModEX(FreQ, SSIcov[1])
 
@@ -64,3 +73,7 @@ Res_SSIcov = oma.SSIModEX(FreQ, SSIcov[1])
 # Make some plots
 # =============================================================================
 MS_SSIcov = Res_SSIcov['Mode Shapes'].real
+
+
+np.save("omega",Res_SSIcov["Frequencies"])
+np.save("phi",Res_SSIcov["Mode Shapes"])

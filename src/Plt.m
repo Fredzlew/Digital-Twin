@@ -10,7 +10,7 @@ omegas = filename.fn * 2 * pi;
 
 dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ
 K_SSI_freq = diag(dataSSIFreq.K)';
-k2 = dataSSIFreq.k2;
+stivhed = dataSSIFreq.stivhed';
 
 
 dataERAFreq = load('costfunupdateERAfreq.mat'); % ERA FREQ
@@ -47,19 +47,20 @@ dataFDDfreqmodeEIL = load('costfunupdateFDDfreqmodeEIL.mat'); % FDD modes
 K_FDD_freqmodeEIL = diag(dataFDDfreqmodeEIL.K)';
 
 dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI modes
-K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEIL.K)';
+K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEILJAN.K)';
 
 dataERAfreqmodeEILJAN = load('costfunupdateERAfreqmodeEILJAN.mat'); % ERA modes
 K_ERA_freqmodeEILJAN = diag(dataERAfreqmodeEILJAN.K)';
 
 dataFDDfreqmodeEILJAN = load('costfunupdateFDDfreqmodeEILJAN.mat'); % FDD modes
 K_FDD_freqmodeEILJAN = diag(dataFDDfreqmodeEILJAN.K)';
+stivhedJan = dataFDDfreqmodeEILJAN.stivhed';
 
 
 
 % PLotting the stiffness
 y = [K_SSI_freq;K_ERA_freq;K_FDD_freq;K_SSI_mode;K_ERA_mode;K_FDD_mode;K_SSI_freq_mode;K_ERA_freq_mode;K_FDD_freq_mode;...
-    K_SSI_freqmodeEIL;K_ERA_freqmodeEIL;K_FDD_freqmodeEIL;K_SSI_freqmodeEILJAN;K_ERA_freqmodeEILJAN;K_FDD_freqmodeEILJAN;k2];
+    K_SSI_freqmodeEIL;K_ERA_freqmodeEIL;K_FDD_freqmodeEIL;K_SSI_freqmodeEILJAN;K_ERA_freqmodeEILJAN;K_FDD_freqmodeEILJAN;stivhed;stivhedJan];
 figure
 hold on
 b = bar(y,'stacked');
@@ -75,7 +76,7 @@ title('Values of stiffness for different OMA methods and cost functions')
 xlabel('Method')
 xticks(xtips)
 xticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)',...
-    'SSI EIL (freq+mode)','ERA EIL (freq+mode)','FDD EIL (freq+mode)','SSI EIL JAN(freq+mode)','ERA EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Geometric Stiffness'})
+    'SSI EIL (freq+mode)','ERA EIL (freq+mode)','FDD EIL (freq+mode)','SSI EIL JAN(freq+mode)','ERA EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Global stiffness Ricky and Johan','Global stiffness Jan'})
 ylabel('Stiffness [N/m]')
 
 % 3D plot of the stiffness
