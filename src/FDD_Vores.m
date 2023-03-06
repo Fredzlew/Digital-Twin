@@ -143,8 +143,6 @@ Vn2 = abs(ModeShapes(:,idF2)).*cos(angle(ModeShapes(:,idF2)));
 Vn3 = abs(ModeShapes(:,idF3)).*cos(angle(ModeShapes(:,idF3)));
 Vn4 = abs(ModeShapes(:,idF4)).*cos(angle(ModeShapes(:,idF4)));
 Vn5 = abs(ModeShapes(:,idF5)).*cos(angle(ModeShapes(:,idF5)));
-% Loading modelprop for real mode shapes
-filename = load('modelprop.mat'); % Loads mass and stiffness matrices
 
 % normalizing FDD mode shapes
 Us = [Vn1,Vn2,Vn3,Vn4,Vn5];
@@ -196,3 +194,6 @@ elseif FDDdata == 2
 elseif FDDdata == 3
     save('.\data\FDDmodalsim_newmark.mat','phi_FDD','fn');
 end
+
+disp(filename.fn)
+disp(fn')

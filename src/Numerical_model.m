@@ -79,6 +79,7 @@ for i = 1:4
     K(i+1,i) = -k(i+1);
 end
 K(5,5) = k(5);
+disp(K)
 
 % mass matrix 
 M = m.*eye(5);
@@ -97,6 +98,7 @@ omegas = omega(iw);
 Us = U(:,iw);
 % frequencies [Hz]
 fn = omegas./(2*pi);
+disp(fn)
 
 % normalization
 MVec_x = max(Us); % start normalization
@@ -157,6 +159,7 @@ for i = 1:4
     K(i+1,i) = -k(i+1);
 end
 K(5,5) = k(5);
+disp(K)
 
 % eigenvalue problem
 [U,D] = eig(K,M);
@@ -172,6 +175,7 @@ omegas = omega(iw);
 Us = U(:,iw);
 % frequencies [Hz]
 fn = omegas./(2*pi);
+disp(fn)
 
 % normalization
 MVec_x = max(Us); % start normalization

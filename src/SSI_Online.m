@@ -152,3 +152,7 @@ elseif SSIdata == 2
 elseif SSIdata == 3
     save('.\data\SSImodalsim_newmark.mat','phi_SSI','SSIFreq');
 end
+
+
+disp(filename.fn)
+disp(Result.Parameters.NaFreq)
