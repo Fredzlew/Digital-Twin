@@ -50,7 +50,7 @@ Mn=diag(Vectors'*M*Vectors); % uncoupled mass
 Cn=diag(Vectors'*C*Vectors); % uncoupled damping
 Kn=diag(Vectors'*K*Vectors); % uncoupled stifness
 wn=sqrt(diag(Values));
-zeta=Cn./(sqrt(2.*Mn.*Kn));  % damping ratio
+zeta=Cn./(2*sqrt(Mn.*Kn));  % damping ratio
 wd=wn.*sqrt(1-zeta.^2);
 
 fn=Vectors'*f; % generalized input force matrix
