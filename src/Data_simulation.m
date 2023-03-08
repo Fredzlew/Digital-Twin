@@ -98,6 +98,9 @@ end
 x0 = zeros(size(f,1),1);
 v0 = x0;
 
+% Sampling rate
+dt = 0.001;
+
 % Number of time steps
 N = length(f)-1;
 
