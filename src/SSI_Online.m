@@ -19,22 +19,27 @@ if SSIdata == 1
     data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
     fss = data(2:6,1:10000)/1000; % Converting mm to m
     f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
+    fs=100; % Sampling frequency (1/dt)
 elseif SSIdata == 2 && prop == 1
     % Simulated data
     data_sim = load('data_sim.mat');
     f = data_sim.dis(:,1:10000);
+    fs=100; % Sampling frequency (1/dt)
 elseif SSIdata == 2 && prop == 2
     % Simulated data
     data_sim = load('data_sim_jan.mat');
     f = data_sim.dis(:,1:10000);
+    fs=100; % Sampling frequency (1/dt)
 elseif SSIdata == 3 && prop == 1
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
-    f = data_sim.dis_new(:,1:10000);
+    f = data_sim.dis_new(:,1:20000);
+    fs=1000; % Sampling frequency (1/dt)
 elseif SSIdata == 3 && prop == 2
     % Simulated data
     data_sim = load('data_sim_newmark_jan.mat');
-    f = data_sim.dis_new(:,1:10000);
+    f = data_sim.dis_new(:,1:20000);
+    fs=1000; % Sampling frequency (1/dt)
 end
 
 
@@ -45,7 +50,6 @@ beta = zeta_min/omega_min; % Rayleigh damping coefficient
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 C=0;%alpha*M+beta*K; % Damping matrix using Rayleigh damping
-fs=100; % Sampling frequency (1/dt)
 
 %Apply modal superposition to get response
 %--------------------------------------------------------------------------
@@ -76,8 +80,8 @@ end % end normalization
 %--------------------------------------------------------------------------
 nm = 5; %number of modes
 output=f; % Displacements
-ncols=7400;%4/5*length(f); % More than 2/3*number of samples
-nrows=600;%;%50*nm; % More than 20*number of sensors % Best at 3970, realsitic around 600
+ncols=4/5*length(f); % More than 2/3*number of samples
+nrows=5*1000;%;%50*nm; % More than 20*number of sensors % Best at 3970, realsitic around 600
 cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
 
