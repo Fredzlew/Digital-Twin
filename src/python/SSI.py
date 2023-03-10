@@ -19,49 +19,51 @@ import scipy.io as sio
 # ======== PRE-PROCESSING =====================================================
 
 # To open a .txt file create a variable containing the path to the file
-_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
+#_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
+#_file = r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
 #_file = r"C:\Users\Christina\OneDrive - Danmarks Tekniske Universitet (1)\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
 # open the file with pandas and create a dataframe
 # N.B. whatchout for header, separator and remove time column if present
 
-data = pd.read_csv(_file, header=1, delim_whitespace=True, index_col=False) 
-data = data.to_numpy()
+#data = pd.read_csv(_file, header=1, delim_whitespace=True, index_col=False) 
+#data = data.to_numpy()
 
 # Removing the time column 
-data = np.delete(data, 0, 1)
-data = np.delete(data, 5, 1)
+#data = np.delete(data, 0, 1)
+#data = np.delete(data, 5, 1)
 
 # Swap the sensors because the sensor 1 is at the top
-data[:,[4,3,2,1,0]] = data[:,[0,1,2,3,4]]
+#data[:,[4,3,2,1,0]] = data[:,[0,1,2,3,4]]
 
 #Finding the file
 #data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data")
-#data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
+data_dir = pjoin(dirname(sio.__file__), r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data")
+data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
 
 # Loading simulated data instead:
-#data = sio.loadmat(data_sim)
-#data = np.transpose(data["dis_new"])
+data = sio.loadmat(data_sim)
+data = np.transpose(data["dis_new"])
 
 
 
 # Sampling frequency
-fs = 100 # [Hz] Sampling Frequency
+fs = 1000 # [Hz] Sampling Frequency
 
 # ======== ANALYSIS ===========================================================
 
 # Bind the button_press_event with the onclick() method
 #fig.canvas.mpl_connect('button_press_event', onclick)
 # Run SSI
-br = 30
+br = 130
 SSIcov,Result = oma.SSIcovStaDiag(data, fs, br)
 
 # Frequencies ccoming from the stability diagram
 # Anela
-FreQ = [1.65612, 5.02666, 7.90311, 10.1157, 11.5903]
+#FreQ = [1.65612, 5.02666, 7.90311, 10.1157, 11.5903]
 # Jan IRF
 #FreQ = [1.74735, 5.18789, 8.1239, 10.3009, 11.6527]
 # Jan new
-#FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468]
+FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468]
 # Extract the modal properties
 Res_SSIcov = oma.SSIModEX(FreQ, Result)
 
