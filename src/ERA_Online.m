@@ -19,22 +19,27 @@ if ERAdata == 1
     data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
     fss = data(2:6,1:10000)/1000; % Converting mm to m
     f = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
+    fs=100; % Sampling frequency (1/dt)
 elseif ERAdata == 2 && prop == 1
     % Simulated data
     data_sim = load('data_sim.mat');
-    f = data_sim.dis(:,1:10000);
+    f = data_sim.dis(:,1:20000);
+    fs=100; % Sampling frequency (1/dt)
 elseif ERAdata == 2 && prop == 2
     % Simulated data
     data_sim = load('data_sim_jan.mat');
-    f = data_sim.dis(:,1:10000);
+    f = data_sim.dis(:,1:20000);
+    fs=100; % Sampling frequency (1/dt)
 elseif ERAdata == 3 && prop == 1
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
-    f = data_sim.dis_new(:,1:10000);
+    f = data_sim.dis_new(:,1:20000);
+    fs=1000; % Sampling frequency (1/dt)
 elseif ERAdata == 3 && prop == 2
     % Simulated data
     data_sim = load('data_sim_newmark_jan.mat');
-    f = data_sim.dis_new(:,1:10000);
+    f = data_sim.dis_new(:,1:20000);
+    fs=1000; % Sampling frequency (1/dt)
 end
 
 
@@ -45,7 +50,6 @@ beta = zeta_min/omega_min; % Rayleigh damping coefficient
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 C=0;%alpha*M+beta*K; % Damping matrix using Rayleigh damping
-fs=100; % Sampling frequency (1/dt)
 n=size(f,1);
 dt=1/fs; %sampling rate
 % Solve eigenvalue problem to find numerical modal parameters
@@ -71,8 +75,8 @@ end % end normalization
 %--------------------------------------------------------------------------
 nm = 5; %Number of modes
 Y=f; %Displacements
-nrows=600;%112;%50*(2*nm/5)+1; Best at 2000, realistic around 600
-ncols=7400;%7044;%4/5*size(f,2)-nrows-3;    %more than 2/3 of No. of data
+nrows=1000*5;%112;%50*(2*nm/5)+1; Best at 2000, realistic around 600
+ncols=4/5*size(f,2)-nrows-3;    %more than 2/3 of No. of data
 inputs=1;     
 cut=2*nm;        %Identify 5 modes
 shift=10;      %Adjust EMAC sensitivity

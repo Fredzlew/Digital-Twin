@@ -2,7 +2,6 @@ clc;
 clear all;
 close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
-dt = 0.01; % here you specify the sampling interval
 Nf1 = 2^12; % here you specify the number of frequency lines (a radix 2 number, i.e., Nf1=2^n, where n is a natural number)
 
 
@@ -34,6 +33,7 @@ if FDDdata == 1
     data = readmatrix('data_1_2_1.txt')'; % Loading displacement data
     ys = (data(2:6,:)/1000)'; % Converting mm to m
     y = [ys(:,5),ys(:,4),ys(:,3),ys(:,2),ys(:,1)]; % Swap columns due to sensor
+    dt = 0.01; % here you specify the sampling interval
 elseif FDDdata == 2 && prop == 1
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
@@ -45,6 +45,7 @@ elseif FDDdata == 2 && prop == 1
     % Simulated data
     data_sim = load('data_sim.mat');
     y=data_sim.dis';
+    dt = 0.01; % here you specify the sampling interval
 elseif FDDdata == 2 && prop == 2
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
@@ -56,28 +57,31 @@ elseif FDDdata == 2 && prop == 2
     % Simulated data
     data_sim = load('data_sim_jan.mat');
     y=data_sim.dis';
+    dt = 0.01; % here you specify the sampling interval
 elseif FDDdata == 3 && prop == 1
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
-    Fn1e = 1.703;   % 1st natural frequency
-    Fn2e = 5.029;   % 2nd natural frequency
-    Fn3e = 7.788;   % 3rd natural frequency
-    Fn4e = 9.759;  % 4th natural frequency
-    Fn5e = 10.956;  % 5th natural frequency
+    Fn1e = 1.709;   % 1st natural frequency
+    Fn2e = 5.066;   % 2nd natural frequency
+    Fn3e = 7.935;   % 3rd natural frequency
+    Fn4e = 10.071;   % 4th natural frequency
+    Fn5e = 11.414;  % 5th natural frequency
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
     y=data_sim.dis_new';
+    dt = 0.001; % here you specify the sampling interval
 elseif FDDdata == 3 && prop == 2
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
-    Fn1e = 1.746;   % 1st natural frequency
-    Fn2e = 5.145;   % 2nd natural frequency
-    Fn3e = 7.953;   % 3rd natural frequency
-    Fn4e = 9.961;  % 4th natural frequency
-    Fn5e = 11.169;  % 5th natural frequency
+    Fn1e = 1.770;   % 1st natural frequency
+    Fn2e = 5.188;   % 2nd natural frequency
+    Fn3e = 8.118;   % 3rd natural frequency
+    Fn4e = 10.315;  % 4th natural frequency
+    Fn5e = 11.658;  % 5th natural frequency
     % Simulated data
     data_sim = load('data_sim_newmark_jan.mat');
     y=data_sim.dis_new';
+    dt = 0.001; % here you specify the sampling interval
 end
 
 Nf = Nf1 + 1;
