@@ -20,7 +20,7 @@ beta = zeta_min/omega_min; % Rayleigh damping coefficient
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 C=0;%alpha*M+beta*K;
-f=5*randn(5,400000);
+f=5*randn(5,2.3e6);  
 fs=100;
 
 %Apply modal superposition to get response
