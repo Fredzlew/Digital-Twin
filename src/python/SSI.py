@@ -19,8 +19,8 @@ import scipy.io as sio
 # ======== PRE-PROCESSING =====================================================
 
 # To open a .txt file create a variable containing the path to the file
-#_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
-_file = r"C:\Users\Christina\OneDrive - Danmarks Tekniske Universitet (1)\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
+_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
+#_file = r"C:\Users\Christina\OneDrive - Danmarks Tekniske Universitet (1)\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
 # open the file with pandas and create a dataframe
 # N.B. whatchout for header, separator and remove time column if present
 
@@ -52,7 +52,7 @@ fs = 100 # [Hz] Sampling Frequency
 # Bind the button_press_event with the onclick() method
 #fig.canvas.mpl_connect('button_press_event', onclick)
 # Run SSI
-br = 15
+br = 30
 SSIcov,Result = oma.SSIcovStaDiag(data, fs, br)
 
 # Frequencies ccoming from the stability diagram
