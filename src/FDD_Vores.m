@@ -2,7 +2,7 @@ clc;
 clear all;
 close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
-Nf1 = 2^12; % here you specify the number of frequency lines (a radix 2 number, i.e., Nf1=2^n, where n is a natural number)
+Nf1 = 2^14; % here you specify the number of frequency lines (a radix 2 number, i.e., Nf1=2^n, where n is a natural number)
 
 
 % data from numerical model
@@ -73,11 +73,11 @@ elseif FDDdata == 3 && prop == 1
 elseif FDDdata == 3 && prop == 2
     % below you specify the 1st three natural frequencies identified from the (frequency domain) plots
     % Frequencies with simulated data
-    Fn1e = 1.770;   % 1st natural frequency
+    Fn1e = 1.755;   % 1st natural frequency
     Fn2e = 5.188;   % 2nd natural frequency
     Fn3e = 8.118;   % 3rd natural frequency
-    Fn4e = 10.315;  % 4th natural frequency
-    Fn5e = 11.658;  % 5th natural frequency
+    Fn4e = 10.300;  % 4th natural frequency
+    Fn5e = 11.643;  % 5th natural frequency
     % Simulated data
     data_sim = load('data_sim_newmark_jan.mat');
     y=data_sim.dis_new';

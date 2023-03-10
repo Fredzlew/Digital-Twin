@@ -33,12 +33,12 @@ elseif SSIdata == 2 && prop == 2
 elseif SSIdata == 3 && prop == 1
     % Simulated data
     data_sim = load('data_sim_newmark.mat');
-    f = data_sim.dis_new(:,1:20000);
+    f = data_sim.dis_new(:,1:40000);
     fs=1000; % Sampling frequency (1/dt)
 elseif SSIdata == 3 && prop == 2
     % Simulated data
     data_sim = load('data_sim_newmark_jan.mat');
-    f = data_sim.dis_new(:,1:20000);
+    f = data_sim.dis_new(:,1:40000);
     fs=1000; % Sampling frequency (1/dt)
 end
 
@@ -81,7 +81,7 @@ end % end normalization
 nm = 5; %number of modes
 output=f; % Displacements
 ncols=4/5*length(f); % More than 2/3*number of samples
-nrows=5*1000;%;%50*nm; % More than 20*number of sensors % Best at 3970, realsitic around 600
+nrows=5*500;%;%50*nm; % More than 20*number of sensors % Best at 3970, realsitic around 600
 cut=2*nm;  % cut=4 -> 2 modes, cut=10 -> 5 modes
 [Result]=SSID(output,fs,ncols,nrows,cut);    %SSI
 
