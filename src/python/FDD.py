@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 13 13:05:29 2023
+
+@author: Frede
+"""
 
 # Import modules
 import numpy as np
@@ -45,6 +51,7 @@ data = sio.loadmat(data_sim)
 data = np.transpose(data["dis_new"])
 
 
+
 # Sampling frequency
 fs = 1000 # [Hz] Sampling Frequency
 
@@ -56,30 +63,28 @@ q = 10 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
+# Filter
+_b, _a = signal.butter(12, (0.3,6.5), fs=fs, btype='bandpass')
+filtdata = signal.filtfilt(_b, _a, data,axis=0) # filtered data
+
 # ======== ANALYSIS ===========================================================
+# Run FDD
+FDD, Result = oma.FDDsvp(data,  fs)
+#FDD, Result = oma.FDDsvp(filtdata,  fs)
 
-# Bind the button_press_event with the onclick() method
-#fig.canvas.mpl_connect('button_press_event', onclick)
-# Run SSI
-br = 130
-SSIcov,Result = oma.SSIcovStaDiag(data, fs, br)
+# Define list/array with the peaks identified from the plot
+# Simuleret data
+FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468] # identified peaks
 
-# Frequencies ccoming from the stability diagram
-# Anela
-#FreQ = [1.65612, 5.02666, 7.90311, 10.1157, 11.5903]
-# Jan IRF
-#FreQ = [1.74735, 5.18789, 8.1239, 10.3009, 11.6527]
-# Jan new
-FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468]
-# Extract the modal properties
-Res_SSIcov = oma.SSIModEX(FreQ, Result)
+# Extract the modal properties 
+Res_FDD = oma.FDDmodEX(FreQ, Result)
+#Res_EFDD = oma.EFDDmodEX(FreQ, FDD[1], method='EFDD')
+#Res_FSDD = oma.EFDDmodEX(FreQ, FDD[1], method='FSDD', npmax = 35, MAClim=0.95, plot=True)
 
-# =============================================================================
-# Make some plots
-# =============================================================================
-MS_SSIcov = Res_SSIcov['Mode Shapes'].real
-
+MS_FDD = Res_FDD['Mode Shapes'].real
+#MS_EFDD = Res_EFDD['Mode Shapes'].real
+#MS_FSDD = Res_FSDD['Mode Shapes'].real
 """
 np.save("omega",Res_SSIcov["Frequencies"])
-np.save("phi",MS_SSIcov)
+np.save("FDDphi",MS_FDD )
 """
