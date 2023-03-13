@@ -114,9 +114,9 @@ end
 
 % plot singular values
 figure(1);
-plot(f,10*log(Sv(1:5,:).^0.5));
+plot(f,10*log10(Sv(1:5,:).^0.5));
 xlabel('Frequency [Hz]');
-ylabel('Sigular Values [dB to unit]');
+ylabel('Singular Values [dB to unit]');
 set(gca, 'xgrid', 'on', 'ygrid', 'on');
 
 [~, idF1] = min(abs(f-Fn1e));
