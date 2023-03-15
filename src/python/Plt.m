@@ -12,18 +12,11 @@ dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ
 K_SSI_freq = diag(dataSSIFreq.K)';
 stivhed = dataSSIFreq.stivhed';
 
-
-dataERAFreq = load('costfunupdateERAfreq.mat'); % ERA FREQ
-K_ERA_freq = diag(dataERAFreq.K)';
-
 dataFDDFreq = load('costfunupdateFDDfreq.mat'); % FDD FREQ
 K_FDD_freq = diag(dataFDDFreq.K)';
 
 dataSSImode = load('costfunupdateSSImode.mat'); % SSI modes
 K_SSI_mode = diag(dataSSImode.K)';
-
-dataERAmode = load('costfunupdateERAmode.mat'); % ERA modes
-K_ERA_mode = diag(dataERAmode.K)';
 
 dataFDDmode = load('costfunupdateFDDmode.mat'); % FDD modes
 K_FDD_mode = diag(dataFDDmode.K)';
@@ -31,26 +24,14 @@ K_FDD_mode = diag(dataFDDmode.K)';
 dataSSIFreqmode = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
 K_SSI_freq_mode = diag(dataSSIFreqmode.K)';
 
-dataERAFreqmode = load('costfunupdateERAfreqmode.mat'); % ERA FREQ and modes
-K_ERA_freq_mode = diag(dataERAFreqmode.K)';
 
 dataFDDFreqmode = load('costfunupdateFDDfreqmode.mat'); % FDD FREQ and modes
 K_FDD_freq_mode = diag(dataFDDFreqmode.K)';
 
-dataSSIfreqmodeEIL = load('costfunupdateSSIfreqmodeEIL.mat'); % SSI modes
-K_SSI_freqmodeEIL = diag(dataSSIfreqmodeEIL.K)';
-
-dataERAfreqmodeEIL = load('costfunupdateERAfreqmodeEIL.mat'); % ERA modes
-K_ERA_freqmodeEIL = diag(dataERAfreqmodeEIL.K)';
-
-dataFDDfreqmodeEIL = load('costfunupdateFDDfreqmodeEIL.mat'); % FDD modes
-K_FDD_freqmodeEIL = diag(dataFDDfreqmodeEIL.K)';
 
 dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI modes
 K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEILJAN.K)';
 
-dataERAfreqmodeEILJAN = load('costfunupdateERAfreqmodeEILJAN.mat'); % ERA modes
-K_ERA_freqmodeEILJAN = diag(dataERAfreqmodeEILJAN.K)';
 
 dataFDDfreqmodeEILJAN = load('costfunupdateFDDfreqmodeEILJAN.mat'); % FDD modes
 K_FDD_freqmodeEILJAN = diag(dataFDDfreqmodeEILJAN.K)';
@@ -59,8 +40,8 @@ stivhedJan = dataFDDfreqmodeEILJAN.stivhed';
 
 
 % PLotting the stiffness
-y = [K_SSI_freq;K_ERA_freq;K_FDD_freq;K_SSI_mode;K_ERA_mode;K_FDD_mode;K_SSI_freq_mode;K_ERA_freq_mode;K_FDD_freq_mode;...
-    K_SSI_freqmodeEIL;K_ERA_freqmodeEIL;K_FDD_freqmodeEIL;K_SSI_freqmodeEILJAN;K_ERA_freqmodeEILJAN;K_FDD_freqmodeEILJAN;stivhed;stivhedJan];
+y = [K_SSI_freq;K_FDD_freq;K_SSI_mode;K_FDD_mode;K_SSI_freq_mode;K_FDD_freq_mode;...
+    K_SSI_freqmodeEILJAN;K_FDD_freqmodeEILJAN;stivhedJan];
 figure
 hold on
 b = bar(y,'stacked');
@@ -75,8 +56,8 @@ legend('k1','k2','k3','k4','k5')
 title('Values of stiffness for different OMA methods and cost functions')
 xlabel('Method')
 xticks(xtips)
-xticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)',...
-    'SSI EIL (freq+mode)','ERA EIL (freq+mode)','FDD EIL (freq+mode)','SSI EIL JAN(freq+mode)','ERA EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Global stiffness Ricky and Johan','Global stiffness Jan'})
+xticklabels({'SSI (freq)','FDD (freq)','SSI (mode)','FDD (mode)','SSI (freq+mode)','FDD (freq+mode)',...
+    'SSI EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Global stiffness'})
 ylabel('Stiffness [N/m]')
 
 % 3D plot of the stiffness
@@ -88,18 +69,18 @@ title('Values of stiffness for different OMA methods and cost functions')
 xticks([1,2,3,4,5])
 xticklabels({'k1','k2','k3','k4','k5'})
 yticks(xtips)
-yticklabels({'SSI (freq)','ERA (freq)','FDD (freq)','SSI (mode)','ERA (mode)','FDD (mode)','SSI (freq+mode)','ERA (freq+mode)','FDD (freq+mode)',...
-    'SSI EIL (freq+mode)','ERA EIL (freq+mode)','FDD EIL (freq+mode)','SSI EIL JAN(freq+mode)','ERA EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Geometric Stiffness'})
+yticklabels({'SSI (freq)','FDD (freq)','SSI (mode)','FDD (mode)','SSI (freq+mode)','FDD (freq+mode)',...
+    'SSI EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Global stiffness'})
 zlabel('Stiffness [N/m]')
 
 % What we want to plot
 % Define what OMA method is used 
 % MODE = 2; % 1=SSI, 2=ERA, 3=FDD
-prompt = "Which OMA is used (1=SSI, 2=ERA, 3=FDD)? ";
+prompt = "Which OMA is used (1=SSI, 2=FDD)? ";
 MODE = input(prompt);
-promptt = "Which do you want to plot? (1=SSI (freq), 2=ERA (freq), 3=FDD (freq), 4=SSI (mode), 5=ERA (mode), 6=FDD (mode)," + ...
-    " 7=SSI (freq+mode), 8=ERA (freq+mode), 9=FDD (freq+mode), 10=SSI EIL (freq+mode), 11=ERA EIL (freq+mode), 12=FDD EIL (freq+mode)," + ...
-    " 13=SSI EIL JAN(freq+mode), 14=ERA EIL JAN(freq+mode), 15=FDD EIL JAN(freq+mode))? ";
+promptt = "Which do you want to plot? (1=SSI (freq), 2=FDD (freq), 3=SSI (mode),  4=FDD (mode)," + ...
+    " 5=SSI (freq+mode),  6=FDD (freq+mode)," + ...
+    " 9=SSI EIL JAN(freq+mode), 10=FDD EIL JAN(freq+mode))? ";
 x = input(promptt);
 if x == 1
     data = load('costfunupdateSSIfreq.mat'); % SSI FREQ
@@ -111,15 +92,6 @@ if x == 1
     U = data.U;
     H = data.H;
 elseif x == 2
-    data = load('costfunupdateERAfreq.mat'); % ERA FREQ
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 3
     data = load('costfunupdateFDDfreq.mat'); % FDD FREQ
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -128,7 +100,7 @@ elseif x == 3
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 4
+elseif x == 3
     data = load('costfunupdateSSImode.mat'); % SSI modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -137,16 +109,7 @@ elseif x == 4
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 5
-    data = load('costfunupdateERAmode.mat'); % ERA modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 6
+elseif x == 4
     data = load('costfunupdateFDDmode.mat'); % FDD modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -155,7 +118,7 @@ elseif x == 6
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 7
+elseif x == 5
     data = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -164,16 +127,7 @@ elseif x == 7
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 8
-    data = load('costfunupdateERAfreqmode.mat'); % ERA FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 9
+elseif x == 6
     data = load('costfunupdateFDDfreqmode.mat'); % FDD FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -182,34 +136,7 @@ elseif x == 9
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 10 
-    data = load('costfunupdateSSIfreqmodeEIL.mat'); % SSI EIL FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 11
-    data = load('costfunupdateERAfreqmodeEIL.mat'); % ERA EIL FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 12
-    data = load('costfunupdateFDDfreqmodeEIL.mat'); % FDD EIL FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 13
+elseif x == 7
     data = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -218,16 +145,7 @@ elseif x == 13
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 14
-    data = load('costfunupdateERAfreqmodeEILJAN.mat'); % ERA EIL JAN FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 15
+elseif x == 8
     data = load('costfunupdateFDDfreqmodeEILJAN.mat'); % FDD EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -243,13 +161,6 @@ x = [0, H];
 phi = [zeros(1,length(U)); U];
 fig = figure;
 fig.Position=[100 100 1600 700];
-% if MODE==1
-%     OMAphi = SSIphi;
-% elseif MODE==2
-%     OMAphi = ERAphi;
-% else
-%     OMAphi = FDDphi;
-% end
 for i=1:length(omegas)
     subplot(1,length(omegas),i)
     hold on
@@ -268,16 +179,12 @@ for i=1:length(omegas)
     ylim([0,x(end)])
     if i==1 && MODE==1
         legend('Numerical','SSI','Location','northwest')
-    elseif i==1 && MODE==2
-        legend('Numerical','ERA','Location','northwest')
     elseif i==1
         legend('Numerical','FDD','Location','northwest')
     end
 end
 if MODE==1
     sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
-elseif MODE==2
-    sgtitle('Numerical mode shapes, calibrated by ERA','FontSize',20)
 else
     sgtitle('Numerical mode shapes, calibrated by FDD','FontSize',20)
 end
@@ -287,19 +194,6 @@ han.XLabel.Visible='on';
 han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
-
-% Display accuracy of natural frequencies
-% if MODE==1
-%     OMAfreq=SSIFreq;
-%     OMAphi=SSIphi;
-% elseif MODE==2
-%     OMAfreq=ERAFreq;
-%     OMAphi=ERAphi;
-% else
-%     OMAfreq=FDDFreq;
-%     OMAphi=FDDphi;
-% end
-
 
 disp(strcat('Frequency accuracy,1 : ',num2str(min(OMAfreq(1),fn(1))/max(OMAfreq(1),fn(1))*100),'%'));
 disp(strcat('Frequency accuracy,2 : ',num2str(min(OMAfreq(2),fn(2))/max(OMAfreq(2),fn(2))*100),'%'));
@@ -338,9 +232,6 @@ mac=crossMAC(U,OMAphi,MODE,[OMAfreq,fn]);
 dmac = diag(mac);
 if MODE==1
     disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
-    disp(strcat(num2str(mac)));
-elseif MODE==2
-    disp('Modal Assurance Criterion between Numerical modeshapes and ERA  : ')
     disp(strcat(num2str(mac)));
 else
     disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )

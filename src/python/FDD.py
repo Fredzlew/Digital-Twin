@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Mar 13 13:05:29 2023
-
-@author: Frede
-"""
 
 # Import modules
 import numpy as np
@@ -11,16 +5,13 @@ import pandas as pd
 import seaborn as sns
 from scipy import signal
 import matplotlib.pyplot as plt
+
 import PyOMA as oma
 from matplotlib.backend_bases import MouseButton
 from os.path import dirname, join as pjoin
 import scipy.io as sio
 # Create a figure and a set of subplots
-#fig,ax = plt.subplots()
-
-# Function to print mouse click event coordinates
-#def onclick(event):
-   #print([event.xdata, event.ydata])
+%matplotlib qt
 
 # ======== PRE-PROCESSING =====================================================
 
@@ -64,7 +55,7 @@ data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
 # Filter
-_b, _a = signal.butter(12, (0.3,6.5), fs=fs, btype='bandpass')
+_b, _a = signal.butter(10, (0.3,6.5), fs=fs, btype='bandpass')
 filtdata = signal.filtfilt(_b, _a, data,axis=0) # filtered data
 
 # ======== ANALYSIS ===========================================================
@@ -73,8 +64,10 @@ FDD, Result = oma.FDDsvp(data,  fs)
 #FDD, Result = oma.FDDsvp(filtdata,  fs)
 
 # Define list/array with the peaks identified from the plot
+# Anela
+#FreQ = [1.66012, 5.03053, 7.90999, 10.1107, 11.5936] # identified peaks
 # Simuleret data
-FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468] # identified peaks
+FreQ = [1.7508, 5.19052, 8.12081, 10.301, 11.6512] # identified peaks
 
 # Extract the modal properties 
 Res_FDD = oma.FDDmodEX(FreQ, Result)
@@ -84,7 +77,6 @@ Res_FDD = oma.FDDmodEX(FreQ, Result)
 MS_FDD = Res_FDD['Mode Shapes'].real
 #MS_EFDD = Res_EFDD['Mode Shapes'].real
 #MS_FSDD = Res_FSDD['Mode Shapes'].real
-"""
-np.save("omega",Res_SSIcov["Frequencies"])
+
+np.save("FDDomega",Res_FDD["Frequencies"])
 np.save("FDDphi",MS_FDD )
-"""
