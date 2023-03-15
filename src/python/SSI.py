@@ -35,7 +35,8 @@ import scipy.io as sio
 data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data")
 #data_dir = pjoin(dirname(sio.__file__), r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data")
 
-data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
+#data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
+data_sim = pjoin(data_dir, 'data_sim_newmark_jan_damp.mat')
 
 # Loading simulated data instead:
 data = sio.loadmat(data_sim)
@@ -49,13 +50,13 @@ fs = 1000 # [Hz] Sampling Frequency
 # decimation, trend removal and filtering. 
 # Detrend and decimate
 data = signal.detrend(data, axis=0) # Trend rmoval
-q = 10 # Decimation factor
+q = 5 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
 # ======== ANALYSIS ===========================================================
 # Run SSI
-br = 130
+br = 260
 SSIcov,Result = oma.SSIcovStaDiag(data, fs, br)
 
 # Frequencies ccoming from the stability diagram

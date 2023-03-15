@@ -23,6 +23,9 @@ filename = load('modelprop_jan.mat'); % omegas from numericla model
 fn = filename.fn;
 U = filename.U;
 
+% simulated damping
+sim = load('data_sim_newmark_jan_damp.mat');
+simdamp = diag(sim.zeta);
 
 % dimensions in meters
 t = 0.015; % floor height [m]
@@ -40,7 +43,7 @@ end
 
 % damping
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
-Freq = table(numFreq,SSIFreq,ERAFreq,FDDFreq,SSIFreq_new,ERAFreq_new,FDDFreq_new,...
+Freq = table(simdamp,SSIdamp,SSIdatdamp,FDDdamp,...
     'RowNames',modes);
 disp('The frequencies out from simulated data  :')
 disp(Freq)
