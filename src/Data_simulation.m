@@ -12,8 +12,8 @@ if prop == 1
 elseif prop == 2
     filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
 end
-omega_min = 1.70; % Minimum natural frequency
-zeta_min = 0.015; % Minimum threshold for desired damping ratio
+omega_min = 1.7474; % Minimum natural frequency
+zeta_min = 0.002; % Minimum threshold for desired damping ratio
 alpha = zeta_min*omega_min; % Rayleigh damping coefficient
 beta = zeta_min/omega_min; % Rayleigh damping coefficient
 % Known system matrices
