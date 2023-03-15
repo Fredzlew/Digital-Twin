@@ -5,7 +5,7 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 
 % Loading stiffness for all OMA costfunction and numerical model
-filename = load('modelprop.mat'); % omegas from numericla model
+filename = load('modelprop_jan.mat'); % omegas from numericla model
 omegas = filename.fn * 2 * pi;
 
 dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ

@@ -9,12 +9,8 @@ import PyOMA as oma
 from matplotlib.backend_bases import MouseButton
 from os.path import dirname, join as pjoin
 import scipy.io as sio
-# Create a figure and a set of subplots
-#fig,ax = plt.subplots()
 
-# Function to print mouse click event coordinates
-#def onclick(event):
-   #print([event.xdata, event.ydata])
+%matplotlib qt
 
 # ======== PRE-PROCESSING =====================================================
 
@@ -38,6 +34,7 @@ import scipy.io as sio
 #Finding the file
 data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data")
 #data_dir = pjoin(dirname(sio.__file__), r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data")
+
 data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
 
 # Loading simulated data instead:
@@ -57,9 +54,6 @@ data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
 # ======== ANALYSIS ===========================================================
-
-# Bind the button_press_event with the onclick() method
-#fig.canvas.mpl_connect('button_press_event', onclick)
 # Run SSI
 br = 130
 SSIcov,Result = oma.SSIcovStaDiag(data, fs, br)
@@ -79,7 +73,7 @@ Res_SSIcov = oma.SSIModEX(FreQ, Result)
 # =============================================================================
 MS_SSIcov = Res_SSIcov['Mode Shapes'].real
 
-"""
+
 np.save("omega",Res_SSIcov["Frequencies"])
 np.save("phi",MS_SSIcov)
-"""
+np.save("damp",Res_SSIcov["Damping"])

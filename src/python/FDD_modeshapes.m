@@ -5,6 +5,12 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'))
 FDDFreq = readNPY('FDDomega.npy');
 FDDomega = FDDFreq * 2 * pi;
 FDDphi = readNPY('FDDphi.npy');
+FDDdamp = readNPY('FDDdamp.npy');
+
+% numerical
+filename = load('modelprop.mat'); % omegas from numericla model
+fn = filename.fn;
+U = filenam.U;
 
  % dimensions in meters
 t = 0.015; % floor height [m]

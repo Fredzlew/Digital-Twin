@@ -5,12 +5,10 @@ import pandas as pd
 import seaborn as sns
 from scipy import signal
 import matplotlib.pyplot as plt
-
 import PyOMA as oma
 from matplotlib.backend_bases import MouseButton
 from os.path import dirname, join as pjoin
 import scipy.io as sio
-# Create a figure and a set of subplots
 
 %matplotlib qt
 
@@ -36,12 +34,12 @@ import scipy.io as sio
 #Finding the file
 data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data")
 #data_dir = pjoin(dirname(sio.__file__), r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data")
+
 data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
 
 # Loading simulated data instead:
 data = sio.loadmat(data_sim)
 data = np.transpose(data["dis_new"])
-
 
 
 # Sampling frequency
@@ -55,30 +53,27 @@ q = 10 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
-# Filter
-_b, _a = signal.butter(10, (0.3,6.5), fs=fs, btype='bandpass')
-filtdata = signal.filtfilt(_b, _a, data,axis=0) # filtered data
-
 # ======== ANALYSIS ===========================================================
-# Run FDD
-FDD, Result = oma.FDDsvp(data,  fs)
-#FDD, Result = oma.FDDsvp(filtdata,  fs)
+# Run SSI
+br = 130
+SSIdat,Result = oma.SSIdatStaDiag(data, fs, br)
 
-# Define list/array with the peaks identified from the plot
+# Frequencies ccoming from the stability diagram
 # Anela
-#FreQ = [1.66012, 5.03053, 7.90999, 10.1107, 11.5936] # identified peaks
-# Simuleret data
-FreQ = [1.7508, 5.19052, 8.12081, 10.301, 11.6512] # identified peaks
+#FreQ = [1.65612, 5.02666, 7.90311, 10.1157, 11.5903]
+# Jan IRF
+#FreQ = [1.74735, 5.18789, 8.1239, 10.3009, 11.6527]
+# Jan new
+FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468]
+# Extract the modal properties
+Res_SSIdat = oma.SSIModEX(FreQ, Result)
 
-# Extract the modal properties 
-#Res_FDD = oma.FDDmodEX(FreQ, Result)
-Res_EFDD = oma.EFDDmodEX(FreQ, Result, method='EFDD')
-#Res_FSDD = oma.EFDDmodEX(FreQ, Result, method='FSDD', npmax = 35, MAClim=0.95, plot=True)
+# =============================================================================
+# Make some plots
+# =============================================================================
+MS_SSIdat = Res_SSIdat['Mode Shapes'].real
 
-#MS_FDD = Res_FDD['Mode Shapes'].real
-MS_EFDD = Res_EFDD['Mode Shapes'].real
-#MS_FSDD = Res_FSDD['Mode Shapes'].real
 
-np.save("FDDomega",Res_EFDD["Frequencies"])
-np.save("FDDphi",MS_EFDD )
-np.save("FDDdamp",Res_EFDD["Damping"] )
+np.save("SSIdatomega",Res_SSIdat["Frequencies"])
+np.save("SSIdatphi",MS_SSIdat)
+np.save("SSIdatdamp",Res_SSIdat["Damping"])
