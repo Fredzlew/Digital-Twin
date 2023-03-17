@@ -1,4 +1,12 @@
-
+# import the builtin time module
+import time
+def cal_fact(n):
+    if n == 1:
+        return n
+    else:
+        return n * cal_fact(n-1)
+# Grab Currrent Time Before Running the Code
+start = time.time()
 # Import modules
 import numpy as np
 import pandas as pd
@@ -52,7 +60,7 @@ fs = 1000 # [Hz] Sampling Frequency
 # decimation, trend removal and filtering. 
 # Detrend and decimate
 data = signal.detrend(data, axis=0) # Trend rmoval
-q = 5 # Decimation factor
+q = 10 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
@@ -68,8 +76,10 @@ FDD, Result = oma.FDDsvp(data,  fs)
 # Define list/array with the peaks identified from the plot
 # Anela
 #FreQ = [1.66012, 5.03053, 7.90999, 10.1107, 11.5936] # identified peaks
-# Simuleret data
-FreQ = [1.7508, 5.19052, 8.12081, 10.301, 11.6512] # identified peaks
+# Simuleret data without damper
+#FreQ = [1.7508, 5.19052, 8.12081, 10.301, 11.6512] # identified peaks
+# Jan new damp
+FreQ = [1.75, 5.18, 8.13, 10.32, 11.65]
 
 # Extract the modal properties 
 #Res_FDD = oma.FDDmodEX(FreQ, Result)
@@ -83,3 +93,9 @@ MS_EFDD = Res_EFDD['Mode Shapes'].real
 np.save("FDDomega",Res_EFDD["Frequencies"])
 np.save("FDDphi",MS_EFDD )
 np.save("FDDdamp",Res_EFDD["Damping"] )
+# Grab Currrent Time After Running the Code
+end = time.time()
+
+#Subtract Start Time from The End Time
+total_time = end - start
+print("\n"+ str(total_time))

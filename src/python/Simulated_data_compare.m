@@ -8,10 +8,10 @@ SSIomega = SSIFreq * 2 * pi;
 SSIphi = readNPY('phi.npy');
 SSIdamp = readNPY('damp.npy');
 
-SSIdatFreq = readNPY('omega.npy');
+SSIdatFreq = readNPY('SSIdatomega.npy');
 SSIdatomega = SSIFreq * 2 * pi;
-SSIdatphi = readNPY('phi.npy');
-SSIdatdamp = readNPY('damp.npy');
+SSIdatphi = readNPY('SSIdatphi.npy');
+SSIdatdamp = readNPY('SSIdatdamp.npy');
 
 FDDFreq = readNPY('FDDomega.npy');
 FDDomega = FDDFreq * 2 * pi;
@@ -43,10 +43,10 @@ end
 
 % damping
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
-Freq = table(simdamp,SSIdamp,SSIdatdamp,FDDdamp,...
+damp = table(simdamp,SSIdamp,SSIdatdamp,FDDdamp,...
     'RowNames',modes);
-disp('The frequencies out from simulated data  :')
-disp(Freq)
+disp('Damping from each method compared to simulated :')
+disp(damp)
 
 prompt = "Which OMA is used (1=SSIcov, 2 = SSIdat, 3=FDD)? ";
 MODE = input(prompt);
@@ -65,12 +65,19 @@ end
 
 
 % plotting the mode shapes
-phi = [zeros(1,length(SSIphi)); SSIphi];
 x = [0, H];
+phi = [zeros(1,length(U)); U];
 fig = figure;
 fig.Position=[100 100 1600 700];
-for i=1:length(OMAfreq)
-    subplot(1,length(OMAfreq),i)
+% if MODE==1
+%     OMAphi = SSIphi;
+% elseif MODE==2
+%     OMAphi = ERAphi;
+% else
+%     OMAphi = FDDphi;
+% end
+for i=1:length(fn)
+    subplot(1,length(fn),i)
     hold on
     plot(phi(:,i),x,'-m')
     if phi(2,i)*OMAphi(1,i) < 0 % Swap sign on mode shape
@@ -81,12 +88,14 @@ for i=1:length(OMAfreq)
         plot(OMAphi(1:end,i),x(2:end),'g.','markersize',30)
     end
     plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    title(['f = ' num2str(OMAfreq(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
     if i==1 && MODE==1
-        legend('Numerical','SSI','Location','northwest')
+        legend('Numerical','SSIcov','Location','northwest')
+    elseif i==1 && MODE==2
+        legend('Numerical','SSIDat','Location','northwest')
     elseif i==1
         legend('Numerical','FDD','Location','northwest')
     end

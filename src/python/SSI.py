@@ -1,4 +1,12 @@
-
+# import the builtin time module
+import time
+def cal_fact(n):
+    if n == 1:
+        return n
+    else:
+        return n * cal_fact(n-1)
+# Grab Currrent Time Before Running the Code
+start = time.time()
 # Import modules
 import numpy as np
 import pandas as pd
@@ -10,7 +18,7 @@ from matplotlib.backend_bases import MouseButton
 from os.path import dirname, join as pjoin
 import scipy.io as sio
 
-#%matplotlib qt
+%matplotlib qt
 
 # ======== PRE-PROCESSING =====================================================
 
@@ -62,10 +70,10 @@ SSIcov,Result = oma.SSIcovStaDiag(data, fs, br, ordmax=260)
 # Frequencies ccoming from the stability diagram
 # Anela
 #FreQ = [1.65612, 5.02666, 7.90311, 10.1157, 11.5903]
-# Jan IRF
-#FreQ = [1.74735, 5.18789, 8.1239, 10.3009, 11.6527]
-# Jan new
-FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468]
+# Jan new damp
+FreQ = [1.74726, 5.18409, 8.11932, 10.2961, 11.6574]
+# Jan new without damp
+#FreQ = [1.7473, 5.18712, 8.12024, 10.2972, 11.6468]
 # Extract the modal properties
 Res_SSIcov = oma.SSIModEX(FreQ, Result)
 
@@ -78,3 +86,10 @@ MS_SSIcov = Res_SSIcov['Mode Shapes'].real
 np.save("omega",Res_SSIcov["Frequencies"])
 np.save("phi",MS_SSIcov)
 np.save("damp",Res_SSIcov["Damping"])
+
+# Grab Currrent Time After Running the Code
+end = time.time()
+
+#Subtract Start Time from The End Time
+total_time = end - start
+print("\n"+ str(total_time))
