@@ -10,7 +10,7 @@ from matplotlib.backend_bases import MouseButton
 from os.path import dirname, join as pjoin
 import scipy.io as sio
 
-%matplotlib qt
+#%matplotlib qt
 
 # ======== PRE-PROCESSING =====================================================
 
@@ -57,7 +57,7 @@ fs = fs/q # [Hz] Decimated sampling frequency
 # ======== ANALYSIS ===========================================================
 # Run SSI
 br = 260
-SSIcov,Result = oma.SSIcovStaDiag(data, fs, br)
+SSIcov,Result = oma.SSIcovStaDiag(data, fs, br, ordmax=260)
 
 # Frequencies ccoming from the stability diagram
 # Anela
