@@ -15,7 +15,7 @@ M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 C=alpha*M+beta*K; % Damping matrix
 zeta=C./(2*sqrt(M.*K)); % Calculate damping ratios
-f=100*randn(5,2.3e6);  
+f=1e2*randn(5,2.3e6);  
  
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

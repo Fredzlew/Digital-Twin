@@ -73,6 +73,10 @@ filtdata = signal.filtfilt(_b, _a, data,axis=0) # filtered data
 FDD, Result = oma.FDDsvp(data,  fs)
 #FDD, Result = oma.FDDsvp(filtdata,  fs)
 
+# Finding frequency to plot the FDD
+dt = 1/fs
+N = data.shape[0]
+f = np.transpose(np.linspace(0,N/2,num=115001))*dt
 # Define list/array with the peaks identified from the plot
 # Anela
 #FreQ = [1.66012, 5.03053, 7.90999, 10.1107, 11.5936] # identified peaks
@@ -93,6 +97,9 @@ MS_EFDD = Res_EFDD['Mode Shapes'].real
 np.save("FDDomega",Res_EFDD["Frequencies"])
 np.save("FDDphi",MS_EFDD )
 np.save("FDDdamp",Res_EFDD["Damping"] )
+np.save("FDDPSD",Result["Singular Values"])
+np.save("FDDPSDfreq",f)
+
 # Grab Currrent Time After Running the Code
 end = time.time()
 
