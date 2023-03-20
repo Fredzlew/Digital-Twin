@@ -87,7 +87,7 @@ FreQ = [1.75, 5.18, 8.13, 10.32, 11.65]
 
 # Extract the modal properties 
 #Res_FDD = oma.FDDmodEX(FreQ, Result)
-Res_EFDD = oma.EFDDmodEX(FreQ, Result, method='EFDD')
+Res_EFDD = oma.EFDDmodEX(FreQ, Result, method='EFDD', MAClim=0.8)
 #Res_FSDD = oma.EFDDmodEX(FreQ, Result, method='FSDD', npmax = 35, MAClim=0.95, plot=True)
 
 #MS_FDD = Res_FDD['Mode Shapes'].real

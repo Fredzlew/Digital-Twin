@@ -16,7 +16,7 @@ FDDPSD = readNPY('FDDPSD.npy');
 k=1;
 
 for i = 1:length(SSIstab2)
- if SSIstab2(i,1) <= 20 && SSIstab2(i,4) <= 0.05 && SSIstab2(i,4) >= 0
+ if SSIstab2(i,1) <= 20 
      SSIstab(k,:) = SSIstab2(i,:);
      k=k+1;
  end
@@ -58,7 +58,7 @@ for i = 1:length(SSIstab)
 end
 
 % plotting stabilization diagram in 3D
-figure
+figure 
 plot3(freq0,damp0,modelorder0,'ro',freq1,damp1,modelorder1,'mo',freq2,damp2,modelorder2,'yo',freq3,damp3,modelorder3,'bo',freq4,damp4,modelorder4,'go')
 legend('Unstable pole','Stable for frequency','Stable for frequency and damping','Stable for frequency and mode shape','Stable pole','FontSize', 12)
 xlabel('Frequency [Hz]','FontSize', 14)
@@ -77,9 +77,11 @@ for i = 1:length(FDDPSD)
     PSD(i,4) = PSD1(4);
     PSD(i,5) = PSD1(5);
 end
+
 % load frequencies
 FDDPSDfreq = readNPY('FDDPSDfreq.npy');
 f_ = FDDPSDfreq(1:length(FDDPSD));
+
 %plotting all figure together
 figure 
 hold on

@@ -86,7 +86,7 @@ MS_SSIcov = Res_SSIcov['Mode Shapes'].real
 np.save("omega",Res_SSIcov["Frequencies"])
 np.save("phi",MS_SSIcov)
 np.save("damp",Res_SSIcov["Damping"])
-np.save("stab",Result['All Poles'])
+np.save("stab",Result['Reduced Poles'])
 # Grab Currrent Time After Running the Code
 end = time.time()
 
