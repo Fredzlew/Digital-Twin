@@ -15,7 +15,7 @@ M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 C=alpha*M+beta*K; % Damping matrix
 zeta=C./(2*sqrt(M.*K)); % Calculate damping ratios
-f=1e2*randn(5,2.3e6);  
+f=2e1*randn(5,2.3e6);  
  
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,6 +41,6 @@ beta = 0.25;
     dt,N,f,beta,gamma);
 
 % Add noise to response
-dis_new=x_new+0.005*randn(5,length(f));
+dis_new=x_new+0.0005*randn(5,length(f));
 save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zeta');
 save('.\python\data\data_sim_newmark_jan_damp.mat','dis_new','zeta');
