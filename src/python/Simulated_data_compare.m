@@ -1,7 +1,7 @@
 
 % parameters
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'))
+addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
 % Loading modal parameters from OMA 
 SSIFreq = readNPY('omega.npy');
 SSIomega = SSIFreq * 2 * pi;

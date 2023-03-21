@@ -1,6 +1,6 @@
 % parameters
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'))
+addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
 % Loading modal parameters from OMA 
 % SSI
 SSIstab2 = readNPY('stab.npy');
@@ -59,12 +59,15 @@ end
 
 % plotting stabilization diagram in 3D
 figure 
-plot3(freq0,damp0,modelorder0,'ro',freq1,damp1,modelorder1,'mo',freq2,damp2,modelorder2,'yo',freq3,damp3,modelorder3,'bo',freq4,damp4,modelorder4,'go')
+plot3(freq0,damp0,modelorder0*2,'r.',freq1,damp1,modelorder1*2,'m.',freq2,damp2,modelorder2*2,'y.',freq3,damp3,modelorder3*2,'b.',freq4,damp4,modelorder4*2,'g.','MarkerSize',20)
 legend('Unstable pole','Stable for frequency','Stable for frequency and damping','Stable for frequency and mode shape','Stable pole','FontSize', 12)
 xlabel('Frequency [Hz]','FontSize', 14)
 ylabel('Damping ratio [-]','FontSize', 14)
 zlabel('Model order','FontSize', 14)
 ylim([0 0.05])
+zlim([0 260])
+
+
 
 %% Plotting stabilization diagram 2D with FDD
 close all
@@ -85,18 +88,20 @@ f_ = FDDPSDfreq(1:length(FDDPSD));
 %plotting all figure together
 figure 
 hold on
+% plot SSI when plotting remember: 2 times modelorder
+scatter(freq0,modelorder0*2,'r','filled')
+scatter(freq1,modelorder1*2,'m','filled')
+scatter(freq2,modelorder2*2,'y','filled')
+scatter(freq3,modelorder3*2,'b','filled')
+scatter(freq4,modelorder4*2,'g','filled')
 % plot PSD
 for i = 1:5
 plot(f_,10*log10(PSD(:,i))+56)
 end
-% plot SSI
-plot(freq0,modelorder0,'ro')
-plot(freq1,modelorder1,'mo')
-plot(freq2,modelorder2,'yo')
-plot(freq3,modelorder3,'bo')
-plot(freq4,modelorder4,'go')
+hold off
+
 legend('Unstable pole','Stable for frequency','Stable for frequency and damping','Stable for frequency and mode shape','Stable pole','FontSize', 12)
 xlabel('Frequency [Hz]','FontSize', 14)
 ylabel('Model order','FontSize', 14)
 xlim([0 20])
-ylim([0 130])
+ylim([0 260])
