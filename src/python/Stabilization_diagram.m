@@ -64,8 +64,8 @@ legend('Unstable pole','Stable for frequency','Stable for frequency and damping'
 xlabel('Frequency [Hz]','FontSize', 14)
 ylabel('Damping ratio [-]','FontSize', 14)
 zlabel('Model order','FontSize', 14)
-ylim([0 0.05])
-zlim([0 260])
+ylim([0 0.01])
+zlim([0 100])
 
 
 
@@ -96,7 +96,7 @@ scatter(freq3,modelorder3*2,'b','filled')
 scatter(freq4,modelorder4*2,'g','filled')
 % plot PSD
 for i = 1:5
-plot(f_,10*log10(PSD(:,i))+56)
+plot(f_,10*log10(PSD(:,i))+82)
 end
 hold off
 
@@ -104,4 +104,4 @@ legend('Unstable pole','Stable for frequency','Stable for frequency and damping'
 xlabel('Frequency [Hz]','FontSize', 14)
 ylabel('Model order','FontSize', 14)
 xlim([0 20])
-ylim([0 260])
+ylim([0 100])

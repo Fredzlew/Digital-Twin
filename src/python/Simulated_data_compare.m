@@ -25,7 +25,7 @@ U = filename.U;
 
 % simulated damping
 sim = load('data_sim_newmark_jan_damp.mat');
-simdamp = diag(sim.zeta);
+simdamp = sim.zetas;
 
 % dimensions in meters
 t = 0.015; % floor height [m]

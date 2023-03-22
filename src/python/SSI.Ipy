@@ -40,9 +40,10 @@ import scipy.io as sio
 #data[:,[4,3,2,1,0]] = data[:,[0,1,2,3,4]]
 
 #Finding the file
-#data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data")
-data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Christina\OneDrive - Danmarks Tekniske Universitet (1)\Github\Digital-Twin\src\data")
+data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data")
+#data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Christina\OneDrive - Danmarks Tekniske Universitet (1)\Github\Digital-Twin\src\data")
 #data_dir = pjoin(dirname(sio.__file__), r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data")
+
 #data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
 data_sim = pjoin(data_dir, 'data_sim_newmark_jan_damp.mat')
 
@@ -65,7 +66,7 @@ fs = fs/q # [Hz] Decimated sampling frequency
 # ======== ANALYSIS ===========================================================
 # Run SSI
 br = 260
-SSIcov,Result = oma.SSIcovStaDiag(data, fs, br, ordmax=260)
+SSIcov,Result = oma.SSIcovStaDiag(data, fs, br, ordmax=100)
 
 # Frequencies ccoming from the stability diagram
 # Anela

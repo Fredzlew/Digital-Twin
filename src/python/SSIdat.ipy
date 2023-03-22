@@ -65,7 +65,7 @@ fs = fs/q # [Hz] Decimated sampling frequency
 # ======== ANALYSIS ===========================================================
 # Run SSI
 br = 260
-SSIdat,Result = oma.SSIdatStaDiag(data, fs, br, ordmax=260)
+SSIdat,Result = oma.SSIdatStaDiag(data, fs, br, ordmax=100)
 
 # Frequencies ccoming from the stability diagram
 # Anela
