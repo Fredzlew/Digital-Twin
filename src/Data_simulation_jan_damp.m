@@ -2,8 +2,9 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
+for i = 1:1000
 % Set global random seed
-rng(2)
+rng(i)
 
 filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
 M=filename.M; % Mass matrix
@@ -42,5 +43,9 @@ beta = 0.25;
 
 % Add noise to response
 dis_new=x_new+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
-save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
-save('.\python\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
+
+%save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
+%filename2 = sprintf('python\data\%04d_data_sim_newmark_jan_damp.mat',i);
+save(['python\data\' num2str(i) '_data_sim_newmark_jan_damp.mat'],'dis_new','zetas');
+
+end
