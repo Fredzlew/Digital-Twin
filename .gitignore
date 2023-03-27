@@ -1,2 +1,3 @@
 /src/data/
 *.asv
+/src/python/data/newmark_jan_damp_simulation/

@@ -45,6 +45,9 @@ data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tek
 #data_dir = pjoin(dirname(sio.__file__), r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data")
 
 #data_sim = pjoin(data_dir, 'data_sim_newmark_jan.mat')
+Omega = []
+Modes = [[]]
+Damp = []
 for i in range(5):
     data_sim = pjoin(data_dir, f'{i+1}_data_sim_newmark_jan_damp.mat')
     
@@ -84,11 +87,14 @@ for i in range(5):
     # =============================================================================
     MS_SSIcov = Res_SSIcov['Mode Shapes'].real
     
+    Omega = np.append(Omega,Res_SSIcov["Frequencies"])
+    Modes = np.append(Modes,MS_SSIcov)
+    Damp = np.append(Damp,Res_SSIcov["Damping"])
     
-    np.save(f"data\Modal_parameters\{i+1}_omega",Res_SSIcov["Frequencies"])
-    np.save(f"data\Modal_parameters\{i+1}_phi",MS_SSIcov)
-    np.save(f"data\Modal_parameters\{i+1}_damp",Res_SSIcov["Damping"])
-    np.save(f"data\Modal_parameters\{i+1}_stab",Result['Reduced Poles'])
+np.save("data\Modal_parameters\Omega",Omega)
+np.save("data\Modal_parameters\Modes",Modes)
+np.save("data\Modal_parameters\Damp",Damp)
+#np.save(f"data\Modal_parameters\{i+1}_stab",Result['Reduced Poles'])
 # Grab Currrent Time After Running the Code
 end = time.time()
 
