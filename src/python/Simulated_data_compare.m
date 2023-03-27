@@ -2,21 +2,23 @@
 % parameters
 clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
-% Loading modal parameters from OMA 
-SSIFreq = readNPY('omega.npy');
+% Loading modal parameters from OMA simulation
+SSIphi = readNPY('Modes.npy');
+SSIFreq = readNPY('Omegas.npy');
 SSIomega = SSIFreq * 2 * pi;
-SSIphi = readNPY('phi.npy');
-SSIdamp = readNPY('damp.npy');
+SSIdamp = readNPY('Damp.npy');
 
 SSIdatFreq = readNPY('SSIdatomega.npy');
 SSIdatomega = SSIFreq * 2 * pi;
 SSIdatphi = readNPY('SSIdatphi.npy');
 SSIdatdamp = readNPY('SSIdatdamp.npy');
 
-FDDFreq = readNPY('FDDomega.npy');
+FDDFreq = readNPY('FDDOmegas.npy');
 FDDomega = FDDFreq * 2 * pi;
-FDDphi = readNPY('FDDphi.npy');
-FDDdamp = readNPY('FDDdamp.npy');
+FDDphi = readNPY('FDDModes.npy');
+FDDdamp = readNPY('FDDDamp.npy');
+
+
 
 % numerical
 filename = load('modelprop_jan.mat'); % omegas from numericla model
@@ -40,6 +42,55 @@ H(1) = Lb + t/2;
 for i = 2:5
     H(i) = H(i-1) + L + t;
 end
+
+% Mean value
+for i = 1:1/length(SSIFreq)-1
+    SSIcovmu_freq1(1,i) = SSIFreq(i+(i-1)*4);
+    SSIcovmu_freq2(2,i) = SSIFreq(i+1+(i-1)*4);
+    SSIcovmu_freq3(3,i) = SSIFreq(i+2+(i-1)*4);
+    SSIcovmu_freq4(4,i) = SSIFreq(i+3+(i-1)*4);
+    SSIcovmu_freq5(5,i) = SSIFreq(i+4+(i-1)*4);
+
+    FDDmu_freq1(1,i) = FDDFreq(i+(i-1)*4);
+    FDDmu_freq2(2,i) = FDDFreq(i+1+(i-1)*4);
+    FDDmu_freq3(3,i) = FDDFreq(i+2+(i-1)*4);
+    FDDmu_freq4(4,i) = FDDFreq(i+3+(i-1)*4);
+    FDDmu_freq5(5,i) = FDDFreq(i+4+(i-1)*4);
+
+    SSIcovmu_damp1(1,i) = SSIdamp(i+(i-1)*4);
+    SSIcovmu_damp2(2,i) = SSIdamp(i+1+(i-1)*4);
+    SSIcovmu_damp3(3,i) = SSIdamp(i+2+(i-1)*4);
+    SSIcovmu_damp4(4,i) = SSIdamp(i+3+(i-1)*4);
+    SSIcovmu_damp5(5,i) = SSIdamp(i+4+(i-1)*4);
+
+    FDDmu_damp1(1,i) = FDDdamp(i+(i-1)*4);
+    FDDmu_damp2(2,i) = FDDdamp(i+1+(i-1)*4);
+    FDDmu_damp3(3,i) = FDDdamp(i+2+(i-1)*4);
+    FDDmu_damp4(4,i) = FDDdamp(i+3+(i-1)*4);
+    FDDmu_damp5(5,i) = FDDdamp(i+4+(i-1)*4);
+end
+
+for i = 1:1/4*length(SSIFreq)-1
+    for j = 1:5
+    SSIcovmu_freq1(j,i) = SSIFreq(i+(j-1)+(i-1)*4);
+    end
+end
+
+SSIcovmu_Modes
+FDDmu_Modes
+SSIcovmu_Damp
+FDDmu_Damp
+
+% standard deviation
+SSIcovsd_omega
+FDDsd_omega
+SSIcovsd_Modes
+FDDsd_Modes
+SSIcovsd_Damp
+FDDsd_Damp
+
+
+
 
 % damping
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
