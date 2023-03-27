@@ -44,3 +44,6 @@ beta = 0.25;
 dis_new=x_new+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
 save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
 save('.\python\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
+
+% Calculates the periodic error for Average Acceleration
+disp(1/12*(omegas(5)*dt)^2)
