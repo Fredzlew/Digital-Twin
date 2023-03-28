@@ -2,10 +2,10 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
-for i = 1:1000
+%for i = 1:1000
 % Set global random seed
-rng(i)
-
+rng(4)
+i = 2;
 filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
@@ -17,7 +17,7 @@ alpha = zeta_min*omega_min; % Rayleigh damping coefficient
 betas = zeta_min/omega_min; % Rayleigh damping coefficient
 C=alpha*M+betas*K; % Damping matrix
 zetas = (alpha./omegas + betas.*omegas)./2; % Calculate damping ratios
-f=2e1*randn(5,2.3e6);  
+f=2e1*randn(5,1.2e7);  
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initial conditions
@@ -48,4 +48,4 @@ dis_new=x_new+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
 %filename2 = sprintf('python\data\%04d_data_sim_newmark_jan_damp.mat',i);
 save(['python\data\newmark_jan_damp_simulation\' num2str(i) '_data_sim_newmark_jan_damp.mat'],'dis_new','zetas');
 
-end
+%end
