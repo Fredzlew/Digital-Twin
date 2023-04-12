@@ -47,5 +47,7 @@ dis_new=x_new+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
 %save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
 %filename2 = sprintf('python\data\%04d_data_sim_newmark_jan_damp.mat',i);
 save(['python\data\newmark_jan_damp_simulation\' num2str(i) '_data_sim_newmark_jan_damp.mat'],'dis_new','zetas');
+% Periodic error
+PERFEJL = 1/12*(omegas(5)*dt)^2;
 
 %end
