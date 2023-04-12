@@ -2,21 +2,25 @@
 % parameters
 clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
-% Loading modal parameters from OMA 
-SSIFreq = readNPY('omega.npy');
+% Loading modal parameters from OMA simulation
+SSIphi = readNPY('Modes.npy');
+SSIFreq = readNPY('Omegas.npy');
 SSIomega = SSIFreq * 2 * pi;
-SSIphi = readNPY('phi.npy');
-SSIdamp = readNPY('damp.npy');
+SSIdamp = readNPY('Damp.npy');
 
 SSIdatFreq = readNPY('SSIdatomega.npy');
 SSIdatomega = SSIFreq * 2 * pi;
 SSIdatphi = readNPY('SSIdatphi.npy');
 SSIdatdamp = readNPY('SSIdatdamp.npy');
 
-FDDFreq = readNPY('FDDomega.npy');
+FDDFreq = readNPY('FDDOmegas.npy');
 FDDomega = FDDFreq * 2 * pi;
-FDDphi = readNPY('FDDphi.npy');
-FDDdamp = readNPY('FDDdamp.npy');
+FDDphi = readNPY('FDDModes.npy');
+FDDdamp = readNPY('FDDDamp.npy');
+
+% number of modes
+nm = 5;
+
 
 % numerical
 filename = load('modelprop_jan.mat'); % omegas from numericla model
@@ -41,24 +45,104 @@ for i = 2:5
     H(i) = H(i-1) + L + t;
 end
 
+SSIcovfreq = zeros(nm,length(SSIFreq)/nm);
+FDDfreq = zeros(nm,length(FDDFreq)/nm);
+SSIcovdamp = zeros(nm,length(SSIdamp)/nm);
+FDDdamping = zeros(nm,length(FDDdamp)/nm);
+% Setting it up in the right order 
+for i = 1:length(SSIFreq)/nm
+    for j = 1:5
+    SSIcovfreq(j,i) = SSIFreq(i+(j-1)+(i-1)*4);
+    FDDfreq(j,i) = FDDFreq(i+(j-1)+(i-1)*4);
+    SSIcovdamp(j,i) = SSIdamp(i+(j-1)+(i-1)*4);
+    FDDdamping(j,i) = FDDdamp(i+(j-1)+(i-1)*4);
+    end
+end
+
+% Mean value and standard deviation
+SSIcovmu_freq = zeros(nm,1);
+FDDmu_freq = zeros(nm,1);
+SSIcovmu_damp = zeros(nm,1);
+FDDmu_damp = zeros(nm,1);
+
+SSIcovsd_freq = zeros(nm,1);
+FDDsd_freq = zeros(nm,1);
+SSIcovsd_Damp = zeros(nm,1);
+FDDsd_Damp = zeros(nm,1);
+for i = 1:nm
+    % mean
+    SSIcovmu_freq(i) = mean(SSIcovfreq(i,:));
+    FDDmu_freq(i) = mean(FDDfreq(i,:));
+    SSIcovmu_damp(i) = mean(SSIcovdamp(i,:));
+    FDDmu_damp(i) = mean(FDDdamping(i,:));
+    % standard deviation
+    SSIcovsd_freq(i) = std(SSIcovfreq(i,:));
+    FDDsd_freq(i) = std(FDDfreq(i,:));
+    SSIcovsd_Damp(i) = std(SSIcovdamp(i,:));
+    FDDsd_Damp(i) = std(FDDdamping(i,:));
+end
+
+% mean and standard deviation for modes
+SSIcovmu_modes = zeros(nm,nm);
+FDDmu_modes = zeros(nm,nm);
+SSIcovsd_modes = zeros(nm,nm);
+FDDsd_modes = zeros(nm,nm);
+for i = 1:nm
+    for j = 1:nm
+        % mean
+        SSIcovmu_modes(i,j) = mean(SSIphi(:,j,i));
+        FDDmu_modes(i,j) = mean(FDDphi(:,j,i));
+        % standard deviation
+        SSIcovsd_modes(i,j) = std(SSIphi(:,j,i));
+        FDDsd_modes(i,j) = std(FDDphi(:,j,i));
+    end
+end
+
+
+
+
+
+
 % damping
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
-damp = table(simdamp,SSIdamp,SSIdatdamp,FDDdamp,...
+damp = table(simdamp,SSIcovmu_damp,SSIdatdamp,FDDmu_damp,...
     'RowNames',modes);
-disp('Damping from each method compared to simulated :')
+disp('Mean damping from each method over 1000 simulations :')
 disp(damp)
+
+% damping
+modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
+damp = table(SSIcovsd_Damp,FDDsd_Damp,...
+    'RowNames',modes);
+disp('standard deviation damping from each method over 1000 simulations :')
+disp(damp)
+
+% frekvens
+modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
+damp = table(fn,SSIcovmu_freq,SSIdatFreq,FDDmu_freq,...
+    'RowNames',modes);
+disp('Mean frequenzy from each method over 1000 simulations :')
+disp(damp)
+
+% frekvens
+modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
+damp = table(SSIcovsd_freq,FDDsd_freq,...
+    'RowNames',modes);
+disp('standard deviation frequenzy from each method over 1000 simulations :')
+disp(damp)
+
 
 prompt = "Which OMA is used (1=SSIcov, 2 = SSIdat, 3=FDD)? ";
 MODE = input(prompt);
 if MODE == 1
-    OMAfreq = SSIFreq;
-    OMAphi = SSIphi;
+    OMAfreq = SSIcovmu_freq;
+    OMAphi = SSIcovmu_modes';
 elseif MODE == 2
     OMAfreq = SSIdatFreq;
     OMAphi = SSIdatphi;
 elseif MODE == 3
-    OMAfreq = FDDFreq;
-    OMAphi = FDDphi;
+    OMAfreq = FDDmu_freq;
+    OMAphi = FDDmu_modes';
 else
     disp('ADAM! WHAT DOES HØVL MEAN???')
 end
