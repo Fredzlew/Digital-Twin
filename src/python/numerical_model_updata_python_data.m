@@ -1,7 +1,7 @@
 % parameters
 clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'))
-for loop =1:10
+for loop = 1:4
 %    column with lumbed masses     
 %         
 %        o <-- H(5),m(5)
@@ -17,13 +17,18 @@ for loop =1:10
 %      //// 
 % ----------------------------------------------------
 % Loading modal parameters from OMA 
-SSIFreq = readNPY('omega.npy');
+promptt = "High damping or low damping? (1 = High and 2 = Low): ";
+x = input(promptt);
+if x == 1
+SSIFreq = readNPY('SSIomega_5_2_1.npy');
 SSIomega = SSIFreq * 2 * pi;
-SSIphi = readNPY('phi.npy');
+SSIphi = readNPY('SSIphi_5_2_1.npy');
 
-FDDFreq = readNPY('FDDomega.npy');
-FDDomega = FDDFreq * 2 * pi;
-FDDphi = readNPY('FDDphi.npy');
+elseif x == 2
+SSIFreq = readNPY('SSIomega_5_6_1.npy');
+SSIomega = SSIFreq * 2 * pi;
+SSIphi = readNPY('SSIphi_5_6_1.npy');
+end
 
 % dimensions in meters
 t = 0.015; % floor height [m]
@@ -63,34 +68,14 @@ rho = 7850; % density column [kg/m^3]
 % total mass of frame [kg]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
-% prompttt = "Using analystic or Total inter-storey stiffness: (1=ANALYSTIC, 2=INTER-STOREY)? ";
-% prop = input(prompttt);
-% if prop == 1
-% %%%%%%%%%%%%%%% hvad sker der her %%%%%%%%%%%%%%%%%%%
-% % gravitational force on each floor [N] 
-% P = flip(cumsum(m))*g;
-% 
-% k0 = sqrt(P./(EI)); % parameter k in DE [1/m]
-% F = 1; % imposed horizontal load [N] 
-% % constants boundary conditions for a cantilever beam (homogen solution)
-% c4 = F./(EI.*k0.^3); % randbetingelse for forskydning w'''(L)=F
-% c3 = c4.*(cos(k0.*Lh)-1)./sin(k0.*Lh); % randbetingelse for ingen moment w''(L)=0 
-% %c3 = -c4 * sin(k0.*L)/cos(k0.*L); % randbetingelse for ingen moment w''(L)=0 
-% c2 = -c4; % randbetingelse for ingen rotation w'(0)=0 
-% c1 = -c3; % randbetingelse for ingen flytning w(0)=0 
-% % deflection from imposed load
-% wL = c1 + c2.*k0.*Lh + c3.*cos(k0.*Lh) + c4.*sin(k0.*Lh); %[m]
-% % lateral stiffness
-% k2 = F./wL; % [N/m]
-% % Initial stiffness matrix
-% % stiffness matrix
-% elseif prop == 2
-    kc = 12*EI/L^3;
-    kg = 6/5*m*g/L;
-    for i = 1:5
-        k2(i) = kc - (sum(kg(i+1:5)));
-    end
-% end
+% local stiffnesses
+kc = 12*EI/L^3;
+kg = 6/5*m*g/L;
+for i = 1:5
+    k2(i) = kc - (sum(kg(i+1:5)));
+end
+
+% global stiffness matrix
 for i = 1:4
     Km(i,i) = k2(i)+k2(i+1);
     Km(i,i+1) = -k2(i+1);
@@ -98,41 +83,20 @@ for i = 1:4
 end
 Km(5,5) = k2(5);
 stivhed = diag(Km);
-% Change cost function to use correct natural frequencies
-% Define what OMA method is used (also change data in costfunction)
-% MODE = 2; % 1=SSI, 2=ERA, 3=FDD
-% prompt = "Which OMA is used (1=SSI, 3=FDD)? ";
-% MODE = input(prompt);
-if  (loop == 1) || (loop == 3) || (loop == 5) || (loop == 7) || (loop == 9) 
-    MODE = 1;
-else
-    MODE = 3;
-end
 
 
-% Define and minimize cost function
-% promptt = "Which costfun is used to find calibrated stiffness (1=SSIFreq, 2=ERAFreq, 3=FDDFreq, 4=SSImodes, 5=ERAmodes, 6=FDDmodes, 7=SSIFreqmodes, 8=ERAFreqmodes, 9=FDDFreqmodes )? ";
-% Stif = input(promptt);
-Stif = loop;
-if Stif == 1
+
+if loop == 1
     Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
-elseif Stif == 2
-    Stiff = fminsearch(@costfunFDDfreq,k2); % FDD, frequency
-elseif Stif == 3
+elseif loop == 2
     Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
-elseif Stif == 4
-    Stiff = fminsearch(@costfunFDDmode,k2); % FDD, mode shape
-elseif Stif == 5
+elseif loop == 3
     Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
-elseif Stif == 6
-    Stiff = fminsearch(@costfunFDDfreqmode,k2); % FDD, frequency + mode shape
-elseif Stif == 7
+elseif loop == 4
     Stiff = fminsearch(@costfunSSIfreqmodeEILJAN,EIL); % SSI (JAN), EI + L
-elseif Stif == 8
-    Stiff = fminsearch(@costfunFDDfreqmodeEILJAN,EIL); % FDD (JAN), EI + L
 end
 
-if (Stif == 7) || (Stif == 8) 
+if (loop == 4)
     EI = Stiff(1);
     L = Stiff(2);
     Lb = 168/175*L; % column length at bottom [m]
@@ -169,7 +133,7 @@ if (Stif == 7) || (Stif == 8)
     for i = 1:5
         k(i) = kc - (sum(kg(i+1:5)));
     end
-elseif (Stif == 1) || (Stif == 2) || (Stif == 3) || (Stif == 4) || (Stif == 5) || (Stif == 6) 
+elseif (loop == 1) || (loop == 2) || (loop == 3) 
     % Define optimal stiffness
     k = Stiff;
 end
@@ -214,38 +178,17 @@ for j = 1:5
     end
 end % end normalization
 
+% saving the parameters
+OMAfreq=SSIFreq;
+OMAphi=SSIphi;
 
-% plotting the mode shapes
-x = [0, H];
-phi = [zeros(1,length(U)); U];
-
-% Display accuracy of natural frequencies
-if MODE==1
-    OMAfreq=SSIFreq;
-    OMAphi=SSIphi;
-elseif MODE==2
-    OMAfreq=ERAFreq;
-    OMAphi=ERAphi;
-else
-    OMAfreq=FDDFreq;
-    OMAphi=FDDphi;
-end
-
-if Stif == 1
-    save('.\data\costfunupdateSSIfreq.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
-elseif Stif == 2
-    save('.\data\costfunupdateFDDfreq.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
-elseif Stif == 3
-    save('.\data\costfunupdateSSImode.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn')
-elseif Stif == 4
-    save('.\data\costfunupdateFDDmode.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
-elseif Stif == 5
-    save('.\data\costfunupdateSSIfreqmode.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
-elseif Stif == 6
-    save('.\data\costfunupdateFDDfreqmode.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
-elseif Stif == 7
-    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
-elseif Stif == 8
-    save('.\data\costfunupdateFDDfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','Km','x','phi','stivhed','H','U','fn');
+if loop == 1
+    save('.\data\costfunupdateSSIfreq.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+elseif loop == 2
+    save('.\data\costfunupdateSSImode.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+elseif loop == 3
+    save('.\data\costfunupdateSSIfreqmode.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+elseif loop == 4
+    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
 end
 end

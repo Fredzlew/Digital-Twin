@@ -12,36 +12,20 @@ dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ
 K_SSI_freq = diag(dataSSIFreq.K)';
 stivhed = dataSSIFreq.stivhed';
 
-dataFDDFreq = load('costfunupdateFDDfreq.mat'); % FDD FREQ
-K_FDD_freq = diag(dataFDDFreq.K)';
-
 dataSSImode = load('costfunupdateSSImode.mat'); % SSI modes
 K_SSI_mode = diag(dataSSImode.K)';
 
-dataFDDmode = load('costfunupdateFDDmode.mat'); % FDD modes
-K_FDD_mode = diag(dataFDDmode.K)';
 
 dataSSIFreqmode = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
 K_SSI_freq_mode = diag(dataSSIFreqmode.K)';
 
-
-dataFDDFreqmode = load('costfunupdateFDDfreqmode.mat'); % FDD FREQ and modes
-K_FDD_freq_mode = diag(dataFDDFreqmode.K)';
-
-
 dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI modes
 K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEILJAN.K)';
-
-
-dataFDDfreqmodeEILJAN = load('costfunupdateFDDfreqmodeEILJAN.mat'); % FDD modes
-K_FDD_freqmodeEILJAN = diag(dataFDDfreqmodeEILJAN.K)';
-stivhedJan = dataFDDfreqmodeEILJAN.stivhed';
-
-
+stivhedJan = dataSSIfreqmodeEILJAN.stivhed';
 
 % PLotting the stiffness
-y = [K_SSI_freq;K_FDD_freq;K_SSI_mode;K_FDD_mode;K_SSI_freq_mode;K_FDD_freq_mode;...
-    K_SSI_freqmodeEILJAN;K_FDD_freqmodeEILJAN;stivhedJan];
+y = [K_SSI_freq;K_SSI_mode;K_SSI_freq_mode;...
+    K_SSI_freqmodeEILJAN;stivhedJan];
 figure
 hold on
 b = bar(y,'stacked');
@@ -56,8 +40,8 @@ legend('k1','k2','k3','k4','k5')
 title('Values of stiffness for different OMA methods and cost functions')
 xlabel('Method')
 xticks(xtips)
-xticklabels({'SSI (freq)','FDD (freq)','SSI (mode)','FDD (mode)','SSI (freq+mode)','FDD (freq+mode)',...
-    'SSI EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Global stiffness'})
+xticklabels({'SSI (freq)','SSI (mode)','SSI (freq+mode)',...
+    'SSI EIL JAN(freq+mode)','Global stiffness'})
 ylabel('Stiffness [N/m]')
 
 % 3D plot of the stiffness
@@ -69,18 +53,18 @@ title('Values of stiffness for different OMA methods and cost functions')
 xticks([1,2,3,4,5])
 xticklabels({'k1','k2','k3','k4','k5'})
 yticks(xtips)
-yticklabels({'SSI (freq)','FDD (freq)','SSI (mode)','FDD (mode)','SSI (freq+mode)','FDD (freq+mode)',...
-    'SSI EIL JAN(freq+mode)','FDD EIL JAN(freq+mode)','Global stiffness'})
+yticklabels({'SSI (freq)','SSI (mode)','SSI (freq+mode)',...
+    'SSI EIL JAN(freq+mode)','Global stiffness'})
 zlabel('Stiffness [N/m]')
 
 % What we want to plot
 % Define what OMA method is used 
 % MODE = 2; % 1=SSI, 2=ERA, 3=FDD
-prompt = "Which OMA is used (1=SSI, 2=FDD)? ";
-MODE = input(prompt);
-promptt = "Which do you want to plot? (1=SSI (freq), 2=FDD (freq), 3=SSI (mode),  4=FDD (mode)," + ...
-    " 5=SSI (freq+mode),  6=FDD (freq+mode)," + ...
-    " 9=SSI EIL JAN(freq+mode), 10=FDD EIL JAN(freq+mode))? ";
+
+MODE = 1;
+promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode),  " + ...
+    " 3=SSI (freq+mode), " + ...
+    " 4=SSI EIL JAN(freq+mode)? ";
 x = input(promptt);
 if x == 1
     data = load('costfunupdateSSIfreq.mat'); % SSI FREQ
@@ -92,15 +76,6 @@ if x == 1
     U = data.U;
     H = data.H;
 elseif x == 2
-    data = load('costfunupdateFDDfreq.mat'); % FDD FREQ
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 3
     data = load('costfunupdateSSImode.mat'); % SSI modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -109,16 +84,7 @@ elseif x == 3
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 4
-    data = load('costfunupdateFDDmode.mat'); % FDD modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 5
+elseif x == 3
     data = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
@@ -127,26 +93,8 @@ elseif x == 5
     Km = data.Km;
     U = data.U;
     H = data.H;
-elseif x == 6
-    data = load('costfunupdateFDDfreqmode.mat'); % FDD FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 7
+elseif x == 4
     data = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI EIL JAN FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-elseif x == 8
-    data = load('costfunupdateFDDfreqmodeEILJAN.mat'); % FDD EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
