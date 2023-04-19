@@ -7,6 +7,8 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 % Loading stiffness for all OMA costfunction and numerical model
 filename = load('modelprop_jan.mat'); % omegas from numericla model
 omegas = filename.fn * 2 * pi;
+L_fe = filename.L;
+EI_fe = filename.EI;
 
 dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ
 K_SSI_freq = diag(dataSSIFreq.K)';
@@ -22,6 +24,8 @@ K_SSI_freq_mode = diag(dataSSIFreqmode.K)';
 dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI modes
 K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEILJAN.K)';
 stivhedJan = dataSSIfreqmodeEILJAN.stivhed';
+L = dataSSIfreqmodeEILJAN.L;
+EI = dataSSIfreqmodeEILJAN.EI;
 
 % PLotting the stiffness
 y = [K_SSI_freq;K_SSI_mode;K_SSI_freq_mode;...
@@ -102,7 +106,18 @@ elseif x == 4
     Km = data.Km;
     U = data.U;
     H = data.H;
+    L = data.L;
+    EI = data.EI;
 end
+if x == 4
+    disp(strcat('Height : ',num2str(L_fe),'m'));
+    disp(strcat('EI  : ',num2str(EI_fe),'Nm^2'));
+    disp(strcat('Height after costfunction : ',num2str(L),'m'));
+    disp(strcat('EI after costfunction : ',num2str(EI),'Nm^2'));
+    disp(strcat('Height difference : ',num2str(L-L_fe),'m'));
+    disp(strcat('EI difference : ',num2str(EI-EI_fe),'Nm^2'));
+end
+disp('----------------------------------------------------------------------')
 
 % plotting the mode shapes
 x = [0, H];
@@ -193,3 +208,4 @@ disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
 disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
+

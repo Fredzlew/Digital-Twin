@@ -1,6 +1,6 @@
 % parameters
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'))
+addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
 for loop = 1:4
 %    column with lumbed masses     
 %         
@@ -69,10 +69,10 @@ rho = 7850; % density column [kg/m^3]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
 % local stiffnesses
-kc = 12*EI/L^3;
-kg = 6/5*m*g/L;
+kc = 12*EI./Lh.^3;
+kg = 6/5*m*g./Lh;
 for i = 1:5
-    k2(i) = kc - (sum(kg(i+1:5)));
+    k2(i) = kc(i) - (sum(kg(i+1:5)));
 end
 
 % global stiffness matrix
@@ -96,7 +96,7 @@ elseif loop == 4
     Stiff = fminsearch(@costfunSSIfreqmodeEILJAN,EIL); % SSI (JAN), EI + L
 end
 
-if (loop == 4)
+if loop == 4
     EI = Stiff(1);
     L = Stiff(2);
     Lb = 168/175*L; % column length at bottom [m]
@@ -128,10 +128,13 @@ if (loop == 4)
     % total mass of frame [kg]
     m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
     
-    kc = 12*EI/L^3;
-    kg = 6/5*m*g/L;
+    % Constitutive stiffness
+    kc = 12*EI./Lh.^3;
+    % Geometric stiffness
+    kg = 6/5*m*g./Lh;
+    
     for i = 1:5
-        k(i) = kc - (sum(kg(i+1:5)));
+        k(i) = kc(i) - (sum(kg(i+1:5)));
     end
 elseif (loop == 1) || (loop == 2) || (loop == 3) 
     % Define optimal stiffness
@@ -189,6 +192,6 @@ elseif loop == 2
 elseif loop == 3
     save('.\data\costfunupdateSSIfreqmode.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
 elseif loop == 4
-    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
 end
 end

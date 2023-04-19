@@ -7,8 +7,14 @@ M = [2.3553        0         0         0         0
          0         0         0         0    2.4467];
 % Natural frequencies from relevant OMA method 
 % SSI
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% High damping
+% SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% omegaOMA = SSIFreq * 2 * pi;
+
+% Low damping
+SSIFreq = readNPY('SSIomega_5_6_1.npy');
 omegaOMA = SSIFreq * 2 * pi;
+
 
 % Stiffness matrix
 for i = 1:4

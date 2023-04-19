@@ -7,7 +7,11 @@ M = [2.3553        0         0         0         0
          0         0         0         0    2.4467];
 % Normalized mode shapes from relevant OMA method 
 % SSI
-phiOMA = readNPY('SSIphi_5_2_1.npy');
+% High damping
+% phiOMA = readNPY('SSIphi_5_2_1.npy');
+
+% Low damping
+phiOMA = readNPY('SSIphi_5_6_1.npy');
 
 % Stiffness matrix
 for i = 1:4

@@ -3,9 +3,15 @@ EI = EIL(1);
 L = EIL(2);
 % Natural frequencies and normalized mode shapes from relevant OMA method 
 % SSI
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% High damping
+% SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% omegaOMA = SSIFreq * 2 * pi;
+% phiOMA = readNPY('SSIphi_5_2_1.npy');
+
+% Low damping
+SSIFreq = readNPY('SSIomega_5_6_1.npy');
 omegaOMA = SSIFreq * 2 * pi;
-phiOMA = readNPY('SSIphi_5_2_1.npy');
+phiOMA = readNPY('SSIphi_5_6_1.npy');
 
 % story heights [m] (from ground to mid floor)
 h = 1*10^-3; % short side of column [m]
@@ -39,8 +45,11 @@ rho = 7850; % density column [kg/m^3]
 % total mass of frame [kg]
 m = mf+4*b*h*rho*[Lh(1) Lh(2) Lh(3) Lh(4) Lh(5)+Lt+t/2]; 
 
-kc = 12*EI/L^3;
-kg = 6/5*m*g/L;
+% Constitutive stiffness
+kc = 12*EI./L.^3;
+% Geometric stiffness
+kg = 6/5*m*g./L;
+
 for i = 1:5
     k(i) = kc - (sum(kg(i+1:5)));
 end
@@ -85,4 +94,5 @@ for j = 1:5
     end
 end % end normalization
 J=sum((omegas-omegaOMA).^2)*1+sum(sum((abs(U)-abs(phiOMA)).^2))*1;
+disp('J')
 end
