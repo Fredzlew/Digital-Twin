@@ -10,18 +10,18 @@ omegas = filename.fn * 2 * pi;
 L_fe = filename.L;
 EI_fe = filename.EI;
 
-dataSSIFreq = load('costfunupdateSSIfreq.mat'); % SSI FREQ
+dataSSIFreq = load('costfunupdateSSIfreq_py.mat'); % SSI FREQ
 K_SSI_freq = diag(dataSSIFreq.K)';
 stivhed = dataSSIFreq.stivhed';
 
-dataSSImode = load('costfunupdateSSImode.mat'); % SSI modes
+dataSSImode = load('costfunupdateSSImode_py.mat'); % SSI modes
 K_SSI_mode = diag(dataSSImode.K)';
 
 
-dataSSIFreqmode = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
+dataSSIFreqmode = load('costfunupdateSSIfreqmode_py.mat'); % SSI FREQ and modes
 K_SSI_freq_mode = diag(dataSSIFreqmode.K)';
 
-dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI modes
+dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN_py.mat'); % SSI modes
 K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEILJAN.K)';
 stivhedJan = dataSSIfreqmodeEILJAN.stivhed';
 L = dataSSIfreqmodeEILJAN.L;
@@ -71,7 +71,7 @@ promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode),  " + ...
     " 4=SSI EIL JAN(freq+mode)? ";
 x = input(promptt);
 if x == 1
-    data = load('costfunupdateSSIfreq.mat'); % SSI FREQ
+    data = load('costfunupdateSSIfreq_py.mat'); % SSI FREQ
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -80,7 +80,7 @@ if x == 1
     U = data.U;
     H = data.H;
 elseif x == 2
-    data = load('costfunupdateSSImode.mat'); % SSI modes
+    data = load('costfunupdateSSImode_py.mat'); % SSI modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -89,7 +89,7 @@ elseif x == 2
     U = data.U;
     H = data.H;
 elseif x == 3
-    data = load('costfunupdateSSIfreqmode.mat'); % SSI FREQ and modes
+    data = load('costfunupdateSSIfreqmode_py.mat'); % SSI FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -98,7 +98,7 @@ elseif x == 3
     U = data.U;
     H = data.H;
 elseif x == 4
-    data = load('costfunupdateSSIfreqmodeEILJAN.mat'); % SSI EIL JAN FREQ and modes
+    data = load('costfunupdateSSIfreqmodeEILJAN_py.mat'); % SSI EIL JAN FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;

@@ -1,16 +1,20 @@
-function J=costfunSSImode(k)
+function J=costfunSSIfreqmode_py(k)
 % Mass matrix
 M = [2.3553        0         0         0         0
          0    2.3690         0         0         0
          0         0    2.3690         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
-% Normalized mode shapes from relevant OMA method 
+% Natural frequencies and normalized mode shapes from relevant OMA method 
 % SSI
 % High damping
+% SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% omegaOMA = SSIFreq * 2 * pi;
 % phiOMA = readNPY('SSIphi_5_2_1.npy');
 
 % Low damping
+SSIFreq = readNPY('SSIomega_5_6_1.npy');
+omegaOMA = SSIFreq * 2 * pi;
 phiOMA = readNPY('SSIphi_5_6_1.npy');
 
 % Stiffness matrix
@@ -26,6 +30,8 @@ K(5,5) = k(5);
 omega = real(sqrt(diag(D)));
 % sort frequencies and mode shapes
 [~,iw] = sort(omega);
+% natural frequencies [rad/s]
+omegas = omega(iw);
 % mode shapes
 Us = U(:,iw);
 % normalization
@@ -41,5 +47,5 @@ for j = 1:5
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-J=sum(sum((abs(U)-abs(phiOMA)).^2));
+J=sum((omegas-omegaOMA).^2)*1+sum(sum((abs(U)-abs(phiOMA)).^2))*1;
 end

@@ -87,13 +87,13 @@ stivhed = diag(Km);
 
 
 if loop == 1
-    Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
+    Stiff = fminsearch(@costfunSSIfreq_py,k2); % SSI, frequency
 elseif loop == 2
-    Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
+    Stiff = fminsearch(@costfunSSImode_py,k2); % SSI, mode shape
 elseif loop == 3
-    Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
+    Stiff = fminsearch(@costfunSSIfreqmode_py,k2); % SSI, frequency + mode shape
 elseif loop == 4
-    Stiff = fminsearch(@costfunSSIfreqmodeEILJAN,EIL); % SSI (JAN), EI + L
+    Stiff = fminsearch(@costfunSSIfreqmodeEILJAN_py,EIL); % SSI (JAN), EI + L
 end
 
 if loop == 4
@@ -186,12 +186,12 @@ OMAfreq=SSIFreq;
 OMAphi=SSIphi;
 
 if loop == 1
-    save('.\data\costfunupdateSSIfreq.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data\costfunupdateSSIfreq_py.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
 elseif loop == 2
-    save('.\data\costfunupdateSSImode.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+    save('.\data\costfunupdateSSImode_py.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
 elseif loop == 3
-    save('.\data\costfunupdateSSIfreqmode.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data\costfunupdateSSIfreqmode_py.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
 elseif loop == 4
-    save('.\data\costfunupdateSSIfreqmodeEILJAN.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
+    save('.\data\costfunupdateSSIfreqmodeEILJAN_py.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
 end
 end
