@@ -1,17 +1,21 @@
 function J=costfunSSIfreqmodeEILJAN_py(EIL)
 EI = EIL(1);
 L = EIL(2);
+f = getGlobalx;
+
 % Natural frequencies and normalized mode shapes from relevant OMA method 
 % SSI
-% High damping
-% SSIFreq = readNPY('SSIomega_5_2_1.npy');
-% omegaOMA = SSIFreq * 2 * pi;
-% phiOMA = readNPY('SSIphi_5_2_1.npy');
-
-% Low damping
-SSIFreq = readNPY('SSIomega_5_6_1.npy');
-omegaOMA = SSIFreq * 2 * pi;
-phiOMA = readNPY('SSIphi_5_6_1.npy');
+if f == 1
+    % High damping
+    SSIFreq = readNPY('SSIomega_5_2_1.npy');
+    omegaOMA = SSIFreq * 2 * pi;
+    phiOMA = readNPY('SSIphi_5_2_1.npy');
+elseif f == 2
+    % Low damping
+    SSIFreq = readNPY('SSIomega_5_6_1.npy');
+    omegaOMA = SSIFreq * 2 * pi;
+    phiOMA = readNPY('SSIphi_5_6_1.npy');
+end
 
 % story heights [m] (from ground to mid floor)
 h = 1*10^-3; % short side of column [m]

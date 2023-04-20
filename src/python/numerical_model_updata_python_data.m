@@ -1,6 +1,21 @@
 % parameters
 clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
+% Loading modal parameters from OMA 
+promptt = "High damping or low damping? (1 = High and 2 = Low): ";
+x = input(promptt);
+setGlobalx(x)
+if x == 1
+SSIFreq = readNPY('SSIomega_5_2_1.npy');
+SSIomega = SSIFreq * 2 * pi;
+SSIphi = readNPY('SSIphi_5_2_1.npy');
+
+elseif x == 2
+SSIFreq = readNPY('SSIomega_5_6_1.npy');
+SSIomega = SSIFreq * 2 * pi;
+SSIphi = readNPY('SSIphi_5_6_1.npy');
+end
+
 for loop = 1:4
 %    column with lumbed masses     
 %         
@@ -16,19 +31,7 @@ for loop = 1:4
 %   |   _|_    ------> x
 %      //// 
 % ----------------------------------------------------
-% Loading modal parameters from OMA 
-promptt = "High damping or low damping? (1 = High and 2 = Low): ";
-x = input(promptt);
-if x == 1
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
-SSIomega = SSIFreq * 2 * pi;
-SSIphi = readNPY('SSIphi_5_2_1.npy');
 
-elseif x == 2
-SSIFreq = readNPY('SSIomega_5_6_1.npy');
-SSIomega = SSIFreq * 2 * pi;
-SSIphi = readNPY('SSIphi_5_6_1.npy');
-end
 
 % dimensions in meters
 t = 0.015; % floor height [m]
@@ -83,7 +86,6 @@ for i = 1:4
 end
 Km(5,5) = k2(5);
 stivhed = diag(Km);
-
 
 
 if loop == 1

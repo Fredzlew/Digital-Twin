@@ -5,18 +5,20 @@ M = [2.3553        0         0         0         0
          0         0    2.3690         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
+f = getGlobalx;
 % Natural frequencies and normalized mode shapes from relevant OMA method 
 % SSI
-% High damping
-% SSIFreq = readNPY('SSIomega_5_2_1.npy');
-% omegaOMA = SSIFreq * 2 * pi;
-% phiOMA = readNPY('SSIphi_5_2_1.npy');
-
-% Low damping
-SSIFreq = readNPY('SSIomega_5_6_1.npy');
-omegaOMA = SSIFreq * 2 * pi;
-phiOMA = readNPY('SSIphi_5_6_1.npy');
-
+if f == 1
+    % High damping
+    SSIFreq = readNPY('SSIomega_5_2_1.npy');
+    omegaOMA = SSIFreq * 2 * pi;
+    phiOMA = readNPY('SSIphi_5_2_1.npy');
+elseif f == 2
+    % Low damping
+    SSIFreq = readNPY('SSIomega_5_6_1.npy');
+    omegaOMA = SSIFreq * 2 * pi;
+    phiOMA = readNPY('SSIphi_5_6_1.npy');
+end
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);

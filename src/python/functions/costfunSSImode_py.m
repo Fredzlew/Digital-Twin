@@ -5,13 +5,16 @@ M = [2.3553        0         0         0         0
          0         0    2.3690         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
+f = getGlobalx;
 % Normalized mode shapes from relevant OMA method 
 % SSI
-% High damping
-% phiOMA = readNPY('SSIphi_5_2_1.npy');
-
-% Low damping
-phiOMA = readNPY('SSIphi_5_6_1.npy');
+if f == 1
+    % High damping
+    phiOMA = readNPY('SSIphi_5_2_1.npy');
+elseif f == 2
+    % Low damping
+    phiOMA = readNPY('SSIphi_5_6_1.npy');
+end
 
 % Stiffness matrix
 for i = 1:4
