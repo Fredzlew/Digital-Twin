@@ -215,7 +215,7 @@ kf = [k1f;k2f;k3f]
 
 % plotting
 q = 1;
-for i = linspace(0.0000000000000000001,100,1000000)
+for i = linspace(0.01,25,100000)
     lambda = i;
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
     eps = r-G*dx; % fortegn + eller -?
