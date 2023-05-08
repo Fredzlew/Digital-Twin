@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% 5 storey frame eigenvalue residual %%%
+%%% 5 storey frame mode_shape residual %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all
 clear all
@@ -63,7 +63,6 @@ omegas = omega(iw);
 % natural frequencies squared
 omega_squared = omegas.^2.;
 
-
 % mode shapes for the analytical model
 Us = U(:,iw);
 
@@ -82,31 +81,97 @@ for j = 1:length(omegas)
 end % end normalization
 
 % The sensitivity matrix out from the OMA analysis:
-% G = zeros(length(omegas),length(k));
-% for i = 1:length(k)
-%     for j = 1:length(omegas)
-%         if i == 1
-%             G(j,i) = SSIphi(j,i)^2;
-%         else
-%             G(j,i) = (SSIphi(j,i-1)-SSIphi(j,i))^2;
+% syms k1 k2 k3 k4 k5 
+
+% K = [k1+k2,-k2,0,0,0;-k2,k2+k3,-k3,0,0;0,-k3,k3+k4,-k4,0;0,0,-k4,k4+k5,-k5;0,0,0,-k5,k5];
+% 
+% % number of modes
+% nm = length(SSIomega);
+% for j = 1:nm
+%     for kk = 1:nm
+%         for h = 1:nm
+%             if j == h
+%                 a(j,kk,h) = 0;
+%             elseif kk == 1 
+%                 stif = k1;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 2
+%                 stif = k2;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 3
+%                 stif = k3;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 4
+%                 stif = k4;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 5
+%                 stif = k5;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             end
+%            
 %         end
+%     end
+% end
+% for j = 1:nm
+%     for kk = 1:nm
+%         G(j,kk) = sum(b(j,kk,:));
 %     end
 % end
 
 % The sensitivity matrix out from the analytical mode shapes:
-G = zeros(length(omegas),length(k));
-for i = 1:length(k)
-    for j = 1:length(omegas)
-        if i == 1
-            G(j,i) = U(j,i)^2;
-        else
-            G(j,i) = (U(j,i-1)-U(j,i))^2;
+syms k1 k2 k3 k4 k5 
+
+Ksym = [k1+k2,-k2,0,0,0;-k2,k2+k3,-k3,0,0;0,-k3,k3+k4,-k4,0;0,0,-k4,k4+k5,-k5;0,0,0,-k5,k5];
+
+
+% number of modes
+nm = length(SSIomega);
+
+% making the a factor
+for j = 1:nm
+    for kk = 1:nm
+        for h = 1:nm
+            if j == h
+                a(j,kk,h) = 0;
+            elseif kk == 1 
+                stif = k1;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 2
+                stif = k2;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 3
+                stif = k3;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 4
+                stif = k4;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 5
+                stif = k5;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            end
+           
+        end
+    end
+end
+
+G = zeros(5,5,5);
+% now finding the snesivity matrix
+for j = 1:nm
+    for kk = 1:nm
+        for h = 1:nm
+          b(:,h) = a(j,kk,h)*U(:,h);
+          G(:,kk,j) = G(:,kk,j)+b(:,h);
         end
     end
 end
 
 % condition number of G
-con = cond(G);
+%con = cond(G);
 
 % symmetric weighting matrix
 Weps = eye(size(G,1));
@@ -139,16 +204,28 @@ for ii = 1:100
     
     % sort frequencies and mode shapes
     [~,iw] = sort(omega);
+
+    % mode shapes for the analytical model
+    Us = U(:,iw);
     
-    % natural frequencies [rad/s]
-    omegas = omega(iw);
-    
-    % natural frequencies squared
-    omega_squared = omegas.^2.;
+    % normalization of the mode shapes
+    MVec_x = max(Us); % start normalization
+    mVec_x = min(Us);
+    for j = 1:length(omegas)
+        if abs(MVec_x(j)) > abs(mVec_x(j))
+            mxVec_x(j) = MVec_x(j);
+        else
+            mxVec_x(j) = mVec_x(j);
+        end
+        for l = 1:length(omegas)
+            U(l,j) = Us(l,j)/mxVec_x(j);
+        end
+    end % end normalization
 
     % Residual
-    r(:,ii) = omegasq_m - omega_squared;
+    r(:,ii) = SSIphi - U;
     disp(sum(abs(r(:,ii))))
+
     % Difne lambda value:
     lambda =  sqrt(0.0143);  
     
