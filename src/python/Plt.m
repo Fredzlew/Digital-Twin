@@ -2,7 +2,7 @@
 %%% Plotting the modal update %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'))
+addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('Mottershead\datam'))
 
 % Loading stiffness for all OMA costfunction and numerical model
 filename = load('modelprop_jan.mat'); % omegas from numericla model
@@ -27,9 +27,12 @@ stivhedJan = dataSSIfreqmodeEILJAN.stivhed';
 L = dataSSIfreqmodeEILJAN.L;
 EI = dataSSIfreqmodeEILJAN.EI;
 
+Dataeigresidual = load('Eigenvalue_residual.mat'); % Eigenvalue residual
+Keigresidual = diag(Dataeigresidual.Knew)';
+
 % PLotting the stiffness
 y = [K_SSI_freq;K_SSI_mode;K_SSI_freq_mode;...
-    K_SSI_freqmodeEILJAN;stivhedJan];
+    K_SSI_freqmodeEILJAN;Keigresidual;stivhedJan];
 figure
 hold on
 b = bar(y,'stacked');
@@ -41,25 +44,25 @@ for i = 1:size(y,2)
 end
 hold off
 legend('k1','k2','k3','k4','k5')
-title('Values of stiffness for different OMA methods and cost functions')
+title('Values of stiffness for different OMA methods and cost functions','FontSize',20)
 xlabel('Method')
 xticks(xtips)
 xticklabels({'SSI (freq)','SSI (mode)','SSI (freq+mode)',...
-    'SSI EIL JAN(freq+mode)','Global stiffness'})
-ylabel('Stiffness [N/m]')
+    'SSI EIL JAN(freq+mode)','Eigenvalue residual','Global stiffness','FontSize',14})
+ylabel('Stiffness [N/m]','FontSize',14)
 
 % 3D plot of the stiffness
 figure
 bar3(y)
-title('Values of stiffness for different OMA methods and cost functions')
+title('Values of stiffness for different OMA methods and cost functions','FontSize',20)
 %xlabel('ks')
 %ylabel('Method')
 xticks([1,2,3,4,5])
-xticklabels({'k1','k2','k3','k4','k5'})
+xticklabels({'k1','k2','k3','k4','k5','FontSize',14})
 yticks(xtips)
 yticklabels({'SSI (freq)','SSI (mode)','SSI (freq+mode)',...
-    'SSI EIL JAN(freq+mode)','Global stiffness'})
-zlabel('Stiffness [N/m]')
+    'SSI EIL JAN(freq+mode)','Eigenvalue residual','Global stiffness','FontSize',14})
+zlabel('Stiffness [N/m]','FontSize',14)
 
 % What we want to plot
 % Define what OMA method is used 

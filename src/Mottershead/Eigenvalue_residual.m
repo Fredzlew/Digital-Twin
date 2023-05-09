@@ -7,29 +7,29 @@ clc
 addpath(genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'),genpath('data'),genpath('Modal_parameters_anela'))
 
 % measuered natural frequencies from OMA SSI-cov 
-% SSIFreq = readNPY('SSIomega_5_2_1.npy');
-SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
+SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
 
 SSIomega = SSIFreq * 2 * pi;
 % squared
 omegasq_m = SSIomega.^2;
 
-%SSIphi = readNPY('SSIphi_5_2_1.npy');
-SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
-    0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
-    0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
-    1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
-    0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
+SSIphi = readNPY('SSIphi_5_2_1.npy');
+% SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
+%     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
+%     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
+%     1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
+%     0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
 
 
 
 %  Analytical natural frequencies
 % loading the model parameters
-% filename = load('modelprop_jan.mat'); 
+filename = load('modelprop_jan.mat'); 
 
 % stiffness parameters
-% k = filename.k';
-k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
+k = filename.k';
+% k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
 
 % stiffness matrix (stiffness parameters in the initial model)
 for i = 1:4
@@ -40,13 +40,13 @@ end
 K(5,5) = k(5);
 
 % Mass matrix
-% M = filename.M;
+M = filename.M;
 
-M = [2.3553, 0, 0, 0, 0;...
-     0, 2.3690, 0, 0, 0;...
-     0, 0, 2.3690, 0, 0;...
-     0, 0, 0, 2.3690, 0;...
-     0, 0, 0, 0, 2.4467];
+% M = [2.3553, 0, 0, 0, 0;...
+%      0, 2.3690, 0, 0, 0;...
+%      0, 0, 2.3690, 0, 0;...
+%      0, 0, 0, 2.3690, 0;...
+%      0, 0, 0, 0, 2.4467];
 
 % eigenvalue problem
 [U,D] = eig(K,M);
@@ -165,8 +165,9 @@ for j = 1:5
     plot((r(j,:)))
 end
 legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
-xlabel('Iterations [-]')
-ylabel('Residual')
+xlabel('Iterations [-]','FontSize',14)
+ylabel('Residual','FontSize',14)
+title('Convergence plot','FontSize',20)
 hold off
 %% Calculating new frequencies with the stiffness changes
 
@@ -194,8 +195,76 @@ omega = real(sqrt(diag(D)));
 omegasnew = omega(iw);
 
 % frequencies
-fn = omegasnew/(2*pi)
+fn = omegasnew/(2*pi);
 
+
+% mode shapes for the analytical model
+Us = U(:,iw);
+
+% normalization of the mode shapes
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:length(omegas)
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:length(omegas)
+        U(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
+
+% plotting the mode shapes
+% dimensions in meters
+t = 0.015; % floor height [m]
+h = 1*10^-3; % short side of column [m]
+b = 30*10^-3; % long side (depth) of column [m]
+L = 175*10^-3; % column length in middle [m]
+Lb = 168*10^-3; % column length at bottom [m]
+Lt = 75*10^-3; % column length on top [m]
+
+% story heights [m] (from ground to mid floor)
+H(1) = Lb + t/2;
+for i = 2:5
+    H(i) = H(i-1) + L + t;
+end
+
+x = [0, H];
+phi = [zeros(1,length(U)); U];
+fig = figure;
+fig.Position=[100 100 1600 700];
+for i=1:length(omegas)
+    subplot(1,length(omegas),i)
+    hold on
+    plot(phi(:,i),x,'-m')
+    if phi(2,i)*SSIphi(1,i) < 0 % Swap sign on mode shape
+        plot([0  ;-SSIphi(:,i)],x,'go-.');
+        plot(-SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+    else
+        plot([0  ;SSIphi(:,i)],x,'go-.');
+        plot(SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+    end
+    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    xline(0.0,'--')
+    xlim([-1.1,1.1])
+    ylim([0,x(end)])
+    if i==1 
+        legend('Numerical','SSI','Location','northwest')
+    end
+end
+
+sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
+
+han=axes(fig,'visible','off'); 
+han.Title.Visible='on';
+han.XLabel.Visible='on';
+han.YLabel.Visible='on';
+ylabel(han,'Height [m]','FontSize',14);
+xlabel(han,'Deflection [-]','FontSize',14);
+
+save('.\datam\Eigenvalue_residual.mat','Knew');
 %% Plotting L curve only for the first iteration
 
 % plotting
@@ -212,31 +281,31 @@ end
 figure (1)
 loglog(Jeps,Jthe)
 grid on
-xlim([10^-4 10^-1+10^-1/2])
-ylim([10^-3 10^-0+10^-0/1.5])
-xlabel('norm (Residual)')
-ylabel('norm (Stiffness Change)')
-title('L-curve')
+xlim([10^-0 10^2+10^2.3])
+ylim([10^-0 10^4])
+xlabel('norm (Residual)','FontSize',14)
+ylabel('norm (Stiffness Change)','FontSize',14)
+title('L-curve','FontSize',20)
 % Finding the optimal value for lambda
 Val = 6.79461;
 index = find(Jeps >= Val,1);
 lamopt = lambda(index);
 % plotting the  norm to the regularization parameter
 % lambda square:
-lam2 = linspace(10^-10,10^0,100000);
-
-
-q = 1;
-for ii = lam2
-    stiffdx(:,q) = ((G'*Weps*G)+(ii*Wtheta))^(-1)*G'*Weps*r(:,end);
-    q = q + 1;
-end
-
-% plotting the  stiffness change to the reqularization parameter
-figure (2)
-semilogx(lam2,stiffdx(1,:),lam2,stiffdx(2,:),lam2,stiffdx(3,:))
-xlim([10^-10 10^0])
-ylim([-1.5 1.5])
-grid on
-xlabel('Regularization Parameter, lambda^2')
-ylabel('Stiffness Change')
+% lam2 = linspace(10^-10,10^0,100000);
+% 
+% 
+% q = 1;
+% for ii = lam2
+%     stiffdx(:,q) = ((G'*Weps*G)+(ii*Wtheta))^(-1)*G'*Weps*r(:,end);
+%     q = q + 1;
+% end
+% 
+% % plotting the  stiffness change to the reqularization parameter
+% figure (2)
+% semilogx(lam2,stiffdx(1,:),lam2,stiffdx(2,:),lam2,stiffdx(3,:))
+% xlim([10^-10 10^0])
+% ylim([-1.5 1.5])
+% grid on
+% xlabel('Regularization Parameter, lambda^2')
+% ylabel('Stiffness Change')
