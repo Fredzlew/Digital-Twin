@@ -26,6 +26,16 @@ k1 = 1;
 k2 = 1;
 k3 = 1;
 
+dx = zeros(3,1);
+dxt = dx;
+k0 = [k1;k2;k3];
+
+for ii=1:20
+% The updated stiffnesses
+k1 = k1+dx(1);
+k2 = k2+dx(2);
+k3 = k3+dx(3);
+
 % stiffness matrix
 K = [k1+k2,-k2;-k2,k2+k3];
 
@@ -36,9 +46,14 @@ r = fm - K*um;
 lambda = 10^-2;  
 
 % the difference with regularization
-dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r
+dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
 
+% Total parameter change
+dxt = dxt + dx;
+end
 
+disp(dxt)
+kf = k0+dxt
 
 %%
 %%%%%%%%%%%%%%
@@ -75,6 +90,16 @@ k1 = 1;
 k2 = 1;
 k3 = 1;
 
+dx = zeros(3,1);
+dxt = dx;
+k0 = [k1;k2;k3];
+
+for ii=1:20
+% The updated stiffnesses
+k1 = k1+dx(1);
+k2 = k2+dx(2);
+k3 = k3+dx(3);
+
 % stiffness matrix
 K = [k1+k2,-k2;-k2,k2+k3];
 
@@ -90,8 +115,14 @@ r = fm - f;
 lambda = 10^-3; 
 
 % the difference with regularization
-dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r
+dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
 
+% Total parameter change
+dxt = dxt + dx;
+end
+
+disp(dxt)
+kf = k0+dxt
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -128,6 +159,16 @@ k1 = 1;
 k2 = 1;
 k3 = 1;
 
+dx = zeros(3,1);
+dxt = dx;
+k0 = [k1;k2;k3];
+
+for ii = 1:1
+% The updated stiffnesses
+k1 = k1+dx(1);
+k2 = k2+dx(2);
+k3 = k3+dx(3);
+
 % stiffness matrix
 K = [k1+k2,-k2;-k2,k2+k3];
 
@@ -139,17 +180,18 @@ f = [f1;f3];
 % input force residual
 r = fm - f;
 
-% plotting to find the regularisation parameter:
+% Define lambda value
 lambda = 0.0093; 
 
 % the difference with regularization
 dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
 
-% The updated stiffnesses
-k1f = 1+dx(1);
-k2f = 1+dx(2);
-k3f = 1+dx(3);
-kf = [k1f;k2f;k3f]
+% Total parameter change
+dxt = dxt + dx;
+end
+
+disp(dxt)
+kf = k0+dxt
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,6 +230,16 @@ k1 = 1;
 k2 = 1;
 k3 = 1;
 
+dx = zeros(3,1);
+dxt = dx;
+k0 = [k1;k2;k3];
+
+for ii = 1:1
+% The updated stiffnesses
+k1 = k1+dx(1);
+k2 = k2+dx(2);
+k3 = k3+dx(3);
+
 % stiffness matrix
 K = [k1+k2,-k2;-k2,k2+k3];
 
@@ -205,11 +257,12 @@ lambda = 0.0179;
 % the difference with regularization
 dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
 
-% The updated stiffnesses
-k1f = 1+dx(1);
-k2f = 1+dx(2);
-k3f = 1+dx(3);
-kf = [k1f;k2f;k3f]
+% Total parameter change
+dxt = dxt + dx;
+end
+
+disp(dxt)
+kf = k0+dxt
 
 %% Plotting L curve
 
