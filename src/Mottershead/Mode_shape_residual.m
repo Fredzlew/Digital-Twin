@@ -159,19 +159,30 @@ for j = 1:nm
     end
 end
 
-G = zeros(5,5,5);
-% now finding the snesivity matrix
+G = zeros(25,5);
+% now finding the sensivity matrix
+m = 1;
+b1 = zeros(5,1);
+b = zeros(5,1);
 for j = 1:nm
     for kk = 1:nm
         for h = 1:nm
-          b(:,h) = a(j,kk,h)*U(:,h);
-          G(:,kk,j) = G(:,kk,j)+b(:,h);
+          b1 = a(j,kk,h)*U(:,h);
+          b = b+b1;
+          if h == nm
+            G(m,kk) = b(1);
+            G(m+1,kk) = b(2);
+            G(m+2,kk) = b(3);
+            G(m+3,kk) = b(4);
+            G(m+4,kk) = b(5);
+          end
         end
     end
+    m = m+5;
 end
 
 % condition number of G
-%con = cond(G);
+con = cond(G);
 
 % symmetric weighting matrix
 Weps = eye(size(G,1));
@@ -184,9 +195,9 @@ Gamma = diag(diag(G'*Weps*G));
 Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
 
 dx = zeros(length(k),1);
-
+SSIphi_re = reshape(SSIphi,25,1);
 % Iterazation over the stiffness
-for ii = 1:100
+for ii = 1:1
     k = k+dx;
 
     for i = 1:4
@@ -221,9 +232,9 @@ for ii = 1:100
             U(l,j) = Us(l,j)/mxVec_x(j);
         end
     end % end normalization
-
+    
     % Residual
-    r(:,ii) = SSIphi - U;
+    r(:,ii) = SSIphi_re - reshape(U,25,1);
     disp(sum(abs(r(:,ii))))
 
     % Difne lambda value:
@@ -237,7 +248,7 @@ end
 % Convergence plot
 
 figure
-for j = 1:5
+for j = 1:25
     hold on
     plot((r(j,:)))
 end
@@ -300,20 +311,20 @@ index = find(Jeps >= Val,1);
 lamopt = lambda(index);
 % plotting the  norm to the regularization parameter
 % lambda square:
-lam2 = linspace(10^-10,10^0,100000);
-
-
-q = 1;
-for ii = lam2
-    stiffdx(:,q) = ((G'*Weps*G)+(ii*Wtheta))^(-1)*G'*Weps*r(:,end);
-    q = q + 1;
-end
-
-% plotting the  stiffness change to the reqularization parameter
-figure (2)
-semilogx(lam2,stiffdx(1,:),lam2,stiffdx(2,:),lam2,stiffdx(3,:))
-xlim([10^-10 10^0])
-ylim([-1.5 1.5])
-grid on
-xlabel('Regularization Parameter, lambda^2')
-ylabel('Stiffness Change')
+% lam2 = linspace(10^-10,10^0,100000);
+% 
+% 
+% q = 1;
+% for ii = lam2
+%     stiffdx(:,q) = ((G'*Weps*G)+(ii*Wtheta))^(-1)*G'*Weps*r(:,end);
+%     q = q + 1;
+% end
+% 
+% % plotting the  stiffness change to the reqularization parameter
+% figure (2)
+% semilogx(lam2,stiffdx(1,:),lam2,stiffdx(2,:),lam2,stiffdx(3,:))
+% xlim([10^-10 10^0])
+% ylim([-1.5 1.5])
+% grid on
+% xlabel('Regularization Parameter, lambda^2')
+% ylabel('Stiffness Change')
