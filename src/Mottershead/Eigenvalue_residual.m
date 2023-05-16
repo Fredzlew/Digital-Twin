@@ -132,7 +132,10 @@ end
 con = cond(G);
 
 % symmetric weighting matrix
-Weps = eye(size(G,1));
+V = ones(size(G,1),1);
+%Weps = diag(omegasq_m)^-2;
+V(1) = 1;
+Weps = eye(size(G,1)).*V;
 
 % a simple version of the parameter weighting matrix
 %Wtheta = eye(size(G,2));
@@ -140,6 +143,10 @@ Weps = eye(size(G,1));
 % (19) and (20)
 Gamma = diag(diag(G'*Weps*G));
 Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
+
+
+% Difne lambda value:
+lambda =  sqrt(0.0672); 
 
 dx = zeros(length(k),1);
 
@@ -170,10 +177,22 @@ for ii = 1:100
     omega_squared = omegas.^2.;
 
     % Residual
-    r(:,ii) = omegasq_m - omega_squared;
-    disp(sum(abs(r(:,ii))))
-    % Difne lambda value:
-    lambda =  sqrt(0.0143);  
+    r(:,ii) = (omegasq_m - omega_squared);
+        
+%     % normalization of the residual
+%     MVec_x = max(r(:,ii)); % start normalization
+%     mVec_x = min(r(:,ii));
+% 
+%     if abs(MVec_x(1)) > abs(mVec_x(1))
+%         mxVec_x(1) = MVec_x(1);
+%     else
+%         mxVec_x(1) = mVec_x(1);
+%     end
+%     for l = 1:length(r(:,ii))
+%         r(l,ii) = r(l,ii)/mxVec_x(1);
+%     end % end normalization
+
+    disp(sum(abs(r(:,ii)))) 
     
     % the difference with regularization
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r(:,ii);
@@ -305,6 +324,10 @@ disp(strcat('Mode shape accuracy,3 : ',num2str(MSacc(3)*100),'%'));
 disp(strcat('Mode shape accuracy,4 : ',num2str(MSacc(4)*100),'%'));
 disp(strcat('Mode shape accuracy,5 : ',num2str(MSacc(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy : ',num2str(TOTacc*100),'%'));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 22b36501afcbf30dcdea4efe9c1d82f6d5abfb41
 save('.\data\Eigenvalue_residual.mat','Knew');
 %% Plotting L curve only for the first iteration
 
@@ -328,7 +351,7 @@ xlabel('norm (Residual)','FontSize',14)
 ylabel('norm (Stiffness Change)','FontSize',14)
 title('L-curve','FontSize',20)
 % Finding the optimal value for lambda
-Val = 6.79461;
+Val = 0.0459514; % X-vlaue
 index = find(Jeps >= Val,1);
 lamopt = lambda(index);
 % plotting the  norm to the regularization parameter
