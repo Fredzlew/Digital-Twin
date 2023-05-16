@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% 5 storey frame eigenvalue residual %%%
+%%% 5 storey frame mode_shape residual %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all
 clear all
@@ -7,29 +7,29 @@ clc
 addpath(genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'),genpath('data'),genpath('Modal_parameters_anela'))
 
 % measuered natural frequencies from OMA SSI-cov 
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
-% SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
+% SSIFreq = readNPY('SSIomega_5_2_1.npy');
+SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
 
 SSIomega = SSIFreq * 2 * pi;
 % squared
 omegasq_m = SSIomega.^2;
 
-SSIphi = readNPY('SSIphi_5_2_1.npy');
-% SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
-%     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
-%     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
-%     1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
-%     0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
+%SSIphi = readNPY('SSIphi_5_2_1.npy');
+SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
+    0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
+    0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
+    1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
+    0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
 
 
 
 %  Analytical natural frequencies
 % loading the model parameters
-filename = load('modelprop_jan.mat'); 
+% filename = load('modelprop_jan.mat'); 
 
 % stiffness parameters
-k = filename.k';
-% k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
+% k = filename.k';
+k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
 
 % stiffness matrix (stiffness parameters in the initial model)
 for i = 1:4
@@ -40,13 +40,13 @@ end
 K(5,5) = k(5);
 
 % Mass matrix
-M = filename.M;
+% M = filename.M;
 
-% M = [2.3553, 0, 0, 0, 0;...
-%      0, 2.3690, 0, 0, 0;...
-%      0, 0, 2.3690, 0, 0;...
-%      0, 0, 0, 2.3690, 0;...
-%      0, 0, 0, 0, 2.4467];
+M = [2.3553, 0, 0, 0, 0;...
+     0, 2.3690, 0, 0, 0;...
+     0, 0, 2.3690, 0, 0;...
+     0, 0, 0, 2.3690, 0;...
+     0, 0, 0, 0, 2.4467];
 
 % eigenvalue problem
 [U,D] = eig(K,M);
@@ -62,7 +62,6 @@ omegas = omega(iw);
 
 % natural frequencies squared
 omega_squared = omegas.^2.;
-
 
 % mode shapes for the analytical model
 Us = U(:,iw);
@@ -82,50 +81,104 @@ for j = 1:length(omegas)
 end % end normalization
 
 % The sensitivity matrix out from the OMA analysis:
-% G = zeros(length(omegas),length(k));
-% for i = 1:length(k)
-%     for j = 1:length(omegas)
-%         if i == 1
-%             G(j,i) = SSIphi(j,i)^2;
-%         else
-%             G(j,i) = (SSIphi(j,i-1)-SSIphi(j,i))^2;
+% syms k1 k2 k3 k4 k5 
+
+% K = [k1+k2,-k2,0,0,0;-k2,k2+k3,-k3,0,0;0,-k3,k3+k4,-k4,0;0,0,-k4,k4+k5,-k5;0,0,0,-k5,k5];
+% 
+% % number of modes
+% nm = length(SSIomega);
+% for j = 1:nm
+%     for kk = 1:nm
+%         for h = 1:nm
+%             if j == h
+%                 a(j,kk,h) = 0;
+%             elseif kk == 1 
+%                 stif = k1;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 2
+%                 stif = k2;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 3
+%                 stif = k3;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 4
+%                 stif = k4;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             elseif kk == 5
+%                 stif = k5;
+%                 a(j,kk,h) = (SSIphi(:,h)'*(diff(K,stif))*SSIphi(:,j))/(omegasq_m(j)-omegasq_m(h));
+%                 b(:,kk,h) = a(j,kk,h)*SSIphi(:,h);
+%             end
+%            
 %         end
+%     end
+% end
+% for j = 1:nm
+%     for kk = 1:nm
+%         G(j,kk) = sum(b(j,kk,:));
 %     end
 % end
 
 % The sensitivity matrix out from the analytical mode shapes:
-% G = zeros(length(omegas),length(k));
-% for i = 1:length(k)
-%     for j = 1:length(omegas)
-%         if i == 1
-%             G(j,i) = U(j,i)^2;
-%         else
-%             G(j,i) = (U(j,i-1)-U(j,i))^2;
-%         end
-%     end
-% end
-
-% The sensitivity matrix out from the analytical mode shapes for the eigenvalue:
-syms k1 k2 k3 k4 k5 m1 m2 m3 m4 m5
-
-Msym = [m1,0,0,0,0;0,m2,0,0,0;0,0,m3,0,0;0,0,0,m4,0;0,0,0,0,m5];
+syms k1 k2 k3 k4 k5 
 
 Ksym = [k1+k2,-k2,0,0,0;-k2,k2+k3,-k3,0,0;0,-k3,k3+k4,-k4,0;0,0,-k4,k4+k5,-k5;0,0,0,-k5,k5];
 
-G = zeros(length(omegas),length(k));
 
 % number of modes
-nm = length(omegas);
-% number of parameters
-np = length(k);
+nm = length(SSIomega);
 
-pars = [k1,k2,k3,k4,k5];
-parm = [m1,m2,m3,m4,m5];
+% making the a factor
 for j = 1:nm
-    for kk = 1:np
-        par = pars(kk);
-        G(j,kk) = (U(:,j)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j));
+    for kk = 1:nm
+        for h = 1:nm
+            if j == h
+                a(j,kk,h) = 0;
+            elseif kk == 1 
+                stif = k1;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 2
+                stif = k2;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 3
+                stif = k3;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 4
+                stif = k4;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            elseif kk == 5
+                stif = k5;
+                a(j,kk,h) = (U(:,h)'*(diff(Ksym,stif))*U(:,j))/(omega_squared(j)-omega_squared(h));
+            end
+           
+        end
     end
+end
+
+G = zeros(25,5);
+% now finding the sensivity matrix
+m = 1;
+b1 = zeros(5,1);
+b = zeros(5,1);
+for j = 1:nm
+    for kk = 1:nm
+        for h = 1:nm
+          b1 = a(j,kk,h)*U(:,h);
+          b = b+b1;
+          if h == nm
+            G(m,kk) = b(1);
+            G(m+1,kk) = b(2);
+            G(m+2,kk) = b(3);
+            G(m+3,kk) = b(4);
+            G(m+4,kk) = b(5);
+          end
+        end
+    end
+    m = m+5;
 end
 
 % condition number of G
@@ -142,7 +195,7 @@ Gamma = diag(diag(G'*Weps*G));
 Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
 
 dx = zeros(length(k),1);
-
+SSIphi_re = reshape(SSIphi,25,1);
 % Iterazation over the stiffness
 for ii = 1:100
     k = k+dx;
@@ -162,16 +215,28 @@ for ii = 1:100
     
     % sort frequencies and mode shapes
     [~,iw] = sort(omega);
-    
-    % natural frequencies [rad/s]
-    omegas = omega(iw);
-    
-    % natural frequencies squared
-    omega_squared = omegas.^2.;
 
+    % mode shapes for the analytical model
+    Us = U(:,iw);
+    
+    % normalization of the mode shapes
+    MVec_x = max(Us); % start normalization
+    mVec_x = min(Us);
+    for j = 1:length(omegas)
+        if abs(MVec_x(j)) > abs(mVec_x(j))
+            mxVec_x(j) = MVec_x(j);
+        else
+            mxVec_x(j) = mVec_x(j);
+        end
+        for l = 1:length(omegas)
+            U(l,j) = Us(l,j)/mxVec_x(j);
+        end
+    end % end normalization
+    
     % Residual
-    r(:,ii) = omegasq_m - omega_squared;
+    r(:,ii) = SSIphi_re - reshape(U,25,1);
     disp(sum(abs(r(:,ii))))
+
     % Difne lambda value:
     lambda =  sqrt(0.0143);  
     
@@ -183,14 +248,13 @@ end
 % Convergence plot
 
 figure
-for j = 1:5
+for j = 1:25
     hold on
     plot((r(j,:)))
 end
 legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
-xlabel('Iterations [-]','FontSize',14)
-ylabel('Residual','FontSize',14)
-title('Convergence plot','FontSize',20)
+xlabel('Iterations [-]')
+ylabel('Residual')
 hold off
 %% Calculating new frequencies with the stiffness changes
 
@@ -218,8 +282,7 @@ omega = real(sqrt(diag(D)));
 omegasnew = omega(iw);
 
 % frequencies
-fn = omegasnew/(2*pi);
-
+fn = omegasnew/(2*pi)
 
 % mode shapes for the analytical model
 Us = U(:,iw);
@@ -287,7 +350,6 @@ han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
-
 % Display accuracy of frequency
 disp(strcat('Frequency accuracy,1 : ',num2str(min(SSIFreq(1),fn(1))/max(SSIFreq(1),fn(1))*100),'%'));
 disp(strcat('Frequency accuracy,2 : ',num2str(min(SSIFreq(2),fn(2))/max(SSIFreq(2),fn(2))*100),'%'));
@@ -305,7 +367,7 @@ disp(strcat('Mode shape accuracy,3 : ',num2str(MSacc(3)*100),'%'));
 disp(strcat('Mode shape accuracy,4 : ',num2str(MSacc(4)*100),'%'));
 disp(strcat('Mode shape accuracy,5 : ',num2str(MSacc(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy : ',num2str(TOTacc*100),'%'));
-save('.\data\Eigenvalue_residual.mat','Knew');
+
 %% Plotting L curve only for the first iteration
 
 % plotting
@@ -322,11 +384,11 @@ end
 figure (1)
 loglog(Jeps,Jthe)
 grid on
-xlim([10^-0 10^2+10^2.3])
-ylim([10^-0 10^4])
-xlabel('norm (Residual)','FontSize',14)
-ylabel('norm (Stiffness Change)','FontSize',14)
-title('L-curve','FontSize',20)
+xlim([10^-4 10^-1+10^-1/2])
+ylim([10^-3 10^-0+10^-0/1.5])
+xlabel('norm (Residual)')
+ylabel('norm (Stiffness Change)')
+title('L-curve')
 % Finding the optimal value for lambda
 Val = 6.79461;
 index = find(Jeps >= Val,1);

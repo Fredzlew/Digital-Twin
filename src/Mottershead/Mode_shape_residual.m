@@ -284,6 +284,90 @@ omegasnew = omega(iw);
 % frequencies
 fn = omegasnew/(2*pi)
 
+% mode shapes for the analytical model
+Us = U(:,iw);
+
+% normalization of the mode shapes
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:length(omegas)
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:length(omegas)
+        U(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
+
+% plotting the mode shapes
+% dimensions in meters
+t = 0.015; % floor height [m]
+h = 1*10^-3; % short side of column [m]
+b = 30*10^-3; % long side (depth) of column [m]
+L = 175*10^-3; % column length in middle [m]
+Lb = 168*10^-3; % column length at bottom [m]
+Lt = 75*10^-3; % column length on top [m]
+
+% story heights [m] (from ground to mid floor)
+H(1) = Lb + t/2;
+for i = 2:5
+    H(i) = H(i-1) + L + t;
+end
+
+x = [0, H];
+phi = [zeros(1,length(U)); U];
+fig = figure;
+fig.Position=[100 100 1600 700];
+for i=1:length(omegas)
+    subplot(1,length(omegas),i)
+    hold on
+    plot(phi(:,i),x,'-m')
+    if phi(2,i)*SSIphi(1,i) < 0 % Swap sign on mode shape
+        plot([0  ;-SSIphi(:,i)],x,'go-.');
+        plot(-SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+    else
+        plot([0  ;SSIphi(:,i)],x,'go-.');
+        plot(SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+    end
+    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+    xline(0.0,'--')
+    xlim([-1.1,1.1])
+    ylim([0,x(end)])
+    if i==1 
+        legend('Numerical','SSI','Location','northwest')
+    end
+end
+
+sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
+
+han=axes(fig,'visible','off'); 
+han.Title.Visible='on';
+han.XLabel.Visible='on';
+han.YLabel.Visible='on';
+ylabel(han,'Height [m]','FontSize',14);
+xlabel(han,'Deflection [-]','FontSize',14);
+
+% Display accuracy of frequency
+disp(strcat('Frequency accuracy,1 : ',num2str(min(SSIFreq(1),fn(1))/max(SSIFreq(1),fn(1))*100),'%'));
+disp(strcat('Frequency accuracy,2 : ',num2str(min(SSIFreq(2),fn(2))/max(SSIFreq(2),fn(2))*100),'%'));
+disp(strcat('Frequency accuracy,3 : ',num2str(min(SSIFreq(3),fn(3))/max(SSIFreq(3),fn(3))*100),'%'));
+disp(strcat('Frequency accuracy,4 : ',num2str(min(SSIFreq(4),fn(4))/max(SSIFreq(4),fn(4))*100),'%'));
+disp(strcat('Frequency accuracy,5 : ',num2str(min(SSIFreq(5),fn(5))/max(SSIFreq(5),fn(5))*100),'%'));
+disp(strcat('Mean frequency accuracy : ',num2str(mean(min(SSIFreq,fn)./max(SSIFreq,fn)*100)),'%'));
+
+% Display accuracy of mode shapes
+[MSacc,TOTacc]=modeshapeacc(SSIphi,U);
+disp('----------------------------------------------------------------------')
+disp(strcat('Mode shape accuracy,1 : ',num2str(MSacc(1)*100),'%'));
+disp(strcat('Mode shape accuracy,2 : ',num2str(MSacc(2)*100),'%'));
+disp(strcat('Mode shape accuracy,3 : ',num2str(MSacc(3)*100),'%'));
+disp(strcat('Mode shape accuracy,4 : ',num2str(MSacc(4)*100),'%'));
+disp(strcat('Mode shape accuracy,5 : ',num2str(MSacc(5)*100),'%'));
+disp(strcat('Mean mode shape accuracy : ',num2str(TOTacc*100),'%'));
+
 %% Plotting L curve only for the first iteration
 
 % plotting
