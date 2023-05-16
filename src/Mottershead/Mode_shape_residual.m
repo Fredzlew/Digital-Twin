@@ -197,7 +197,7 @@ Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
 dx = zeros(length(k),1);
 SSIphi_re = reshape(SSIphi,25,1);
 % Iterazation over the stiffness
-for ii = 1:1
+for ii = 1:100
     k = k+dx;
 
     for i = 1:4
