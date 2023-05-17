@@ -316,18 +316,20 @@ disp(strcat('Frequency accuracy,5 : ',num2str(min(SSIFreq(5),fn(5))/max(SSIFreq(
 disp(strcat('Mean frequency accuracy : ',num2str(mean(min(SSIFreq,fn)./max(SSIFreq,fn)*100)),'%'));
 
 % Display accuracy of mode shapes
-[MSacc,TOTacc]=modeshapeacc(SSIphi,U);
+% CrossMAC plot of mode shapes
+mac=crossMAC(U,SSIphi,1,[SSIFreq,fn]);
+dmac = diag(mac);
+disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
+disp(strcat(num2str(mac)));
 disp('----------------------------------------------------------------------')
-disp(strcat('Mode shape accuracy,1 : ',num2str(MSacc(1)*100),'%'));
-disp(strcat('Mode shape accuracy,2 : ',num2str(MSacc(2)*100),'%'));
-disp(strcat('Mode shape accuracy,3 : ',num2str(MSacc(3)*100),'%'));
-disp(strcat('Mode shape accuracy,4 : ',num2str(MSacc(4)*100),'%'));
-disp(strcat('Mode shape accuracy,5 : ',num2str(MSacc(5)*100),'%'));
-disp(strcat('Mean mode shape accuracy : ',num2str(TOTacc*100),'%'));
-<<<<<<< HEAD
-=======
+disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),2 : ',num2str(dmac(2)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),3 : ',num2str(dmac(3)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
+disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
+disp('----------------------------------------------------------------------')
 
->>>>>>> 22b36501afcbf30dcdea4efe9c1d82f6d5abfb41
 save('.\data\Eigenvalue_residual.mat','Knew');
 %% Plotting L curve only for the first iteration
 

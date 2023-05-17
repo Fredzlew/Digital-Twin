@@ -80,7 +80,8 @@ for j = 1:length(omegas)
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-% Making the big sensitivity matrix
+
+% Making the sensitivity matrix
 
 % The sensitivity matrix out from the analytical mode shapes for the eigenvalue:
 syms k1 k2 k3 k4 k5 m1 m2 m3 m4 m5
@@ -116,28 +117,14 @@ end
 Geig = [Gs,Gm];
 
 % The sensitivity matrix out from the analytical mode shapes:
-
-
-% making the a factor for the stiffness parameters
-for j = 1:nm
-    for kk = 1:np
-        for h = 1:nm
-            if j == h
-                as(j,kk,h) = 0;
-            elseif kk == 1 
-                par = k1;
-                as(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 2
-                par = k2;
-                as(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 3
-                par = k3;
-                as(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 4
-                par = k4;
-                as(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 5
-                par = k5;
+for j = 1:nm % looping over the mode shape
+    for kk = 1:np % looping over the parameters
+        for h = 1:nm % Looping over modes shape included in approximated
+             if j == h 
+                par = pars(kk);
+                as(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
+            elseif j ~= h 
+                par = pars(kk);
                 as(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
             end
            
@@ -170,38 +157,14 @@ end
 
 
 % making the a factor for the mass parameters
-for j = 1:nm
-    for kk = 1:np
-        for h = 1:nm
-             if j == h && kk == 1 
-                par = m1;
+for j = 1:nm % looping over the mode shape
+    for kk = 1:np % looping over the parameters
+        for h = 1:nm % Looping over modes shape included in approximated
+             if j == h 
+                par = parm(kk);
                 am(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
-            elseif j == h && kk == 2
-                par = m2;
-                am(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
-            elseif j == h && kk == 3
-                par = m3;
-                am(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
-            elseif j == h && kk == 4
-                par = m4;
-                am(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
-            elseif j == h && kk == 5
-                par = m5;
-                am(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
-            elseif kk == 1 
-                par = m1;
-                am(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 2
-                par = m2;
-                am(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 3
-                par = m3;
-                am(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 4
-                par = m4;
-                am(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
-            elseif kk == 5
-                par = m5;
+            elseif j ~= h 
+                par = parm(kk);
                 am(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
             end
            
@@ -231,10 +194,10 @@ for j = 1:nm
     ind = ind+5;
 end
 
-% The combined sensivity matrix
+% The combined sensivity matrix of mode shape
 Gmod = [Gs,Gm];
 
-% The big sensivity matrix
+% The sensivity matrix
 G = [Geig;Gmod];
 
 % condition number of G
@@ -257,19 +220,27 @@ Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
 % Difne lambda value:
 lambda = sqrt(0.3437); 
 
-dx = zeros(10,1);
-SSIphi_re = reshape(SSIphi,25,1);
-% Iterazation over the stiffness
+% initial parameters changes
+dx = zeros(size(G,2),1);
+
+% reshape of modeshape to 25x1
+SSIphi_re = reshape(SSIphi,size(SSIphi,1)*size(SSIphi,2),1);
+
+% Iterazation over the parameters
 for ii = 1:100
+    % updated parameters
     k = k+dx(1:5);
     m = m+dx(6:end);
-
+    
+    % stiffness matrix
     for i = 1:4
     K(i,i) = k(i)+k(i+1);
     K(i,i+1) = -k(i+1);
     K(i+1,i) = -k(i+1);
     end
     K(5,5) = k(5);
+    
+    % Mass matrix 
 
     M = [m(1), 0, 0, 0, 0;...
          0, m(2), 0, 0, 0;...
@@ -283,13 +254,15 @@ for ii = 1:100
     % natural frequencies from eigenvalues
     omega = real(sqrt(diag(D)));
     
-    
     % sort frequencies and mode shapes
     [~,iw] = sort(omega);
 
     % natural frequencies [rad/s]
     omegas = omega(iw);
     
+    % Frequencie
+    fn = omegas/(2*pi);
+
     % natural frequencies squared
     omega_squared = omegas.^2.;
 
@@ -309,7 +282,7 @@ for ii = 1:100
             U(l,j) = Us(l,j)/mxVec_x(j);
         end
     end % end normalization
-    
+    Umac(:,:,ii) = U;
     % Residual mode shapes
     rmod(:,ii) = SSIphi_re - reshape(U,25,1);
 
@@ -340,15 +313,37 @@ for ii = 1:100
 
 end
 
-% Convergence plot
-figure
-for j = 1:30
-    hold on
-    plot((r(j,:)))
+% Convergence plot for the relative failure for frequencies
+figure (1)
+hold on
+for j = 1:5
+    err(j,:) = abs(r(j,:))/omegasq_m(j)*100;
+    plot(err(j,:))
 end
 legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
 xlabel('Iterations [-]')
-ylabel('Residual')
+ylabel('Relative error [%]')
+hold off
+
+
+% Display accuracy of mode shapes
+% CrossMAC plot of mode shapes
+for i = 1:100
+    mac=crossMACnm(SSIphi,Umac(:,:,i));
+    for j = 1:5
+        dmac = diag(mac);
+        acc(j,i) = dmac(j)*100;
+    end
+end
+% Convergence plot for the relative failure for mode shapes
+figure (2)
+hold on
+for j = 1:5
+    plot(acc(j,:))
+end
+legend('Mode shape 1', 'Mode shape 2','Mode shape 3', 'Mode shape 4','Mode shape 5')
+xlabel('Iterations [-]')
+ylabel('MAC [%]')
 hold off
 
 %% Calculating new frequencies with the stiffness changes
@@ -461,14 +456,19 @@ disp(strcat('Frequency accuracy,5 : ',num2str(min(SSIFreq(5),fn(5))/max(SSIFreq(
 disp(strcat('Mean frequency accuracy : ',num2str(mean(min(SSIFreq,fn)./max(SSIFreq,fn)*100)),'%'));
 
 % Display accuracy of mode shapes
-[MSacc,TOTacc]=modeshapeacc(SSIphi,U);
+% CrossMAC plot of mode shapes
+mac=crossMAC(U,SSIphi,1,[SSIFreq,fn]);
+dmac = diag(mac);
+disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
+disp(strcat(num2str(mac)));
 disp('----------------------------------------------------------------------')
-disp(strcat('Mode shape accuracy,1 : ',num2str(MSacc(1)*100),'%'));
-disp(strcat('Mode shape accuracy,2 : ',num2str(MSacc(2)*100),'%'));
-disp(strcat('Mode shape accuracy,3 : ',num2str(MSacc(3)*100),'%'));
-disp(strcat('Mode shape accuracy,4 : ',num2str(MSacc(4)*100),'%'));
-disp(strcat('Mode shape accuracy,5 : ',num2str(MSacc(5)*100),'%'));
-disp(strcat('Mean mode shape accuracy : ',num2str(TOTacc*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),2 : ',num2str(dmac(2)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),3 : ',num2str(dmac(3)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
+disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
+disp('----------------------------------------------------------------------')
 
 %% Plotting L curve only for the first iteration
 
