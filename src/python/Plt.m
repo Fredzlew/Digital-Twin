@@ -168,16 +168,6 @@ disp(strcat('Frequency accuracy,4 : ',num2str(min(OMAfreq(4),fn(4))/max(OMAfreq(
 disp(strcat('Frequency accuracy,5 : ',num2str(min(OMAfreq(5),fn(5))/max(OMAfreq(5),fn(5))*100),'%'));
 disp(strcat('Mean frequency accuracy : ',num2str(mean(min(OMAfreq,fn)./max(OMAfreq,fn)*100)),'%'));
 
-% Display accuracy of mode shapes
-[MSacc,TOTacc]=modeshapeacc(OMAphi,U);
-disp('----------------------------------------------------------------------')
-disp(strcat('Mode shape accuracy,1 : ',num2str(MSacc(1)*100),'%'));
-disp(strcat('Mode shape accuracy,2 : ',num2str(MSacc(2)*100),'%'));
-disp(strcat('Mode shape accuracy,3 : ',num2str(MSacc(3)*100),'%'));
-disp(strcat('Mode shape accuracy,4 : ',num2str(MSacc(4)*100),'%'));
-disp(strcat('Mode shape accuracy,5 : ',num2str(MSacc(5)*100),'%'));
-disp(strcat('Mean mode shape accuracy : ',num2str(TOTacc*100),'%'));
-
 
 % Display stiffness matrices and changes in these
 disp('----------------------------------------------------------------------')
