@@ -1,7 +1,7 @@
 function [xp] = VirtualSens(data,modeshapes,num_ms,im)
 
 % Total number of sensors
-ns = size(data,1);
+ns = size(modeshapes,1);
 
 % Total number of time steps
 nt = size(data,2);
@@ -13,7 +13,7 @@ for i = 1:length(im)
 end
 
 % Measured data
-xm = data(im,:);
+xm = data;
 
 % Measured mode shapes used in approximation
 phi_m = modeshapes(im,1:num_ms);

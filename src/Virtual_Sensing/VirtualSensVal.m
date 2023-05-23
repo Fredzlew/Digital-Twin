@@ -1,4 +1,4 @@
-function [xp] = VirtualSens2(data,modeshapes,num_ms,im)
+function [xp] = VirtualSensVal(data,modeshapes,num_ms,im)
 
 % Total number of sensors
 ns = size(data,1);
