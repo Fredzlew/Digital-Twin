@@ -486,8 +486,8 @@ end
 figure (1)
 loglog(Jeps,Jthe)
 grid on
-xlim([10^-4 10^-1+10^-1/2])
-ylim([10^-3 10^-0+10^-0/1.5])
+% xlim([10^-4 10^-1+10^-1/2])
+% ylim([10^-3 10^-0+10^-0/1.5])
 xlabel('norm (Residual)')
 ylabel('norm (Stiffness Change)')
 title('L-curve')
