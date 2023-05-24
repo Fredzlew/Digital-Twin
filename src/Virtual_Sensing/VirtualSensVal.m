@@ -1,4 +1,11 @@
 function [xp] = VirtualSensVal(data,modeshapes,num_ms,im)
+% Inputs:
+% data = data matrix containing all measurements for all locations
+% modeshapes = containing all mode shapes for all locations
+% num_ms = number of mode shapes included in approximation <= length(im)
+% im = index of measured locations
+% Output:
+% xp = displacements at predicted locations
 
 % Total number of sensors
 ns = size(data,1);

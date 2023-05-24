@@ -1,19 +1,23 @@
-function [xp] = VirtualSens(data,modeshapes,num_ms,im)
+function [xp] = VirtualSens(xm,modeshapes,num_ms,im)
+% Inputs:
+% xm = data matrix containing all measurements for measured locations
+% modeshapes = containing all mode shapes for all locations
+% num_ms = number of mode shapes included in approximation <= length(im)
+% im = index of measured locations
+% Output:
+% xp = displacements at predicted locations
 
 % Total number of sensors
 ns = size(modeshapes,1);
 
 % Total number of time steps
-nt = size(data,2);
+nt = size(xm,2);
 
 % Indicies of predicted DOFs
 ip = 1:ns;
 for i = 1:length(im)
     ip = ip(ip~=im(i));
 end
-
-% Measured data
-xm = data;
 
 % Measured mode shapes used in approximation
 phi_m = modeshapes(im,1:num_ms);
