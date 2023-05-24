@@ -219,6 +219,7 @@ Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
 
 % Difne lambda value:
 lambda = sqrt(0.3437); 
+%lambda = sqrt(12.0331);
 
 % initial parameters changes
 dx = zeros(size(G,2),1);
@@ -438,7 +439,7 @@ for i=1:length(omegas)
     end
 end
 
-sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
+sgtitle('Mode shapes','FontSize',20)
 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
@@ -492,7 +493,7 @@ xlabel('norm (Residual)')
 ylabel('norm (Stiffness Change)')
 title('L-curve')
 % Finding the optimal value for lambda
-Val = 111.116;
+Val = 102.716;
 index = find(Jeps >= Val,1);
 lamopt = lambda(index);
 % plotting the  norm to the regularization parameter

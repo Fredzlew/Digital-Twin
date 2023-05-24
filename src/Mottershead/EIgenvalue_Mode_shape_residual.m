@@ -348,7 +348,7 @@ for i=1:length(omegas)
     end
 end
 
-sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
+sgtitle('Mode shapes','FontSize',20)
 
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
@@ -396,8 +396,8 @@ end
 figure (1)
 loglog(Jeps,Jthe)
 grid on
-xlim([10^-4 10^-1+10^-1/2])
-ylim([10^-3 10^-0+10^-0/1.5])
+% xlim([10^-4 10^-1+10^-1/2])
+% ylim([10^-3 10^-0+10^-0/1.5])
 xlabel('norm (Residual)')
 ylabel('norm (Stiffness Change)')
 title('L-curve')
