@@ -1,4 +1,4 @@
-function [xp] = VirtualSensVal(data,modeshapes,num_ms,im)
+function [xp,qt] = VirtualSensVal(data,modeshapes,num_ms,im)
 % Inputs:
 % data = data matrix containing all measurements for all locations
 % modeshapes = containing all mode shapes for all locations
@@ -11,7 +11,7 @@ function [xp] = VirtualSensVal(data,modeshapes,num_ms,im)
 ns = size(data,1);
 
 % Total number of time steps
-nt = size(data,2);
+% nt = size(data,2);
 
 % Indicies of predicted DOFs
 % ip = 1:ns;
@@ -37,4 +37,7 @@ phi_minv = (phi_m'*phi_m)^-1*phi_m';
 %     xp(:,i) = phi_p*phi_minv*xm(:,i);
 % end
 xp = phi_p*phi_minv*xm;
+
+% Calculate modal coordinates
+qt = phi_minv*xm;
 end

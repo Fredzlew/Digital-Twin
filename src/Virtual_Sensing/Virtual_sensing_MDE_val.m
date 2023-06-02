@@ -32,7 +32,7 @@ num_ms = 3;
 im = [2,4,5];
 
 % Calculate displacement at predicted locations
-[xp] = VirtualSensVal(xm,U,num_ms,im);
+[xp,qt] = VirtualSensVal(xm,U,num_ms,im);
 
 % Number of time steps to plot
 nt = 100;
@@ -65,3 +65,22 @@ disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',nu
 % MAE (normalized with respect to the standard deviation)
 MAE = sum(abs(xm(vs,1:nt)-xp(vs,1:nt)))/nt/std(xp(vs,1:nt));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
+
+% Plot the modal coordinates in the frequency domain
+Fs = 100;            % Sampling frequency                    
+T = 1/Fs;            % Sampling period       
+L = size(data,2);    % Length of signal
+t = (0:L-1)*T;       % Time vector
+f = Fs*(0:(L/2))/L;
+
+% Plots
+Y = fft(qt(3,:));
+P2 = abs(Y/L);
+P1 = P2(1:L/2+1);
+P1(2:end-1) = 2*P1(2:end-1);
+
+figure
+plot(f,P1) 
+title("Single-Sided Amplitude Spectrum of S(t)")
+xlabel("f (Hz)")
+ylabel("|P1(f)|")
