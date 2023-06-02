@@ -32,8 +32,9 @@ phi_p = modeshapes(1:ns,1:num_ms);
 phi_minv = (phi_m'*phi_m)^-1*phi_m';
 
 % Calculate the displacements at the predicted locations for each t
-xp = zeros(ns,nt);
-for i = 1:nt
-    xp(:,i) = phi_p*phi_minv*xm(:,i);
-end
+% xp = zeros(ns,nt);
+% for i = 1:nt
+%     xp(:,i) = phi_p*phi_minv*xm(:,i);
+% end
+xp = phi_p*phi_minv*xm;
 end

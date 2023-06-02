@@ -11,7 +11,8 @@ data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
 % data = readmatrix('data_5_6_1.txt')'; % Loading displacement data
 
 fss = data(2:6,:)/1000; % Converting mm to m
-xm = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
+xbase = data(7,:)/1000;
+xm = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]-xbase; % Swap columns due to sensor
 filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
 U = filename.U;
 % U = [0.2338    0.6457    1.0000    1.0000   -0.6471;...
@@ -25,10 +26,10 @@ U = filename.U;
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = 2;
+num_ms = 3;
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [4,5];
+im = [2,4,5];
 
 % Calculate displacement at predicted locations
 [xp] = VirtualSensVal(xm,U,num_ms,im);
