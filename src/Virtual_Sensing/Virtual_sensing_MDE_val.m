@@ -24,11 +24,11 @@ U = filename.U;
 
 %% Virtual sensing part
 %close all;
-% Number of modeshapes included in approximation
-num_ms = 5;
+% Number of modeshapes included in approximation (max length(im))
+num_ms = 3;
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [1,2,3,4,5];
+im = [3,4,5];
 
 % Calculate displacement at predicted locations
 [xp] = VirtualSensVal(xm,U,num_ms,im);
@@ -52,15 +52,15 @@ else
     legend('Actual displacements','Predicted displacements')
 end
 hold off
-title('Displacements at virtual sensor')
+title(['Displacements at virtual sensor:',num2str(vs)])
 xlabel('Time [s]')
 ylabel('Displacement [m]')
 
 %%% Calculate quality indicators %%%
 % TRAC
-TRAC = (xm(vs,1:nt)*xp(vs,1:nt)')^2/(xm(vs,1:nt)*xm(vs,1:nt)'*xp(vs,1:nt)*xp(vs,1:nt)');
-disp(['TRAC value: ',num2str(TRAC)])
+TRAC = (xm(vs,1:nt)*xp(vs,1:nt)')^2/((xm(vs,1:nt)*xm(vs,1:nt)')*(xp(vs,1:nt)*xp(vs,1:nt)'));
+disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(TRAC)])
 
-% MAE (in meters)
-MAE = sum(abs(xm(vs,1:nt)-xp(vs,1:nt)))/nt;
-disp(['MAE value: ',num2str(MAE)])
+% MAE (normalized with respect to the standard deviation)
+MAE = sum(abs(xm(vs,1:nt)-xp(vs,1:nt)))/nt/std(xp(vs,1:nt));
+disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])

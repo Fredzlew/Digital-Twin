@@ -14,10 +14,10 @@ ns = size(data,1);
 nt = size(data,2);
 
 % Indicies of predicted DOFs
-ip = 1:ns;
-for i = 1:length(im)
-    ip = ip(ip~=im(i));
-end
+% ip = 1:ns;
+% for i = 1:length(im)
+%     ip = ip(ip~=im(i));
+% end
 
 % Measured data
 xm = data(im,:);
@@ -26,13 +26,13 @@ xm = data(im,:);
 phi_m = modeshapes(im,1:num_ms);
 
 % Predicted mode shapes
-phi_p = modeshapes([ip,im],1:num_ms);
+phi_p = modeshapes(1:ns,1:num_ms);
 
 % Calculate the psuedo-inverse of the measured mode shapes
 phi_minv = (phi_m'*phi_m)^-1*phi_m';
 
 % Calculate the displacements at the predicted locations for each t
-xp = zeros(length([ip,im]),nt);
+xp = zeros(ns,nt);
 for i = 1:nt
     xp(:,i) = phi_p*phi_minv*xm(:,i);
 end
