@@ -14,21 +14,21 @@ fss = data(2:6,:)/1000; % Converting mm to m
 xm = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]; % Swap columns due to sensor
 filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
 U = filename.U;
-% U = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
-%     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
-%     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
-%     1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
-%     0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
+% U = [0.2338    0.6457    1.0000    1.0000   -0.6471;...
+%     0.5108    1.0000    0.4949   -0.6345    1.0000;...
+%     0.7398    0.6738   -0.8045   -0.4821   -0.9794;...
+%     0.9066   -0.0908   -0.7113    0.9791    0.6360;...
+%     1.0000   -0.7609    0.6006   -0.3793   -0.1715];
 
 
 
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = 3;
+num_ms = 2;
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [3,4,5];
+im = [4,5];
 
 % Calculate displacement at predicted locations
 [xp] = VirtualSensVal(xm,U,num_ms,im);
