@@ -25,16 +25,16 @@ U = filename.U;
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation
-num_ms = 3;
+num_ms = 5;
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [3,4,5];
+im = [1,2,3,4,5];
 
 % Calculate displacement at predicted locations
 [xp] = VirtualSensVal(xm,U,num_ms,im);
 
 % Number of time steps to plot
-nt = 4320000;
+nt = 100;
 
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;
