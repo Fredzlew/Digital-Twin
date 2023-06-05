@@ -15,16 +15,13 @@ addpath(genpath('data_sens'))
 % xbase = data(7,:)/1000;
 % xm = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]-xbase; % Swap columns due to sensor
 % Simulated data
-file = load('data_sim_newmark_jan_damp.mat');
+file = load('1_data_sim_newmark_jan_damp.mat');
 xm = file.dis_new;
-% Modeshapes for simulated data
-U = [ 0.2448    0.6732    1.0000    1.0000    0.4947;...
-    0.5318    1.0000    0.3599   -0.7952   -0.8160;...
-    0.7614    0.5670   -0.9105   -0.1746    1.0000;...
-    0.9197   -0.2532   -0.5326    0.9118   -0.8649;...
-    1.0000   -0.8661    0.7245   -0.5096    0.3364];
-% Manually create timesteps
-data = linspace(0,2300,2300000);
+filename = load('modelprop_jan.mat');
+U = filename.U;
+
+% Manually create timesteps (stepsize dt=0.001)
+data = linspace(0,size(xm,2)*0.001,size(xm,2));
 
 % Modeshapes from mottershead for High damping data
 % U = [0.2338    0.6457    1.0000    1.0000   -0.6471;...
@@ -47,7 +44,7 @@ im = [3,4,5];
 [xp,qt] = VirtualSensVal(xm,U,num_ms,im);
 
 % Number of time steps to plot
-nt = 10000;
+nt = 100000;
 
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;

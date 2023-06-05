@@ -4,8 +4,8 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 %--------------------------------------------------------------------------
 %for i = 1:1000
 % Set global random seed
-rng(4)
-i = 2;
+rng(1)
+i = 1;
 filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
