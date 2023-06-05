@@ -50,7 +50,7 @@ Modes = []
 Damp = []
 for i in range(1000):
     data_sim = pjoin(data_dir, f'{i+1}_data_sim_newmark_jan_damp.mat')
-    
+    #data_sim = pjoin(data_dir, f'{i+1}_data_sim_newmark_jan_damp.mat')
     # Loading simulated data instead:
     data = sio.loadmat(data_sim)
     data = np.transpose(data["dis_new"])
