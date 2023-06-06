@@ -186,14 +186,25 @@ end % end normalization
 % saving the parameters
 OMAfreq=SSIFreq;
 OMAphi=SSIphi;
-
+if x == 1
 if loop == 1
-    save('.\data\costfunupdateSSIfreq_py.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data\costfunctionsdata\costfunupdateSSIfreq_py_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
 elseif loop == 2
-    save('.\data\costfunupdateSSImode_py.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+    save('.\data\costfunctionsdata\costfunupdateSSImode_py_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
 elseif loop == 3
-    save('.\data\costfunupdateSSIfreqmode_py.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data\costfunctionsdata\costfunupdateSSIfreqmode_py_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
 elseif loop == 4
-    save('.\data\costfunupdateSSIfreqmodeEILJAN_py.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
+    save('.\data\costfunctionsdata\costfunupdateSSIfreqmodeEILJAN_py_high.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
+end
+elseif x == 2
+if loop == 1
+    save('.\data\costfunctionsdata\costfunupdateSSIfreq_py_low.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+elseif loop == 2
+    save('.\data\costfunctionsdata\costfunupdateSSImode_py_low.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+elseif loop == 3
+    save('.\data\costfunctionsdata\costfunupdateSSIfreqmode_py_low.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+elseif loop == 4
+    save('.\data\costfunctionsdata\costfunupdateSSIfreqmodeEILJAN_py_low.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
+end
 end
 end

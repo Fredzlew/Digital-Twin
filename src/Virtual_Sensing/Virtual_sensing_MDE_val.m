@@ -5,10 +5,10 @@ clear;clc;close all
 addpath(genpath('data_sens'))
 
 % Load data
-% High damping
-% data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
 % Low damping
 % data = readmatrix('data_5_6_1.txt')'; % Loading displacement data
+% High damping
+% data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
 % filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
 % U = filename.U;
 % fss = data(2:6,:)/1000; % Converting mm to m

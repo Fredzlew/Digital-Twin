@@ -7,29 +7,29 @@ clc
 addpath(genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'),genpath('data'),genpath('Modal_parameters_anela'))
 
 % measuered natural frequencies from OMA SSI-cov 
-% SSIFreq = readNPY('SSIomega_5_2_1.npy');
-SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
+SSIFreq = readNPY('SSIomega_5_2_1.npy');
+% SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
 
 SSIomega = SSIFreq * 2 * pi;
 % squared
 omegasq_m = SSIomega.^2;
 
-%SSIphi = readNPY('SSIphi_5_2_1.npy');
-SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
-    0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
-    0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
-    1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
-    0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
+SSIphi = readNPY('SSIphi_5_2_1.npy');
+% SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
+%     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
+%     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
+%     1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
+%     0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
 
 
 
 %  Analytical natural frequencies
 % loading the model parameters
-% filename = load('modelprop_jan.mat'); 
+filename = load('modelprop_jan.mat'); 
 
 % stiffness parameters
-% k = filename.k';
-k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
+k = filename.k';
+% k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
 
 % stiffness matrix (stiffness parameters in the initial model)
 for i = 1:4
@@ -40,13 +40,13 @@ end
 K(5,5) = k(5);
 
 % Mass matrix
-% M = filename.M;
+M = filename.M;
 
-M = [2.3553, 0, 0, 0, 0;...
-     0, 2.3690, 0, 0, 0;...
-     0, 0, 2.3690, 0, 0;...
-     0, 0, 0, 2.3690, 0;...
-     0, 0, 0, 0, 2.4467];
+% M = [2.3553, 0, 0, 0, 0;...
+%      0, 2.3690, 0, 0, 0;...
+%      0, 0, 2.3690, 0, 0;...
+%      0, 0, 0, 2.3690, 0;...
+%      0, 0, 0, 0, 2.4467];
 
 % eigenvalue problem
 [U,D] = eig(K,M);
@@ -124,13 +124,21 @@ end % end normalization
 % end
 
 % The sensitivity matrix out from the analytical mode shapes:
-syms k1 k2 k3 k4 k5 
+syms k1 k2 k3 k4 k5 m1 m2 m3 m4 m5
+
+Msym = [m1,0,0,0,0;0,m2,0,0,0;0,0,m3,0,0;0,0,0,m4,0;0,0,0,0,m5];
 
 Ksym = [k1+k2,-k2,0,0,0;-k2,k2+k3,-k3,0,0;0,-k3,k3+k4,-k4,0;0,0,-k4,k4+k5,-k5;0,0,0,-k5,k5];
 
 
 % number of modes
 nm = length(SSIomega);
+
+% number of parameters
+np = length(K);
+
+pars = [k1,k2,k3,k4,k5];
+parm = [m1,m2,m3,m4,m5];
 
 % The sensitivity matrix out from the analytical mode shapes:
 for j = 1:nm % looping over the mode shape

@@ -472,7 +472,7 @@ disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
 
 % Save updated system matrices
-save('.\Virtual_Sensing\data_sens\Eigenvalue_modeshape_residual_stiffmass.mat','U','fn');
+save('..\Virtual_Sensing\data_sens\Eigenvalue_modeshape_residual_stiffmass.mat','U','fn');
 %% Plotting L curve only for the first iteration
 
 % plotting

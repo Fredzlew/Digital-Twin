@@ -330,7 +330,7 @@ disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
 
-save('.\data\Eigenvalue_residual.mat','Knew');
+save('.\data_mot\Eigenvalue_residual.mat','Knew');
 %% Plotting L curve only for the first iteration
 
 % plotting
