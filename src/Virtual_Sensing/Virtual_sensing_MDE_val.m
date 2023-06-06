@@ -15,10 +15,11 @@ addpath(genpath('data_sens'))
 % xbase = data(7,:)/1000;
 % xm = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]-xbase; % Swap columns due to sensor
 % Simulated data
-file = load('1_data_sim_newmark_jan_damp.mat');
+% file = load('1_data_sim_newmark_jan_damp.mat');
+file = load('..\data\1_data_sim_newmark_jan.mat');
 xm = file.dis_new;
-filename = load('modelprop_jan.mat');
-U = filename.U;
+filename = load('..\data\modelprop_jan.mat');
+U = filename.U,1;
 
 % Manually create timesteps (stepsize dt=0.001)
 data = linspace(0,size(xm,2)*0.001,size(xm,2));
@@ -35,7 +36,7 @@ data = linspace(0,size(xm,2)*0.001,size(xm,2));
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = 3;
+num_ms = 2;
 
 % Index of measured locations (1 = bottom, 5 = top)
 im = [3,4,5];
@@ -44,7 +45,7 @@ im = [3,4,5];
 [xp,qt] = VirtualSensVal(xm,U,num_ms,im);
 
 % Number of time steps to plot
-nt = 100000;
+nt = 1000;
 
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;
@@ -83,7 +84,7 @@ t = (0:L-1)*T;       % Time vector
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(qt(3,:));
+Y = fft(qt(2,:));
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
