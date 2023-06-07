@@ -36,7 +36,7 @@ data = linspace(0,size(xm,2)*0.001,size(xm,2));
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = 3;
+num_ms = 2;
 
 % Index of measured locations (1 = bottom, 5 = top)
 im = [3,4,5];
@@ -48,7 +48,7 @@ im = [3,4,5];
 nt = 1000;
 
 % Show displacements for # virtual sensor (1 = bottom)
-vs = 3;
+vs = 1;
 
 % Plot actual displacements vs predicted displacements
 figure
@@ -73,18 +73,18 @@ TRAC = (xm(vs,:)*xp(vs,:)')^2/((xm(vs,:)*xm(vs,:)')*(xp(vs,:)*xp(vs,:)'));
 disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(TRAC)])
 
 % MAE (normalized with respect to the standard deviation)
-MAE = sum(abs(xm(vs,:)-xp(vs,:)))/nt/std(xp(vs,:));
+MAE = sum(abs(xm(vs,:)-xp(vs,:)))/size(xm,2)/std(xp(vs,:));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
 
 % Plot the modal coordinates in the frequency domain
-Fs = 100;            % Sampling frequency                    
+Fs = 1000;           % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
 L = size(data,2);    % Length of signal
 t = (0:L-1)*T;       % Time vector
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(qt(2,:));
+Y = fft(qt(1,:));
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
@@ -93,4 +93,5 @@ figure
 plot(f,P1) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
+xlim([0 20])
 ylabel("|P1(f)|")

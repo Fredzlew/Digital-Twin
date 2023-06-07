@@ -6,14 +6,14 @@ addpath(genpath('data'),genpath('functions'),genpath('OMA'))
 % Set global random seed
 rng(1)
 i = 1;
-filename = load('modelprop_jan.mat'); % Loads mass and stiffness matrices
+filename = load('.\data\modelprop_jan.mat'); % Loads mass and stiffness matrices
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 [Us, Values]=eig(K,M); % Solve eigenvalue problem
 omegas=sqrt(diag(Values)); % undamped natural frequency
 omega_min = omegas(1); % Minimum natural frequency [rad/s]
 C=0; % Damping matrix
-f=2e1*randn(5,1.2e7);  
+f=2e1*randn(1,1.2e7).*ones(5,1);  
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initial conditions
@@ -38,7 +38,7 @@ beta = 0.25;
     dt,N,f,beta,gamma);
 
 % Add noise to response
-dis_new=x_new+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
+dis_new=x_new; %+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
 
 %save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
 %filename2 = sprintf('python\data\%04d_data_sim_newmark_jan_damp.mat',i);
