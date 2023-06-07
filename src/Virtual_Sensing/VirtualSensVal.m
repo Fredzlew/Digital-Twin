@@ -30,6 +30,8 @@ phi_p = modeshapes(1:ns,1:num_ms);
 
 % Calculate the psuedo-inverse of the measured mode shapes
 phi_minv = (phi_m'*phi_m)^-1*phi_m';
+% phi_minv = phi_m'*inv(phi_m*phi_m')
+% phi_minv = pinv(phi_m)
 
 % Calculate modal coordinates
 qt = phi_minv*xm;

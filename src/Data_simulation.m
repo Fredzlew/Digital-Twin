@@ -11,7 +11,19 @@ M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 [Us, Values]=eig(K,M); % Solve eigenvalue problem
 omegas=sqrt(diag(Values)); % undamped natural frequency
-omega_min = omegas(1); % Minimum natural frequency [rad/s]
+% normalization
+MVec_x = max(Us); % start normalization
+mVec_x = min(Us);
+for j = 1:5
+    if abs(MVec_x(j)) > abs(mVec_x(j))
+        mxVec_x(j) = MVec_x(j);
+    else
+        mxVec_x(j) = mVec_x(j);
+    end
+    for l = 1:5
+        U(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
 C=0; % Damping matrix
 f=2e1*randn(1,1.2e7).*ones(5,1);  
  
@@ -42,7 +54,7 @@ dis_new=x_new; %+0.03*x_new.*randi([-1,1],size(x_new,1),size(x_new,2));
 
 %save('.\data\data_sim_newmark_jan_damp.mat','dis_new','zetas');
 %filename2 = sprintf('python\data\%04d_data_sim_newmark_jan_damp.mat',i);
-save(['data\' num2str(i) '_data_sim_newmark_jan.mat'],'dis_new');
+save(['data\' num2str(i) '_data_sim_newmark_jan.mat'],'dis_new','U');
 % Periodic error
 PERFEJL = 1/12*(omegas(5)*dt)^2;
 
