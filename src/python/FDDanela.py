@@ -23,7 +23,7 @@ import scipy.io as sio
 %matplotlib qt
 
 # ======== PRE-PROCESSING =====================================================
-dataset = float(input('Which data set (1 (data_5_2_1) and 2 (data_5_6_1)? '))
+dataset = float(input('Which data set (1 (data_1_2_1) and 2 (data_1_6_1)? '))
 # To open a .txt file create a variable containing the path to the file
 if dataset == 1:
     _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_5_2_1.txt" # Path to the txt file
@@ -92,19 +92,19 @@ MS_EFDD = Res_EFDD['Mode Shapes'].real
 # Saving parameters
 if dataset == 1:
     # Anela data_5_2_1
-    np.save("data\Modal_parameters_anela\FDDomega_5_2_1",Res_EFDD["Frequencies"])
-    np.save("data\Modal_parameters_anela\FDDphi_5_2_1",MS_EFDD )
-    np.save("data\Modal_parameters_anela\FDDdamp_5_2_1",Res_EFDD["Damping"] )
-    np.save("data\Modal_parameters_anela\FDDPSD_5_2_1",Result["Singular Values"])
-    np.save("data\Modal_parameters_anela\FDDPSDfreq_5_2_1",f)
+    np.save("data\Modal_parameters_anela\FDDomega_1_2_1",Res_EFDD["Frequencies"])
+    np.save("data\Modal_parameters_anela\FDDphi_1_2_1",MS_EFDD )
+    np.save("data\Modal_parameters_anela\FDDdamp_1_2_1",Res_EFDD["Damping"] )
+    np.save("data\Modal_parameters_anela\FDDPSD_1_2_1",Result["Singular Values"])
+    np.save("data\Modal_parameters_anela\FDDPSDfreq_1_2_1",f)
 
 elif dataset == 2:
     # Anela data_5_6_1
-    np.save("data\Modal_parameters_anela\FDDomega_5_6_1",Res_EFDD["Frequencies"])
-    np.save("data\Modal_parameters_anela\FDDphi_5_6_1",MS_EFDD )
-    np.save("data\Modal_parameters_anela\FDDdamp_5_6_1",Res_EFDD["Damping"] )
-    np.save("data\Modal_parameters_anela\FDDPSD_5_6_1",Result["Singular Values"])
-    np.save("data\Modal_parameters_anela\FDDPSDfreq_5_6_1",f)
+    np.save("data\Modal_parameters_anela\FDDomega_1_6_1",Res_EFDD["Frequencies"])
+    np.save("data\Modal_parameters_anela\FDDphi_1_6_1",MS_EFDD )
+    np.save("data\Modal_parameters_anela\FDDdamp_1_6_1",Res_EFDD["Damping"] )
+    np.save("data\Modal_parameters_anela\FDDPSD_1_6_1",Result["Singular Values"])
+    np.save("data\Modal_parameters_anela\FDDPSDfreq_1_6_1",f)
     
 
 # Grab Currrent Time After Running the Code

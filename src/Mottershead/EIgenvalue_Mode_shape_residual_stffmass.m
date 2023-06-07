@@ -7,14 +7,14 @@ clc
 addpath(genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'),genpath('data'),genpath('Modal_parameters_anela'))
 
 % measuered natural frequencies from OMA SSI-cov 
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
+SSIFreq = readNPY('SSIomega_5_6_1.npy');
 % SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
 
 SSIomega = SSIFreq * 2 * pi;
 % squared
 omegasq_m = SSIomega.^2;
 
-SSIphi = readNPY('SSIphi_5_2_1.npy');
+SSIphi = readNPY('SSIphi_5_6_1.npy');
 % SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
 %     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
 %     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
@@ -25,7 +25,7 @@ SSIphi = readNPY('SSIphi_5_2_1.npy');
 
 %  Analytical natural frequencies
 % loading the model parameters
-filename = load('modelprop_jan.mat'); 
+filename = load('..\data\modelprop_jan.mat'); 
 
 % stiffness parameters
 k = filename.k';
