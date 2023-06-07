@@ -6,44 +6,35 @@ addpath(genpath('data_sens'))
 
 % Load data
 % Low damping
-% data = readmatrix('data_5_6_1.txt')'; % Loading displacement data
+data = readmatrix('data_1_6_1.txt')'; % Loading displacement data
 % High damping
 % data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
-% filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
-% U = filename.U;
-% fss = data(2:6,:)/1000; % Converting mm to m
-% xbase = data(7,:)/1000;
-% xm = [fss(5,:);fss(4,:);fss(3,:);fss(2,:);fss(1,:)]-xbase; % Swap columns due to sensor
+filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
+U = filename.U;
+fss = data(2:6,:)/1000; % Converting mm to m
+xbase = data(7,:)/1000; % Converting mm to m
+xm = flip(fss,1)-xbase; % Swap rows due to sensor
+
 % Simulated data
-file = load('..\data\1_data_sim_newmark_jan.mat');
-xm = file.dis_new;
-U = file.U;
-
-% Manually create timesteps (stepsize dt=0.001)
-data = linspace(0,size(xm,2)*0.001,size(xm,2));
-
-% Modeshapes from mottershead for High damping data
-% U = [0.2338    0.6457    1.0000    1.0000   -0.6471;...
-%     0.5108    1.0000    0.4949   -0.6345    1.0000;...
-%     0.7398    0.6738   -0.8045   -0.4821   -0.9794;...
-%     0.9066   -0.0908   -0.7113    0.9791    0.6360;...
-%     1.0000   -0.7609    0.6006   -0.3793   -0.1715];
-
-
+% file = load('..\data\1_data_sim_newmark_jan.mat');
+% xm = file.dis_new;
+% U = file.U;
+% % Manually create timesteps (stepsize dt=0.001)
+% data = linspace(0,size(xm,2)*0.001,size(xm,2));
 
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = 1;
+num_ms = 3;
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [5];
+im = [2,3,5];
 
 % Calculate displacement at predicted locations
 [xp,qt] = VirtualSensVal(xm,U,num_ms,im);
 
 % Number of time steps to plot
-nt = 10000;
+nt = 1000;
 
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;
