@@ -6,7 +6,7 @@ addpath(genpath('data_sens'))
 
 % Load data
 % Low damping
-data = readmatrix('data_1_6_1.txt')'; % Loading displacement data
+data = readmatrix('data_5_6_1.txt')'; % Loading displacement data
 % High damping
 % data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
 filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
@@ -16,7 +16,7 @@ xbase = data(7,:)/1000; % Converting mm to m
 xm = flip(fss,1)-xbase; % Swap rows due to sensor
 
 % Simulated data
-% file = load('..\data\1_data_sim_newmark_jan.mat');
+%file = load('..\data\1_data_sim_newmark_jan.mat');
 % xm = file.dis_new;
 % U = file.U;
 % % Manually create timesteps (stepsize dt=0.001)
@@ -66,7 +66,7 @@ MAE = sum(abs(xm(vs,:)-xp(vs,:)))/size(xm,2)/std(xp(vs,:));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
 
 % Plot the modal coordinates in the frequency domain
-Fs = 1000;           % Sampling frequency                    
+Fs = 100;           % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
 L = size(data,2);    % Length of signal
 t = (0:L-1)*T;       % Time vector
