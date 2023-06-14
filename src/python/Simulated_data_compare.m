@@ -198,6 +198,10 @@ han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
+S = [{'height','numphi1','numphi2','numphi3','numphi4','numphi5','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};num2cell(x'),num2cell(phi),num2cell([zeros(1,length(OMAphi))  ;OMAphi]),num2cell([0;OMAfreq])];
+T = array2table([num2cell(x'),num2cell(phi),num2cell([zeros(1,length(OMAphi))  ;OMAphi]),num2cell([0;OMAfreq])]);
+T.Properties.VariableNames(1:12) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
+
 % Frequency accaruancy
 disp(strcat('Frequency accuracy,1 : ',num2str(min(OMAfreq(1),fn(1))/max(OMAfreq(1),fn(1))*100),'%'));
 disp(strcat('Frequency accuracy,2 : ',num2str(min(OMAfreq(2),fn(2))/max(OMAfreq(2),fn(2))*100),'%'));
@@ -212,12 +216,15 @@ dmac = diag(mac);
 if MODE==1
     disp('Modal Assurance Criterion between Numerical modeshapes and SSIcov  : ')
     disp(strcat(num2str(mac)));
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_vs_simulated.xlsm')
 elseif MODE==2
     disp('Modal Assurance Criterion between Numerical modeshapes and SSIdat  : ')
     disp(strcat(num2str(mac)));
+    writecell(S,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIdat_vs_simulated.xlsm')
 elseif MODE == 3
     disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
     disp(strcat(num2str(mac)));
+    writecell(S,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_FDD_vs_simulated.xlsm')
 end
 disp('----------------------------------------------------------------------')
 disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
@@ -227,4 +234,6 @@ disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
 disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
+
+
 
