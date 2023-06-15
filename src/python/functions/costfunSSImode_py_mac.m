@@ -1,4 +1,4 @@
-function J=costfunSSImode_py(k)
+function J=costfunSSImode_py_mac(k)
 % Mass matrix
 M = [2.3553        0         0         0         0
          0    2.3690         0         0         0
@@ -46,5 +46,5 @@ for j = 1:5
 end % end normalization
 mac=crossMACnoplot(U,phiOMA);
 dmac = diag(mac);
-J=sum(sum((abs(U)-abs(phiOMA)).^2));
+J=5-sum(dmac);
 end
