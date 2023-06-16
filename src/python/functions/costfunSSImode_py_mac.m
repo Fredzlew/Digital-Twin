@@ -46,5 +46,5 @@ for j = 1:5
 end % end normalization
 mac=crossMACnoplot(U,phiOMA);
 dmac = diag(mac);
-J=(5-sum(dmac))^2;
+J=(length(dmac)-sum(dmac))^2;
 end
