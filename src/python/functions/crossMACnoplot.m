@@ -17,8 +17,8 @@ function MAC = crossMAC(modeShape1,modeShape2)
 MAC = zeros(numMode1,numMode2,'double'); % Initialize MAC matrix
 for mode1 = 1:numMode1    
     for mode2 = 1:numMode2
-        MAC(mode1,mode2) = abs(modeShape1(:,mode1)'*modeShape2(:,mode2))/ ...
-                           sqrt(abs((modeShape1(:,mode1)'*modeShape1(:,mode1))*(modeShape2(:,mode2)'*modeShape2(:,mode2))));                          
+        MAC(mode1,mode2) = abs(modeShape1(:,mode1)'*modeShape2(:,mode2))^2/ ...
+                          (abs((modeShape1(:,mode1)'*modeShape1(:,mode1))*(modeShape2(:,mode2)'*modeShape2(:,mode2))));                          
     end   
 end
 
