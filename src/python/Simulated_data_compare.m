@@ -235,5 +235,30 @@ disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
 
+% CrossMAC plot of mode shapes
+mac=MACnoplot(U,OMAphi);
+dmac = diag(mac);
+if MODE==1
+    disp('Modal Assurance Criterion between Numerical modeshapes and SSIcov  : ')
+    disp(strcat(num2str(mac)));
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_vs_simulated.xlsm')
+elseif MODE==2
+    disp('Modal Assurance Criterion between Numerical modeshapes and SSIdat  : ')
+    disp(strcat(num2str(mac)));
+    writecell(S,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIdat_vs_simulated.xlsm')
+elseif MODE == 3
+    disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
+    disp(strcat(num2str(mac)));
+    writecell(S,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_FDD_vs_simulated.xlsm')
+end
+disp('----------------------------------------------------------------------')
+disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),2 : ',num2str(dmac(2)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),3 : ',num2str(dmac(3)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
+disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
+disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
+disp('----------------------------------------------------------------------')
+
 
 
