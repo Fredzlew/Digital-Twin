@@ -5,15 +5,19 @@ clear;clc;close all
 addpath(genpath('data_sens'))
 
 % Load data
-% Low damping
-data = readmatrix('data_5_6_1.txt')'; % Loading displacement data
-% High damping
+% No damping
+data = readmatrix('..\data\Anela\data.txt'); % Loading displacement data
+data = downsample(data,2)';
+xm = readNPY('..\python\data\Modal_parameters_anela\data_nodamp_filtdata.npy')'/1000;
+
 % data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
-filename = load('Eigenvalue_modeshape_residual_stiffmass.mat');
+filename = load('data_sens\Eigenvalue_modeshape_residual_stiff_nodamp.mat');
 U = filename.U;
-fss = data(2:6,:)/1000; % Converting mm to m
-xbase = data(7,:)/1000; % Converting mm to m
-xm = flip(fss,1)-xbase; % Swap rows due to sensor
+% fss = data(2:6,:)/1000; % Converting mm to m
+% xbase = data(7,:)/1000; % Converting mm to m
+% xm = flip(fss,1)-xbase; % Swap rows due to sensor
+
+
 
 % Simulated data
 %file = load('..\data\1_data_sim_newmark_jan.mat');
@@ -25,7 +29,7 @@ xm = flip(fss,1)-xbase; % Swap rows due to sensor
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = 3;
+num_ms = [1,2,3];
 
 % Index of measured locations (1 = bottom, 5 = top)
 im = [2,3,5];
@@ -34,7 +38,7 @@ im = [2,3,5];
 [xp,qt] = VirtualSensVal(xm,U,num_ms,im);
 
 % Number of time steps to plot
-nt = 1000;
+nt = 500;
 
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;
@@ -66,7 +70,7 @@ MAE = sum(abs(xm(vs,:)-xp(vs,:)))/size(xm,2)/std(xp(vs,:));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
 
 % Plot the modal coordinates in the frequency domain
-Fs = 100;           % Sampling frequency                    
+Fs = 50;           % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
 L = size(data,2);    % Length of signal
 t = (0:L-1)*T;       % Time vector

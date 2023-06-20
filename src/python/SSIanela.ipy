@@ -40,15 +40,14 @@ elif dataset == 2:
 # open the file with pandas and create a dataframe
 # N.B. whatchout for header, separator and remove time column if present
 
-data = pd.read_csv(_file, header=1, delim_whitespace=True, index_col=False) 
+data = pd.read_csv(_file, header=0, delim_whitespace=True, index_col=False) 
 data = data.to_numpy()
 
-# Removing the time column 
-data = np.delete(data, 0, 1)
-data = np.delete(data, 5, 1)
+# remove all other columns
+data = data[:,[1,2,3,4,5]]
 
 # Swap the sensors because the sensor 1 is at the top
-data[:,[4,3,2,1,0]] = data[:,[0,1,2,3,4]]
+data = np.flip(data,1)
 
 
 # Sampling frequency

@@ -7,19 +7,14 @@ clc
 addpath(genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'),genpath('data'),genpath('Modal_parameters_anela'))
 
 % measuered natural frequencies from OMA SSI-cov 
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
-% SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
+SSIFreq = readNPY('..\python\data\Modal_parameters_anela\SSIfreq_nodamp.npy');
 
 SSIomega = SSIFreq * 2 * pi;
 % squared
 omegasq_m = SSIomega.^2;
 
-SSIphi = readNPY('SSIphi_5_2_1.npy');
-% SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
-%     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
-%     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
-%     1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
-%     0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
+SSIphi = readNPY('..\python\data\Modal_parameters_anela\SSIphi_nodamp.npy');
+
 
 
 
@@ -29,7 +24,6 @@ filename = load('modelprop_jan.mat');
 
 % stiffness parameters
 k = filename.k';
-% k = [4.0700; 3.2289; 3.3756; 3.5224; 3.6740]*1e3;
 
 % stiffness matrix (stiffness parameters in the initial model)
 for i = 1:4
@@ -42,11 +36,6 @@ K(5,5) = k(5);
 % Mass matrix
 M = filename.M;
 
-% M = [2.3553, 0, 0, 0, 0;...
-%      0, 2.3690, 0, 0, 0;...
-%      0, 0, 2.3690, 0, 0;...
-%      0, 0, 0, 2.3690, 0;...
-%      0, 0, 0, 0, 2.4467];
 
 % eigenvalue problem
 [U,D] = eig(K,M);
@@ -379,6 +368,9 @@ disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
 disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
+
+% Save updated system matrices
+save('..\Virtual_Sensing\data_sens\Eigenvalue_modeshape_residual_stiff_nodamp.mat','U','fn');
 
 %% Plotting L curve only for the first iteration
 

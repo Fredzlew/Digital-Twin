@@ -23,10 +23,10 @@ ns = size(data,1);
 xm = data(im,:);
 
 % Measured mode shapes used in approximation
-phi_m = modeshapes(im,1:num_ms);
+phi_m = modeshapes(im,num_ms);
 
 % Predicted mode shapes
-phi_p = modeshapes(1:ns,1:num_ms);
+phi_p = modeshapes(1:ns,num_ms);
 
 % Calculate the psuedo-inverse of the measured mode shapes
 phi_minv = (phi_m'*phi_m)^-1*phi_m';
