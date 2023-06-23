@@ -29,10 +29,10 @@ U = filename.U;
 %% Virtual sensing part
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = [1,2,3];
+num_ms = [1,2,3,4,5];
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [2,3,5];
+im = [1,2,3,4,5];
 
 % Calculate displacement at predicted locations
 [xp,qt] = VirtualSensVal(xm,U,num_ms,im);
@@ -77,7 +77,7 @@ t = (0:L-1)*T;       % Time vector
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(qt(3,:)); % mode vi plotter
+Y = fft(qt(1,:)); % mode vi plotter
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);

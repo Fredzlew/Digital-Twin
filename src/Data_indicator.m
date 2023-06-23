@@ -15,12 +15,12 @@ end
 
 % Using filter data
 data = downsample(data',2)';
-xm = readNPY('..\python\data\Modal_parameters_anela\data_nodamp_filtdata.npy')'/1000;
+xm = readNPY('.\python\data\Modal_parameters_anela\data_nodamp_filtdata.npy')'/1000;
 
 %% FFT of the data
 
 % modal coordinates
-phi_m = readNPY('..\python\data\Modal_parameters_anela\SSIphi_nodamp.npy');
+phi_m = readNPY('.\python\data\Modal_parameters_anela\SSIphi_nodamp.npy');
 % Calculate the psuedo-inverse of the measured mode shapes
 phi_minv = (phi_m'*phi_m)^-1*phi_m';
 % phi_minv = phi_m'*inv(phi_m*phi_m')
@@ -38,7 +38,7 @@ t = data(1,:);       % Time vector
 f = Fs*(0:(L/2))/L; % frequency domain
 
 % Plots
-Y = fft(xm(2,:)); % mode vi plotter
+Y = fft(qt(1,:)); % mode vi plotter
 P2 = abs(Y/L); % two-sided spectrum
 P1 = P2(1:L/2+1); % single-sided amplitude spectrum P1
 P1(2:end-1) = 2*P1(2:end-1);
