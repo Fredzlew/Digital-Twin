@@ -23,7 +23,7 @@ SSIphi = readNPY('..\python\data\Modal_parameters_anela\SSIphi_nodamp.npy');
 filename = load('modelprop_jan.mat'); 
 
 % stiffness parameters
-k = filename.k';
+k = diag(filename.K);
 
 % stiffness matrix (stiffness parameters in the initial model)
 for i = 1:4
@@ -240,6 +240,9 @@ for ii = 1:100
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r(:,ii);
 
 end
+% requirement
+req = rank(G'*Weps*G) == size(G,2);
+disp(req)
 
 % Convergence plot
 figure
