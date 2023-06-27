@@ -238,7 +238,7 @@ for ii = 1:100
     
     % the difference with regularization
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r(:,ii);
-
+GNEW(:,:,ii) = G;
 end
 % requirement
 req = rank(G'*Weps*G) == size(G,2);
