@@ -150,9 +150,9 @@ con = cond(G);
 
 % symmetric weighting matrix
 V = ones(size(G,1),1);
-%Weps = diag(omegasq_m)^-2;
-V(1) = 1;
-V(6:end) = 1000;
+%Weps = diag([omegasq_m;reshape(SSIphi,25,1)*100])^-2;
+%V(1) = 1;
+%V(6:end) = 1000;
 Weps = eye(size(G,1)).*V;
 
 % a simple version of the parameter weighting matrix

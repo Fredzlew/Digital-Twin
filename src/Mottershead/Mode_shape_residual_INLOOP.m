@@ -188,7 +188,7 @@ Wtheta = mean(diag(Gamma))/mean(diag(Gamma^-1))*Gamma^-1;
 dx = zeros(length(k),1);
 SSIphi_re = reshape(SSIphi,25,1);
 % Iterazation over the stiffness
-for ii = 1:100
+for ii = 1:10
     k = k+dx;
 
     for i = 1:4
@@ -227,6 +227,61 @@ for ii = 1:100
     % Residual
     r(:,ii) = SSIphi_re - reshape(U,25,1);
     disp(sum(abs(r(:,ii))))
+
+    % New sensitivity matrix
+    syms k1 k2 k3 k4 k5 m1 m2 m3 m4 m5
+    
+    Msym = [m1,0,0,0,0;0,m2,0,0,0;0,0,m3,0,0;0,0,0,m4,0;0,0,0,0,m5];
+    
+    Ksym = [k1+k2,-k2,0,0,0;-k2,k2+k3,-k3,0,0;0,-k3,k3+k4,-k4,0;0,0,-k4,k4+k5,-k5;0,0,0,-k5,k5];
+    
+    
+    % number of modes
+    nm = length(SSIomega);
+    
+    % number of parameters
+    np = length(K);
+    
+    pars = [k1,k2,k3,k4,k5];
+    parm = [m1,m2,m3,m4,m5];
+    
+    % The sensitivity matrix out from the analytical mode shapes:
+    for j = 1:nm % looping over the mode shape
+        for kk = 1:np % looping over the parameters
+            for h = 1:nm % Looping over modes shape included in approximated
+                 if j == h 
+                    par = pars(kk);
+                    as(j,kk,h) = -1/2 * U(:,j)'*(diff(Msym,par))*U(:,j);
+                elseif j ~= h 
+                    par = pars(kk);
+                    as(j,kk,h) = (U(:,h)'*(-omega_squared(j)*diff(Msym,par)+diff(Ksym,par))*U(:,j))/(omega_squared(j)-omega_squared(h));
+                end
+               
+            end
+        end
+    end
+    
+    G = zeros(25,5);
+    % now finding the sensivity matrix for the stiffness parameters
+    ind = 1;
+    b1 = zeros(5,1);
+    b = zeros(5,1);
+    for j = 1:nm
+        for kk = 1:np
+            for h = 1:nm
+              b1 = as(j,kk,h)*U(:,h);
+              b = b+b1;
+              if h == nm
+                G(ind,kk) = b(1);
+                G(ind+1,kk) = b(2);
+                G(ind+2,kk) = b(3);
+                G(ind+3,kk) = b(4);
+                G(ind+4,kk) = b(5);
+              end
+            end
+        end
+        ind = ind+5;
+    end
 
     % Difne lambda value:
     lambda =  sqrt(0.0143);  

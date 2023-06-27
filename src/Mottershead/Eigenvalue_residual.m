@@ -7,19 +7,14 @@ clc
 addpath(genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'),genpath('data'),genpath('Modal_parameters_anela'))
 
 % measuered natural frequencies from OMA SSI-cov 
-SSIFreq = readNPY('SSIomega_5_2_1.npy');
-% SSIFreq =  [1.6570; 5.0168; 7.8984; 10.1144; 11.5872];
+SSIFreq = readNPY('..\python\data\Modal_parameters_anela\SSIfreq_nodamp.npy');
 
 SSIomega = SSIFreq * 2 * pi;
 % squared
 omegasq_m = SSIomega.^2;
 
-SSIphi = readNPY('SSIphi_5_2_1.npy');
-% SSIphi = [0.3164, 0.7748, 1.0000, 1.0000, -0.4440;...
-%     0.6301, 1.0000, 0.2081, -0.9371,0.8281;...
-%     0.7783, 0.4530, -0.7971, -0.0186, -0.9820;...
-%     1.0000, -0.3185, -0.3893, 0.8750, 1.0000;...
-%     0.9923, -0.7864, 0.6152, -0.5075, -0.3861];
+SSIphi = readNPY('..\python\data\Modal_parameters_anela\SSIphi_nodamp.npy');
+
 
 
 
