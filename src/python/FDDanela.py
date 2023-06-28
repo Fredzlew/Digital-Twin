@@ -23,14 +23,15 @@ import scipy.io as sio
 %matplotlib qt
 
 # ======== PRE-PROCESSING =====================================================
-dataset = float(input('Which data set (1 (data_1_2_1) and 2 (data_1_6_1)? '))
+dataset = float(input('Which data set (1 (data_5_2_1) and 2 (data_5_6_1)? and 3 (data_nodamp)? '))
 # To open a .txt file create a variable containing the path to the file
 if dataset == 1:
     _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_5_2_1.txt" # Path to the txt file
 
 elif dataset == 2:
     _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data_5_6_1.txt" # Path to the txt file
-
+elif dataset == 3:
+    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data.txt" # Path to the txt file
 #_file = r"C:\Users\User\OneDrive\Dokumenter\GitHub\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
 #_file = r"C:\Users\Christina\OneDrive - Danmarks Tekniske Universitet (1)\Github\Digital-Twin\src\data\Anela\data_1_2_1.txt" # Path to the txt file
 # open the file with pandas and create a dataframe
@@ -60,7 +61,7 @@ data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
 # Filter
-_b, _a = signal.butter(4, (0.1,12), fs=fs, btype='bandpass')
+_b, _a = signal.butter(4, (0.1,24.9), fs=fs, btype='bandpass')
 filtdata = signal.filtfilt(_b, _a, data,axis=0) # filtered data
 
 # ======== ANALYSIS ===========================================================
@@ -81,6 +82,9 @@ if dataset == 1:
 elif dataset == 2:
     # Anela data_5_6_1
     FreQ = [1.66, 5.030, 7.90, 10.12, 11.59] # identified peaks
+elif dataset == 3:
+    # Anela data
+    FreQ = [1.66, 5.020, 7.90, 10.11, 11.58] # identified peaks
 
 
 # Extract the modal properties 
@@ -92,19 +96,27 @@ MS_EFDD = Res_EFDD['Mode Shapes'].real
 # Saving parameters
 if dataset == 1:
     # Anela data_5_2_1
-    np.save("data\Modal_parameters_anela\FDDomega_1_2_1",Res_EFDD["Frequencies"])
-    np.save("data\Modal_parameters_anela\FDDphi_1_2_1",MS_EFDD )
-    np.save("data\Modal_parameters_anela\FDDdamp_1_2_1",Res_EFDD["Damping"] )
-    np.save("data\Modal_parameters_anela\FDDPSD_1_2_1",Result["Singular Values"])
-    np.save("data\Modal_parameters_anela\FDDPSDfreq_1_2_1",f)
+    np.save("data\Modal_parameters_anela\FDDomega_5_2_1",Res_EFDD["Frequencies"])
+    np.save("data\Modal_parameters_anela\FDDphi_5_2_1",MS_EFDD )
+    np.save("data\Modal_parameters_anela\FDDdamp_5_2_1",Res_EFDD["Damping"] )
+    np.save("data\Modal_parameters_anela\FDDPSD_5_2_1",Result["Singular Values"])
+    np.save("data\Modal_parameters_anela\FDDPSDfreq_5_2_1",f)
 
 elif dataset == 2:
     # Anela data_5_6_1
-    np.save("data\Modal_parameters_anela\FDDomega_1_6_1",Res_EFDD["Frequencies"])
-    np.save("data\Modal_parameters_anela\FDDphi_1_6_1",MS_EFDD )
-    np.save("data\Modal_parameters_anela\FDDdamp_1_6_1",Res_EFDD["Damping"] )
-    np.save("data\Modal_parameters_anela\FDDPSD_1_6_1",Result["Singular Values"])
-    np.save("data\Modal_parameters_anela\FDDPSDfreq_1_6_1",f)
+    np.save("data\Modal_parameters_anela\FDDomega_5_6_1",Res_EFDD["Frequencies"])
+    np.save("data\Modal_parameters_anela\FDDphi_5_6_1",MS_EFDD )
+    np.save("data\Modal_parameters_anela\FDDdamp_5_6_1",Res_EFDD["Damping"] )
+    np.save("data\Modal_parameters_anela\FDDPSD_5_6_1",Result["Singular Values"])
+    np.save("data\Modal_parameters_anela\FDDPSDfreq_5_6_1",f)
+    
+elif dataset == 3:
+    # Anela data
+    np.save("data\Modal_parameters_anela\FDDomega_no_damp",Res_EFDD["Frequencies"])
+    np.save("data\Modal_parameters_anela\FDDphi_no_damp",MS_EFDD )
+    np.save("data\Modal_parameters_anela\FDDdamp_no_damp",Res_EFDD["Damping"] )
+    np.save("data\Modal_parameters_anela\FDDPSD_no_damp",Result["Singular Values"])
+    np.save("data\Modal_parameters_anela\FDDPSDfreq_no_damp",f)
     
 
 # Grab Currrent Time After Running the Code

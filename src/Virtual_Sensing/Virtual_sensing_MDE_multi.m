@@ -39,17 +39,22 @@ disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(0),' modes:',num2str
 num_ms = [1,2,3];
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [2,3,5];
+im = [2,3,4,5];
 
 % Calculate displacement at predicted locations
 [xp1,qt1] = VirtualSensVal(xm_0_cut,U,num_ms,im);
 
 % Virtual sensing part 2
+% Number of modeshapes included in approximation (max length(im))
+num_ms = [4,5];
+
+% Index of measured locations (1 = bottom, 5 = top)
+im = [2,3,4,5];
 % Calculate displacement at predicted locations
 [xp2,qt2] = VirtualSensVal(xm_cut_end,U,num_ms,im);
 
 xp = xp1 + xp2;
-qt = qt1 + qt2;
+%qt = qt1 + qt2;
 
 %% Plotting
 % Number of time steps to plot
@@ -92,7 +97,7 @@ t = (0:L-1)*T;       % Time vector
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(qt(1,:)); % mode vi plotter
+Y = fft(xp(1,:)); % mode vi plotter
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);

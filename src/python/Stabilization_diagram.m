@@ -3,9 +3,9 @@ clc; clear; close all;
 addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
 % Loading modal parameters from OMA 
 % SSI
-SSIstab2 = readNPY('stab.npy');
+SSIstab2 = readNPY('.\data\Modal_parameters_anela\SSIstab_nodamp.npy');
 % FDD
-FDDPSD = readNPY('FDDPSD.npy');
+FDDPSD = readNPY('.\data\Modal_parameters_anela\FDDPSD_no_damp.npy');
 % definition:
 % freq = SSIstab(:,1);
 % modelorder = SSIstab(:,2);
@@ -16,7 +16,7 @@ FDDPSD = readNPY('FDDPSD.npy');
 k=1;
 
 for i = 1:length(SSIstab2)
- if SSIstab2(i,1) <= 20 
+ if SSIstab2(i,1) <= 12 
      SSIstab(k,:) = SSIstab2(i,:);
      k=k+1;
  end
@@ -82,7 +82,7 @@ for i = 1:length(FDDPSD)
 end
 
 % load frequencies
-FDDPSDfreq = readNPY('FDDPSDfreq.npy');
+FDDPSDfreq = readNPY('FDDPSDfreq_no_damp.npy');
 f_ = FDDPSDfreq(1:length(FDDPSD));
 
 %plotting all figure together
@@ -96,7 +96,7 @@ scatter(freq3,modelorder3*2,'b','filled')
 scatter(freq4,modelorder4*2,'g','filled')
 % plot PSD
 for i = 1:5
-plot(f_,10*log10(PSD(:,i))+82)
+plot(f_,10*log10(PSD(:,i))+20)
 end
 hold off
 
