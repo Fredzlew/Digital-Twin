@@ -42,7 +42,7 @@ K = [k1+k2,-k2;-k2,k2+k3];
 % input force residual
 r = fm - K*um;
 
-% Difne lambda value:
+% Define lambda value:
 lambda = 10^-2;  
 
 % the difference with regularization
