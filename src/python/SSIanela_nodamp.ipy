@@ -27,7 +27,7 @@ import scipy.io as sio
 
 # To open a .txt file create a variable containing the path to the file
 
-_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data.txt" # Path to the txt file
+_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\data\Anela\data.txt" # Path to the txt file
 
 
 

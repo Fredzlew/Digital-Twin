@@ -6,16 +6,22 @@ addpath(genpath('data_sens'))
 
 % Load data
 % No damping
-data = readmatrix('..\data\Anela\data.txt'); % Loading displacement data
-data = downsample(data,2)';
-xm_0_cut = readNPY('..\python\data\Modal_parameters_anela\data_filt_0_cut.npy')'/1000;
-xm_cut_end = readNPY('..\python\data\Modal_parameters_anela\data_filt_cut_end.npy')'/1000;
+xm_0_cut = readNPY('..\python\data\Modal_parameters_anela\data_filt_0_cut.npy')/1000;
+xm_cut_end = readNPY('..\python\data\Modal_parameters_anela\data_filt_cut_end.npy')/1000;
 
-xm_ori = readNPY('..\python\data\Modal_parameters_anela\data_nodamp_filtdata.npy')'/1000;
+xm_ori = readNPY('..\python\data\Modal_parameters_anela\data_filt_nodamp.npy')'/1000;
 
+% Make a time vector
+Fs = 50;           % Sampling frequency                    
+T = 1/Fs;            % Sampling period       
+L = size(xm_ori,2);    % Length of signal
+t = (0:L-1)*T;       % Time vector
 
 % data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
-filename = load('data_sens\Eigenvalue_modeshape_residual_stiff_nodamp.mat');
+% filename = load('data_sens\Eigenvalue_modeshape_residual_stiff_nodamp.mat');
+% U = filename.U;
+
+filename = load('..\python\data\modelprop_jan.mat');
 U = filename.U;
 
 % Verifying original and filtered data
@@ -27,8 +33,8 @@ nt = 500;
 vs = 1;
 
 hold on 
-plot(data(1,1:nt),xm_ori(vs,1:nt),'b.-')
-plot(data(1,1:nt),xm_filt(vs,1:nt),'r.-')
+plot(t(1:nt),xm_ori(vs,1:nt),'b.-')
+plot(t(1:nt),xm_filt(vs,1:nt),'r.-')
 hold off
 % TRAC
 TRAC = (xm_ori(vs,:)*xm_filt(vs,:)')^2/((xm_ori(vs,:)*xm_ori(vs,:)')*(xm_filt(vs,:)*xm_filt(vs,:)'));
@@ -67,12 +73,12 @@ vs = 1;
 figure
 hold on
 if sum(abs(xp(1,:)))>sum(abs(xm_ori(1,:)))
-    plot(data(1,1:nt),xp(vs,1:nt),'r')
-    plot(data(1,1:nt),xm_ori(vs,1:nt),'b')
+    plot(t(1:nt),xp(vs,1:nt),'r')
+    plot(t(1:nt),xm_ori(vs,1:nt),'b')
     legend('Predicted displacements','Actual displacements','FontSize',14)
 else
-    plot(data(1,1:nt),xm_ori(vs,1:nt),'b')
-    plot(data(1,1:nt),xp(vs,1:nt),'r')
+    plot(t(1:nt),xm_ori(vs,1:nt),'b')
+    plot(t(1:nt),xp(vs,1:nt),'r')
     legend('Actual displacements','Predicted displacements','FontSize',14)
 end
 hold off
@@ -90,10 +96,6 @@ MAE = sum(abs(xm_ori(vs,:)-xp(vs,:)))/size(xm_ori,2)/std(xp(vs,:));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
 
 % Plot the modal coordinates in the frequency domain
-Fs = 50;           % Sampling frequency                    
-T = 1/Fs;            % Sampling period       
-L = size(data,2);    % Length of signal
-t = (0:L-1)*T;       % Time vector
 f = Fs*(0:(L/2))/L;
 
 % Plots

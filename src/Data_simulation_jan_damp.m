@@ -17,7 +17,7 @@ alpha = zeta_min*omega_min; % Rayleigh damping coefficient
 betas = zeta_min/omega_min; % Rayleigh damping coefficient
 C=alpha*M+betas*K; % Damping matrix
 zetas = (alpha./omegas + betas.*omegas)./2; % Calculate damping ratios
-f=2e1*randn(5,1.2e7);  
+f=2e1*randn(1,1.2e7).*ones(5,1);   
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initial conditions

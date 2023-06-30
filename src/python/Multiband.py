@@ -59,17 +59,30 @@ q = 2 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
+np.save("data\Modal_parameters_anela\data_filt_nodamp",data)
+
 # Filter
 #First 3 modes
-_b, _a = signal.butter(5, (0.1,6), fs=fs, btype='bandpass')
-filtdata_0_cut = signal.filtfilt(_b, _a, data,axis=0) # filtered data
+sos = signal.butter(75, 9/fs*2, btype='lowpass', output='sos')
+filtdata_0_cut = signal.sosfiltfilt(sos, data.T) # filtered data
 
 # Last 2 modes
-_b, _a = signal.butter(5, (6,12), fs=fs, btype='bandpass')
-filtdata_cut_end = signal.filtfilt(_b, _a, data,axis=0) # filtered data
+sos = signal.butter(75, 9/fs*2, btype='highpass', output='sos')
+filtdata_cut_end = signal.sosfiltfilt(sos, data.T) # filtered data
 
 np.save("data\Modal_parameters_anela\data_filt_0_cut",filtdata_0_cut)
 np.save("data\Modal_parameters_anela\data_filt_cut_end",filtdata_cut_end)
+
+
+sos = signal.butter(75, 20/fs*2, btype='lowpass', output='sos')
+filtdata_20 = signal.sosfiltfilt(sos, data.T) # filtered data
+
+sos = signal.butter(75, 9/fs*2, btype='lowpass', output='sos')
+filtdata_9 = signal.sosfiltfilt(sos, data.T) # filtered data
+
+
+np.save("data\Modal_parameters_anela\datafiltnodamp20",filtdata_20)
+np.save("data\Modal_parameters_anela\data_filt_nodamp_6.5",filtdata_9)
 
 
 
