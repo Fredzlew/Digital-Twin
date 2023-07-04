@@ -1,9 +1,9 @@
-/src/data/
+/src_old/data/
 *.asv
-/src/python/data/newmark_jan_damp_simulation/
-/src/Virtual_Sensing/data_sens/data_5_2_1.txt
-/src/Virtual_Sensing/data_sens/data_5_6_1.txt
-/src/Virtual_Sensing/data_sens/1_data_sim_newmark_jan_damp.mat
+/src_old/python/data/newmark_jan_damp_simulation/
+/src_old/Virtual_Sensing/data_sens/data_5_2_1.txt
+/src_old/Virtual_Sensing/data_sens/data_5_6_1.txt
+/src_old/Virtual_Sensing/data_sens/1_data_sim_newmark_jan_damp.mat
 /src_update/data
-/src/python/data/sim_filtered
-/Ny mappe/experimental_data
+/src_old/python/data/sim_filtered
+/src/data
