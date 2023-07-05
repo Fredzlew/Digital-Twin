@@ -2,28 +2,26 @@
 clear;clc;close all
 
 % Adding path to data
-addpath(genpath('data_sens'))
-
+addpath(genpath('..\..\data'),genpath('.\Filtered_data_sim'),genpath('..\function'))
 % Load data
-% No damping
-xm_9 = readNPY('..\python\data\sim_filtered\data_filtdata_9.npy')/1000;
-xm_ori = readNPY('..\python\data\sim_filtered\sim_data.npy')'/1000;
+xm_9 = readNPY('.\Filtered_data_sim\data_filtdata_first_modes_sim.npy');
+xm_ori = readNPY('.\Filtered_data_sim\sim_data.npy')';
 
 % Make a time vector
-Fs = 500;           % Sampling frequency                    
+Fs = 500;            % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
-L = size(xm_ori,2);    % Length of signal
+L = size(xm_ori,2);  % Length of signal
 t = (0:L-1)*T;       % Time vector
 
 
 % data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
-filename = load('..\python\data\modelprop_jan.mat');
+filename = load('..\..\data\modelprop.mat');
 U = filename.U;
 
 %% Virtual sensing part 1
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = [1,2];
+num_ms = [1,2,3];
 
 % Index of measured locations (1 = bottom, 5 = top)
 im = [2,3,5];

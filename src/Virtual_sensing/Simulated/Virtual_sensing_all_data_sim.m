@@ -2,44 +2,23 @@
 clear;clc;close all
 
 % Adding path to data
-addpath(genpath('data_sens'))
+addpath(genpath('..\..\data'),genpath('.\Filtered_data_sim'),genpath('..\function'))
 
 % Load data
-% No damping
-%data = readmatrix('..\data\Anela\data.txt'); % Loading displacement data
-%data = downsample(data,2)';
-xm_0_cut = readNPY('..\python\data\sim_filtered\data_filt_0_cut_sim.npy')/1000;
-xm_cut_end = readNPY('..\python\data\sim_filtered\data_filt_cut_end_sim.npy')/1000;
-
-
-xm_ori = readNPY('..\python\data\sim_filtered\sim_data.npy')'/1000;
+xm_20 = readNPY('.\Filtered_data_sim\data_filtdata_all_sim.npy');
+xm_ori = readNPY('.\Filtered_data_sim\sim_data.npy')';
 
 % Make a time vector
-Fs = 500;           % Sampling frequency                    
+Fs = 500;            % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
-L = size(xm_ori,2);    % Length of signal
+L = size(xm_ori,2);  % Length of signal
 t = (0:L-1)*T;       % Time vector
 
 
 % data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
-filename = load('..\python\data\modelprop_jan.mat');
+filename = load('..\..\data\modelprop.mat');
 U = filename.U;
 
-% Verifying original and filtered data
-xm_filt =  xm_0_cut + xm_cut_end;
-
-% Number of time steps to plot
-nt = 1000;
-% Show displacements for # virtual sensor (1 = bottom)
-vs = 1;
-
-hold on 
-plot(t(1:nt),xm_ori(vs,1:nt),'b.-')
-plot(t(1:nt),xm_filt(vs,1:nt),'r.-')
-hold off
-% TRAC
-TRAC = (xm_ori(vs,:)*xm_filt(vs,:)')^2/((xm_ori(vs,:)*xm_ori(vs,:)')*(xm_filt(vs,:)*xm_filt(vs,:)'));
-disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(0),' modes:',num2str(TRAC)])
 %% Virtual sensing part 1
 %close all;
 % Number of modeshapes included in approximation (max length(im))
@@ -49,20 +28,8 @@ num_ms = [1,2];
 im = [2,3,5];
 
 % Calculate displacement at predicted locations
-[xp1,qt1] = VirtualSensVal(xm_0_cut,U,num_ms,im);
+[xp,qt] = VirtualSensVal(xm_20,U,num_ms,im);
 
-% Virtual sensing part 2
-% Number of modeshapes included in approximation (max length(im))
-num_ms = [3,4];
-
-% Index of measured locations (1 = bottom, 5 = top)
-im = [2,3,5];
-
-% Calculate displacement at predicted locations
-[xp2,qt2] = VirtualSensVal(xm_cut_end,U,num_ms,im);
-
-xp = xp1 + xp2;
-%qt = qt1 + qt2;
 
 %% Plotting
 % Number of time steps to plot

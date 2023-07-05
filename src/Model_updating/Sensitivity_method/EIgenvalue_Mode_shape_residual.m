@@ -2,7 +2,7 @@
 %%% 5 storey frame eigenvalue and mode shape residual %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all;clear;clc
-addpath(genpath('npy-matlab-master'),genpath('..\..\data'))
+addpath(genpath('npy-matlab-master'),genpath('..\..\data'),genpath('..\Costfunctions\functions'))
 promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
 q = input(promptt);
 
@@ -37,7 +37,7 @@ end
 filename = load('..\..\data\modelprop.mat'); 
 
 % stiffness parameters
-k = diag(filename.K);
+k = filename.k';
 
 % Mass matrix
 M = filename.M;
@@ -49,7 +49,6 @@ SSIphi_re = reshape(SSIphi,25,1);
 Weps = diag([omegasq_m./max(omegasq_m);SSIphi_re])^-2;
 
 %Weps = eye(30);
-%Weps = [eye(5,5),zeros(5,25);zeros(25,5),diag(abs(SSIphi_re))^-2];
 
 % Difine lambda value:
 if q == 1
@@ -60,8 +59,10 @@ end
 
 dx = zeros(length(k),1);
 
+% number of iterations
+ni = 100;
 % Iterazation over the stiffness
-for ii = 1:200
+for ii = 1:ni
     k = k+dx;
 
     for i = 1:4
@@ -105,7 +106,7 @@ for ii = 1:200
     Umac(:,:,ii) = U;
 
     % Residual mode shapes
-    rmod(:,ii) = SSIphi_re - abs(reshape(U,25,1));
+    rmod(:,ii) = SSIphi_re - reshape(U,25,1);
 
     % Residual eigenvalue
     reig(:,ii) = (omegasq_m - omega_squared);
@@ -223,7 +224,7 @@ hold off
 
 % Display accuracy of mode shapes
 % CrossMAC plot of mode shapes
-for i = 1:200
+for i = 1:ni
     mac=crossMACnm(SSIphi,Umac(:,:,i));
     for j = 1:5
         dmac = diag(mac);
@@ -286,83 +287,11 @@ for j = 1:length(omegas)
     end
 end % end normalization
 
-% plotting the mode shapes
-% dimensions in meters
-t = 0.015; % floor height [m]
-h = 1*10^-3; % short side of column [m]
-b = 30*10^-3; % long side (depth) of column [m]
-L = 175*10^-3; % column length in middle [m]
-Lb = 168*10^-3; % column length at bottom [m]
-Lt = 75*10^-3; % column length on top [m]
-
-% story heights [m] (from ground to mid floor)
-H(1) = Lb + t/2;
-for i = 2:5
-    H(i) = H(i-1) + L + t;
-end
-
-x = [0, H];
-phi = [zeros(1,length(U)); U];
-fig = figure;
-fig.Position=[100 100 1600 700];
-for i=1:length(omegas)
-    subplot(1,length(omegas),i)
-    hold on
-    plot(phi(:,i),x,'-m')
-    if phi(2,i)*SSIphi(1,i) < 0 % Swap sign on mode shape
-        plot([0  ;-SSIphi(:,i)],x,'go-.');
-        plot(-SSIphi(1:end,i),x(2:end),'g.','markersize',30)
-    else
-        plot([0  ;SSIphi(:,i)],x,'go-.');
-        plot(SSIphi(1:end,i),x(2:end),'g.','markersize',30)
-    end
-    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-    title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
-    xline(0.0,'--')
-    xlim([-1.1,1.1])
-    ylim([0,x(end)])
-    if i==1 
-        legend('Numerical','SSI','Location','northwest')
-    end
-end
-
-sgtitle('Mode shapes','FontSize',20)
-
-han=axes(fig,'visible','off'); 
-han.Title.Visible='on';
-han.XLabel.Visible='on';
-han.YLabel.Visible='on';
-ylabel(han,'Height [m]','FontSize',14);
-xlabel(han,'Deflection [-]','FontSize',14);
-
-% Display accuracy of frequency
-disp(strcat('Frequency accuracy,1 : ',num2str(min(SSIFreq(1),fn(1))/max(SSIFreq(1),fn(1))*100),'%'));
-disp(strcat('Frequency accuracy,2 : ',num2str(min(SSIFreq(2),fn(2))/max(SSIFreq(2),fn(2))*100),'%'));
-disp(strcat('Frequency accuracy,3 : ',num2str(min(SSIFreq(3),fn(3))/max(SSIFreq(3),fn(3))*100),'%'));
-disp(strcat('Frequency accuracy,4 : ',num2str(min(SSIFreq(4),fn(4))/max(SSIFreq(4),fn(4))*100),'%'));
-disp(strcat('Frequency accuracy,5 : ',num2str(min(SSIFreq(5),fn(5))/max(SSIFreq(5),fn(5))*100),'%'));
-disp(strcat('Mean frequency accuracy : ',num2str(mean(min(SSIFreq,fn)./max(SSIFreq,fn)*100)),'%'));
-
-% Display accuracy of mode shapes
-% CrossMAC plot of mode shapes
-mac=crossMAC(U,SSIphi);
-dmac = diag(mac);
-disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
-disp(strcat(num2str(mac)));
-disp('----------------------------------------------------------------------')
-disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
-disp(strcat('Mode shape accuracy (MAC),2 : ',num2str(dmac(2)*100),'%'));
-disp(strcat('Mode shape accuracy (MAC),3 : ',num2str(dmac(3)*100),'%'));
-disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
-disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
-disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
-disp('----------------------------------------------------------------------')
-
 % Save updated system matrices
 if q == 1
-    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat','Knew','U','fn');
+    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat','knew','Knew','U','fn');
 elseif q == 2
-    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat','Knew','U','fn');
+    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat','knew','Knew','U','fn');
 end
 %% Plotting L curve only for the first iteration
 

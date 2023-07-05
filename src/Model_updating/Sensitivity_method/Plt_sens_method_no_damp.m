@@ -1,38 +1,32 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Plotting the modal update %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Plotting the model update no damp %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('Mottershead\datam'))
+addpath(genpath('..\..\data'),genpath('.\data_updated_par_sens'),genpath('..\Costfunctions\functions'))
+
 
 % Loading stiffness for all OMA costfunction and numerical model
-filename = load('modelprop_jan.mat'); % omegas from numericla model
+filename = load('..\..\data\modelprop.mat'); % omegas from numericla model
 omegas = filename.fn * 2 * pi;
-L_fe = filename.L;
-EI_fe = filename.EI;
+Globalstiff = filename.k;
+H = filename.H;
+Km = filename.K;
 
-dataSSIFreq = load('costfunupdateSSIfreq_py.mat'); % SSI FREQ
-K_SSI_freq = diag(dataSSIFreq.K)';
-stivhed = dataSSIFreq.stivhed';
+dataSSIFreq = load('.\data_updated_par_sens\Eigenvalue_residual_no_damp.mat'); % SSI FREQ
+K_SSI_freq = dataSSIFreq.knew';
 
-dataSSImode = load('costfunupdateSSImode_py.mat'); % SSI modes
-K_SSI_mode = diag(dataSSImode.K)';
+dataSSImode = load('.\data_updated_par_sens\Mode_shape_residual_no_damp.mat'); % SSI modes
+K_SSI_mode = dataSSImode.knew';
+
+dataSSIFreqmode = load('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat'); % SSI modes and freq
+K_SSI_freq_mode = dataSSIFreqmode.knew';
 
 
-dataSSIFreqmode = load('costfunupdateSSIfreqmode_py.mat'); % SSI FREQ and modes
-K_SSI_freq_mode = diag(dataSSIFreqmode.K)';
 
-dataSSIfreqmodeEILJAN = load('costfunupdateSSIfreqmodeEILJAN_py.mat'); % SSI modes
-K_SSI_freqmodeEILJAN = diag(dataSSIfreqmodeEILJAN.K)';
-stivhedJan = dataSSIfreqmodeEILJAN.stivhed';
-L = dataSSIfreqmodeEILJAN.L;
-EI = dataSSIfreqmodeEILJAN.EI;
-
-Dataeigresidual = load('Eigenvalue_residual.mat'); % Eigenvalue residual
-Keigresidual = diag(Dataeigresidual.Knew)';
 
 % PLotting the stiffness
 y = [K_SSI_freq;K_SSI_mode;K_SSI_freq_mode;...
-    K_SSI_freqmodeEILJAN;Keigresidual;stivhedJan];
+    Globalstiff];
 figure
 hold on
 b = bar(y,'stacked');
@@ -44,82 +38,54 @@ for i = 1:size(y,2)
 end
 hold off
 legend('k1','k2','k3','k4','k5')
-title('Values of stiffness for different OMA methods and cost functions','FontSize',20)
+title('Values of stiffness for different OMA methods and sensitivity method','FontSize',20)
 xlabel('Method')
 xticks(xtips)
 xticklabels({'SSI (freq)','SSI (mode)','SSI (freq+mode)',...
-    'SSI EIL JAN(freq+mode)','Eigenvalue residual','Global stiffness','FontSize',14})
+    'Global stiffness','FontSize',14})
 ylabel('Stiffness [N/m]','FontSize',14)
 
 % 3D plot of the stiffness
 figure
 bar3(y)
-title('Values of stiffness for different OMA methods and cost functions','FontSize',20)
+title('Values of stiffness for different OMA methods and sensitivity method','FontSize',20)
 %xlabel('ks')
 %ylabel('Method')
 xticks([1,2,3,4,5])
 xticklabels({'k1','k2','k3','k4','k5','FontSize',14})
 yticks(xtips)
-yticklabels({'SSI (freq)','SSI (mode)','SSI (freq+mode)',...
-    'SSI EIL JAN(freq+mode)','Eigenvalue residual','Global stiffness','FontSize',14})
+yticklabels({'freq','mode','freq+mode',...
+    'Global stiffness','FontSize',14})
 zlabel('Stiffness [N/m]','FontSize',14)
 
 % What we want to plot
-% Define what OMA method is used 
-% MODE = 2; % 1=SSI, 2=ERA, 3=FDD
+% measuered natural frequencies from OMA SSI-cov [Hz]
+OMAfreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_no_damp.npy');
 
-MODE = 1;
-promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode),  " + ...
-    " 3=SSI (freq+mode), " + ...
-    " 4=SSI EIL JAN(freq+mode)? ";
+% Load mode shapes
+OMAphi = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_no_damp.npy');
+
+
+promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode) " + ...
+    " 3=SSI (freq+mode)? ";
 x = input(promptt);
 if x == 1
-    data = load('costfunupdateSSIfreq_py.mat'); % SSI FREQ
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
+    data = load('.\data_updated_par_sens\Eigenvalue_residual_no_damp.mat'); % SSI FREQ
     fn = data.fn;
-    K = data.K;
-    Km = data.Km;
+    K = data.Knew;
     U = data.U;
-    H = data.H;
 elseif x == 2
-    data = load('costfunupdateSSImode_py.mat'); % SSI modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
+    data = load('.\data_updated_par_sens\Mode_shape_residual_no_damp.mat'); % SSI modes
     fn = data.fn;
-    K = data.K;
-    Km = data.Km;
+    K = data.Knew;
     U = data.U;
-    H = data.H;
 elseif x == 3
-    data = load('costfunupdateSSIfreqmode_py.mat'); % SSI FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
+    data = load('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat'); % SSI EIL  FREQ and modes
     fn = data.fn;
-    K = data.K;
-    Km = data.Km;
+    K = data.Knew;
     U = data.U;
-    H = data.H;
-elseif x == 4
-    data = load('costfunupdateSSIfreqmodeEILJAN_py.mat'); % SSI EIL JAN FREQ and modes
-    OMAphi = data.OMAphi;
-    OMAfreq = data.OMAfreq;
-    fn = data.fn;
-    K = data.K;
-    Km = data.Km;
-    U = data.U;
-    H = data.H;
-    L = data.L;
-    EI = data.EI;
 end
-if x == 4
-    disp(strcat('Height : ',num2str(L_fe),'m'));
-    disp(strcat('EI  : ',num2str(EI_fe),'Nm^2'));
-    disp(strcat('Height after costfunction : ',num2str(L),'m'));
-    disp(strcat('EI after costfunction : ',num2str(EI),'Nm^2'));
-    disp(strcat('Height difference : ',num2str(L-L_fe),'m'));
-    disp(strcat('EI difference : ',num2str(EI-EI_fe),'Nm^2'));
-end
+
 disp('----------------------------------------------------------------------')
 
 % plotting the mode shapes
@@ -143,17 +109,13 @@ for i=1:length(omegas)
     xline(0.0,'--')
     xlim([-1.1,1.1])
     ylim([0,x(end)])
-    if i==1 && MODE==1
+    if i==1 
         legend('Numerical','SSI','Location','northwest')
-    elseif i==1
-        legend('Numerical','FDD','Location','northwest')
     end
 end
-if MODE==1
-    sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
-else
-    sgtitle('Numerical mode shapes, calibrated by FDD','FontSize',20)
-end
+
+sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
+
 han=axes(fig,'visible','off'); 
 han.Title.Visible='on';
 han.XLabel.Visible='on';
@@ -180,19 +142,13 @@ disp(strcat(num2str(abs(abs(K)-abs(Km)))));
 disp('Total change in stiffness matrix [N/m] : ')
 disp(strcat(num2str(sum(sum(abs(abs(K)-abs(Km)))))));
 disp('----------------------------------------------------------------------')
-disp(strcat('Total mean accuracy (mode+freq) : ',num2str(mean([TOTacc*100,mean(min(OMAfreq,fn)./max(OMAfreq,fn)*100)])),'%'));
-disp('----------------------------------------------------------------------')
 
 % CrossMAC plot of mode shapes
-mac=crossMAC(U,OMAphi,MODE,[OMAfreq,fn]);
+mac=crossMAC(U,OMAphi);
 dmac = diag(mac);
-if MODE==1
-    disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
-    disp(strcat(num2str(mac)));
-else
-    disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
-    disp(strcat(num2str(mac)));
-end
+
+disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
+disp(strcat(num2str(mac)));
 disp('----------------------------------------------------------------------')
 disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));
 disp(strcat('Mode shape accuracy (MAC),2 : ',num2str(dmac(2)*100),'%'));
@@ -201,4 +157,23 @@ disp(strcat('Mode shape accuracy (MAC),4 : ',num2str(dmac(4)*100),'%'));
 disp(strcat('Mode shape accuracy (MAC),5 : ',num2str(dmac(5)*100),'%'));
 disp(strcat('Mean mode shape accuracy (MAC): ',num2str(mean(dmac)*100),'%'));
 disp('----------------------------------------------------------------------')
+
+% % Plot MAC
+figure
+barMAC = bar3(mac);
+for k = 1:length(barMAC)   
+    zdata = barMAC(k).ZData;   
+    barMAC(k).CData = zdata;
+    barMAC(k).FaceColor = 'interp';
+end
+colormap(jet);
+colorbar
+title('MAC - Numerical compared to SSI no_damp damp')
+xlabel('FE-model frequencies [Hz]')
+ylabel('OMA frequencies [Hz]')
+xticks([1,2,3,4,5])
+xticklabels(string(fn'))
+yticks([1,2,3,4,5])
+yticklabels(string(OMAfreq'))
+box on
 

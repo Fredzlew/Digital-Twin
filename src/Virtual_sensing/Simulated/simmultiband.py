@@ -26,20 +26,16 @@ import scipy.io as sio
 
 # To open a .txt file create a variable containing the path to the file
 
-data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\python\data\newmark_jan_damp_simulation")
-
-
-
-
+data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\data\simulated_data")
 
 # open the file with pandas and create a dataframe
 # N.B. whatchout for header, separator and remove time column if present
 
-data_sim = pjoin(data_dir, '1_data_sim_newmark_jan_damp.mat')
+data_sim = pjoin(data_dir, '1_sim_data.mat')
 #data_sim = pjoin(data_dir, f'{i+1}_data_sim_newmark_jan_damp.mat')
 # Loading simulated data instead:
 data = sio.loadmat(data_sim)
-data = np.transpose(data["dis_new"])
+data = np.transpose(data["x"])
 
 
 # Sampling frequency
@@ -53,28 +49,28 @@ q = 2 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
-np.save("data\sim_filtered\sim_data",data)
+np.save("Filtered_data_sim\sim_data",data)
 
 # Filter
 #First 3 modes
-sos1 = signal.butter(4, 6.5/fs*2, btype='lowpass', output='sos')
-filtdata_0_cut = signal.sosfiltfilt(sos1, data.T) # filtered data
+sos = signal.butter(4, 9/fs*2, btype='lowpass', output='sos')
+filtdata_0_cut = signal.sosfiltfilt(sos, data.T) # filtered data
 
 # Last 2 modes
-sos2 = signal.butter(4, 6.5/fs*2, btype='highpass', output='sos')
-filtdata_cut_end = signal.sosfiltfilt(sos2, data.T) # filtered data
+sos = signal.butter(4, 9/fs*2, btype='highpass', output='sos')
+filtdata_cut_end = signal.sosfiltfilt(sos, data.T) # filtered data
 
-np.save("data\sim_filtered\data_filt_0_cut_sim",filtdata_0_cut)
-np.save("data\sim_filtered\data_filt_cut_end_sim",filtdata_cut_end)
-
-
-sos3 = signal.butter(4, 20/fs*2, btype='lowpass', output='sos')
-filtdata_20 = signal.sosfiltfilt(sos3, data.T) # filtered data
-
-sos4 = signal.butter(4, 6.5/fs*2, btype='lowpass', output='sos')
-filtdata_9 = signal.sosfiltfilt(sos4, data.T) # filtered data
+np.save("Filtered_data_sim\data_filt_0_cut_sim",filtdata_0_cut)
+np.save("Filtered_data_sim\data_filt_cut_end_sim",filtdata_cut_end)
 
 
-np.save("data\sim_filtered\data_filtdata_20",filtdata_20)
-np.save("data\sim_filtered\data_filtdata_9",filtdata_9)
+sos = signal.butter(4, 20/fs*2, btype='lowpass', output='sos')
+filtdata_20 = signal.sosfiltfilt(sos, data.T) # filtered data
+
+sos = signal.butter(4, 6.5/fs*2, btype='lowpass', output='sos')
+filtdata_9 = signal.sosfiltfilt(sos, data.T) # filtered data
+
+
+np.save("Filtered_data_sim\data_filtdata_all_sim",filtdata_20)
+np.save("Filtered_data_sim\data_filtdata_first_modes_sim",filtdata_9)
 

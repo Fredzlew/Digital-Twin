@@ -2,33 +2,30 @@
 clear;clc;close all
 
 % Adding path to data
-addpath(genpath('data_sens'))
+addpath(genpath('..\..\data'),genpath('.\Filtered_data_sim'),genpath('..\function'))
 
 % Load data
-% No damping
-xm_0_cut = readNPY('..\python\data\Modal_parameters_anela\data_filt_0_cut.npy')/1000;
-xm_cut_end = readNPY('..\python\data\Modal_parameters_anela\data_filt_cut_end.npy')/1000;
+xm_0_cut = readNPY('.\Filtered_data_sim\data_filt_0_cut_sim.npy');
+xm_cut_end = readNPY('.\Filtered_data_sim\data_filt_cut_end_sim.npy');
 
-xm_ori = readNPY('..\python\data\Modal_parameters_anela\data_filt_nodamp.npy')'/1000;
+xm_ori = readNPY('.\Filtered_data_sim\sim_data.npy')';
 
 % Make a time vector
-Fs = 50;           % Sampling frequency                    
+Fs = 500;            % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
-L = size(xm_ori,2);    % Length of signal
+L = size(xm_ori,2);  % Length of signal
 t = (0:L-1)*T;       % Time vector
 
-% data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
-% filename = load('data_sens\Eigenvalue_modeshape_residual_stiff_nodamp.mat');
-% U = filename.U;
 
-filename = load('..\python\data\modelprop_jan.mat');
+% data = readmatrix('data_5_2_1.txt')'; % Loading displacement data
+filename = load('..\..\data\modelprop.mat');
 U = filename.U;
 
 % Verifying original and filtered data
 xm_filt =  xm_0_cut + xm_cut_end;
 
 % Number of time steps to plot
-nt = 500;
+nt = 1000;
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;
 
@@ -42,10 +39,10 @@ disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(0),' modes:',num2str
 %% Virtual sensing part 1
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = [1,2,3];
+num_ms = [1,2];
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [2,3,4,5];
+im = [2,3,5];
 
 % Calculate displacement at predicted locations
 [xp1,qt1] = VirtualSensVal(xm_0_cut,U,num_ms,im);
@@ -55,7 +52,8 @@ im = [2,3,4,5];
 num_ms = [4,5];
 
 % Index of measured locations (1 = bottom, 5 = top)
-im = [2,3,4,5];
+im = [2,3,5];
+
 % Calculate displacement at predicted locations
 [xp2,qt2] = VirtualSensVal(xm_cut_end,U,num_ms,im);
 
@@ -64,7 +62,7 @@ xp = xp1 + xp2;
 
 %% Plotting
 % Number of time steps to plot
-nt = 500;
+nt = 10000;
 
 % Show displacements for # virtual sensor (1 = bottom)
 vs = 1;
@@ -99,7 +97,27 @@ disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(xp(1,:)); % mode vi plotter
+Y = fft(xm_ori(1,:)); % mode vi plotter
+P2 = abs(Y/L);
+P1 = P2(1:L/2+1);
+P1(2:end-1) = 2*P1(2:end-1);
+
+figure
+plot(f,P1) 
+title("Single-Sided Amplitude Spectrum of S(t)")
+xlabel("f (Hz)")
+xlim([0 20])
+ylabel("|P1(f)|")
+%% xm ori modal coordinates
+% Calculate the psuedo-inverse of the measured mode shapes
+U_inv = (U'*U)^-1*U';
+% phi_minv = phi_m'*inv(phi_m*phi_m')
+% phi_minv = pinv(phi_m)
+
+% Calculate modal coordinates
+qt = U_inv*xm_ori;
+% Plots
+Y = fft(qt(4,:)); % mode vi plotter
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);

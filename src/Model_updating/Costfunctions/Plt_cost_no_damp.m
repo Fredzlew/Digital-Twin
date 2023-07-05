@@ -1,32 +1,32 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Plotting the model update %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Plotting the model update no damp %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc; clear; close all;
-addpath(genpath('..\..\data'),genpath('data_updated_par'),genpath('functions'))
+addpath(genpath('..\..\data'),genpath('.\data_updated_par'),genpath('.\functions'))
 
 % Loading stiffness for all OMA costfunction and numerical model
 filename = load('..\..\data\modelprop.mat'); % omegas from numericla model
 omegas = filename.fn * 2 * pi;
 L_fe = filename.L;
 EI_fe = filename.EI;
+H = filename.H;
+Globalstiff = filename.k;
 
 dataSSIFreq = load('.\data_updated_par\SSIfreq_no_damp.mat'); % SSI FREQ
-K_SSI_freq = diag(dataSSIFreq.K)';
-stivhed = dataSSIFreq.stivhed';
+K_SSI_freq = dataSSIFreq.k;
 
 dataSSImode = load('.\data_updated_par\SSImode_no_damp.mat'); % SSI modes
-K_SSI_mode = diag(dataSSImode.K)';
+K_SSI_mode = dataSSImode.k;
 
 dataSSImodemac = load('.\data_updated_par\SSImode_mac_no_damp.mat'); % SSI modes
-K_SSI_mode_mac = diag(dataSSImodemac.K)';
+K_SSI_mode_mac = dataSSImodemac.k;
 
 
 dataSSIFreqmode = load('.\data_updated_par\SSIfreqmode_no_damp.mat'); % SSI FREQ and modes
-K_SSI_freq_mode = diag(dataSSIFreqmode.K)';
+K_SSI_freq_mode = dataSSIFreqmode.k;
 
 dataSSIfreqmodeEIL = load('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat'); % SSI modes
-K_SSI_freqmodeEIL = diag(dataSSIfreqmodeEIL.K)';
-Globalstiff = dataSSIfreqmodeEIL.stivhed';
+K_SSI_freqmodeEIL = dataSSIfreqmodeEIL.k;
 L = dataSSIfreqmodeEIL.L;
 EI = dataSSIfreqmodeEIL.EI;
 
@@ -80,7 +80,6 @@ if x == 1
     K = data.K;
     Km = data.Km;
     U = data.U;
-    H = data.H;
 elseif x == 2
     data = load('.\data_updated_par\SSImode_no_damp.mat'); % SSI modes
     OMAphi = data.OMAphi;
@@ -89,7 +88,6 @@ elseif x == 2
     K = data.K;
     Km = data.Km;
     U = data.U;
-    H = data.H;
 elseif x == 3
     data = load('.\data_updated_par\SSImode_mac_no_damp.mat'); % SSI EIL  FREQ and modes
     OMAphi = data.OMAphi;
@@ -98,7 +96,6 @@ elseif x == 3
     K = data.K;
     Km = data.Km;
     U = data.U;
-    H = data.H;
 elseif x == 4
     data = load('.\data_updated_par\SSIfreqmode_no_damp.mat'); % SSI FREQ and modes
     OMAphi = data.OMAphi;
@@ -107,16 +104,14 @@ elseif x == 4
     K = data.K;
     Km = data.Km;
     U = data.U;
-    H = data.H;
 elseif x == 5
-    data = load('.\data_updated_par\SSIfreqmode_no_damp.mat'); % SSI EIL  FREQ and modes
+    data = load('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat'); % SSI EIL  FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
     K = data.K;
     Km = data.Km;
     U = data.U;
-    H = data.H;
     L = data.L;
     EI = data.EI;
 end
@@ -210,7 +205,7 @@ for k = 1:length(barMAC)
 end
 colormap(jet);
 colorbar
-title('MAC - Numerical compared to SSI no_damp damp')
+title('MAC - Numerical compared to SSI no damp damp')
 xlabel('FE-model frequencies [Hz]')
 ylabel('OMA frequencies [Hz]')
 xticks([1,2,3,4,5])

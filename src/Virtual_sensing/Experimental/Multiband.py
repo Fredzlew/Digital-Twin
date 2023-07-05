@@ -24,9 +24,13 @@ import scipy.io as sio
 # To open a .txt file create a variable containing the path to the file
 # ======== PRE-PROCESSING =====================================================
 
+dataset = float(input('Which data set (1 (data_5_2_1)? and 2 (data_nodamp)? '))
 # To open a .txt file create a variable containing the path to the file
+if dataset == 1:
+    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\data\experimental_data\data_5_2_1.txt" # Path to the txt file
 
-_file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Github\Digital-Twin\src\data\Anela\data.txt" # Path to the txt file
+elif dataset == 2:
+    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\data\experimental_data\data.txt" # Path to the txt file
 
 
 
@@ -59,31 +63,33 @@ q = 2 # Decimation factor
 data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
 fs = fs/q # [Hz] Decimated sampling frequency
 
-np.save("data\Modal_parameters_anela\data_filt_nodamp",data)
-
 # Filter
 #First 3 modes
-sos = signal.butter(75, 9/fs*2, btype='lowpass', output='sos')
+sos = signal.butter(75, 6.5/fs*2, btype='lowpass', output='sos')
 filtdata_0_cut = signal.sosfiltfilt(sos, data.T) # filtered data
 
 # Last 2 modes
-sos = signal.butter(75, 9/fs*2, btype='highpass', output='sos')
+sos = signal.butter(75, 6.5/fs*2, btype='highpass', output='sos')
 filtdata_cut_end = signal.sosfiltfilt(sos, data.T) # filtered data
-
-np.save("data\Modal_parameters_anela\data_filt_0_cut",filtdata_0_cut)
-np.save("data\Modal_parameters_anela\data_filt_cut_end",filtdata_cut_end)
-
 
 sos = signal.butter(75, 20/fs*2, btype='lowpass', output='sos')
 filtdata_20 = signal.sosfiltfilt(sos, data.T) # filtered data
 
-sos = signal.butter(75, 9/fs*2, btype='lowpass', output='sos')
+sos = signal.butter(75, 6.5/fs*2, btype='lowpass', output='sos')
 filtdata_9 = signal.sosfiltfilt(sos, data.T) # filtered data
 
+if dataset == 1:
+    np.save("Filtered_data\data_filt_high",data)
+    np.save("Filtered_data\data_filt_0_cut_high",filtdata_0_cut)
+    np.save("Filtered_data\data_filt_cut_end_high",filtdata_cut_end)
+    np.save("Filtered_data\data_filt_all_high",filtdata_20)
+    np.save("Filtered_data\data_filt_first_modes_high",filtdata_9)
 
-np.save("data\Modal_parameters_anela\datafiltnodamp20",filtdata_20)
-np.save("data\Modal_parameters_anela\data_filt_nodamp_6.5",filtdata_9)
-
-
+elif dataset == 2:
+    np.save("Filtered_data\data_filt_no_damp",data)
+    np.save("Filtered_data\data_filt_0_cut_no_damp",filtdata_0_cut)
+    np.save("Filtered_data\data_filt_cut_end_no_damp",filtdata_cut_end)
+    np.save("Filtered_data\data_filt_all_no_damp",filtdata_20)
+    np.save("Filtered_data\data_filt_first_modes_no_damp",filtdata_9)
 
 

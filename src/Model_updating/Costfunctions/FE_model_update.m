@@ -84,7 +84,6 @@ for i = 1:4
     Km(i+1,i) = -k2(i+1);
 end
 Km(5,5) = k2(5);
-stivhed = diag(Km);
 
 
 if loop == 1
@@ -189,27 +188,27 @@ OMAfreq=SSIFreq;
 OMAphi=SSIphi;
 if x == 1
 if loop == 1
-    save('.\data_updated_par\SSIfreq_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data_updated_par\SSIfreq_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 2
-    save('.\data_updated_par\SSImode_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+    save('.\data_updated_par\SSImode_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 elseif loop == 3
-    save('.\data_updated_par\SSIfreqmode_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data_updated_par\SSIfreqmode_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 4
-    save('.\data_updated_par\SSIfreqmodeEIL_high.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
+    save('.\data_updated_par\SSIfreqmodeEIL_high.mat','OMAphi','OMAfreq','K','L','EI','Km','U','fn','k');
 elseif loop == 5
-    save('.\data_updated_par\SSImode_mac_high.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+    save('.\data_updated_par\SSImode_mac_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 end
 elseif x == 2
 if loop == 1
-    save('.\data_updated_par\SSIfreq_no_damp.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data_updated_par\SSIfreq_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 2
-    save('.\data_updated_par\SSImode_no_damp.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+    save('.\data_updated_par\SSImode_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 elseif loop == 3
-    save('.\data_updated_par\SSIfreqmode_no_damp.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn');
+    save('.\data_updated_par\SSIfreqmode_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 4
-    save('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat','OMAphi','OMAfreq','K','L','EI','Km','stivhed','H','U','fn');
+    save('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat','OMAphi','OMAfreq','K','L','EI','Km','U','fn','k');
 elseif loop == 5
-    save('.\data_updated_par\SSImode_mac_no_damp.mat','OMAphi','OMAfreq','K','Km','stivhed','H','U','fn')
+    save('.\data_updated_par\SSImode_mac_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 end
 end
 end
