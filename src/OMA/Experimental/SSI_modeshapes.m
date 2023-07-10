@@ -3,12 +3,12 @@ clc; clear; close all;
 addpath(genpath('..\..\data'))
 % Loading modal parameters from OMA 
 promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
-x = input(promptt);
-if x == 1
+xx = input(promptt);
+if xx == 1
     SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_5_2_1.npy');
     SSIomega = SSIFreq * 2 * pi;
     SSIphi = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_5_2_1.npy');
-elseif x == 2
+elseif xx == 2
     SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_no_damp.npy');
     SSIomega = SSIFreq * 2 * pi;
     SSIphi = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_no_damp.npy');
@@ -76,4 +76,12 @@ disp(strcat('Frequency accuracy,4 : ',num2str(min(OMAfreq(4),fn(4))/max(OMAfreq(
 disp(strcat('Frequency accuracy,5 : ',num2str(min(OMAfreq(5),fn(5))/max(OMAfreq(5),fn(5))*100),'%'));
 disp(strcat('Mean frequency accuracy : ',num2str(mean(min(OMAfreq,fn)./max(OMAfreq,fn)*100)),'%'));
 
-
+if xx == 1
+    T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
+    T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_highdamp.xlsm')
+elseif xx == 2
+    T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
+    T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_nodamp.xlsm')
+end

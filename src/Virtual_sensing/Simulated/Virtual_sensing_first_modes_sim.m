@@ -21,7 +21,7 @@ U = filename.U;
 %% Virtual sensing part 1
 %close all;
 % Number of modeshapes included in approximation (max length(im))
-num_ms = [1,2,3];
+num_ms = [1,2];
 
 % Index of measured locations (1 = bottom, 5 = top)
 im = [2,3,5];
@@ -58,6 +58,10 @@ ylabel('Displacement [m]','FontSize',14)
 % TRAC
 TRAC = (xm_ori(vs,:)*xp(vs,:)')^2/((xm_ori(vs,:)*xm_ori(vs,:)')*(xp(vs,:)*xp(vs,:)'));
 disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(TRAC)])
+
+% FRAC
+FRAC = (fft(xm_ori(vs,:))*ctranspose(fft(xp(vs,:))))^2/((fft(xm_ori(vs,:))*ctranspose(fft(xm_ori(vs,:))))*(fft(xp(vs,:))*ctranspose(fft(xp(vs,:)))));
+disp(['FRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(FRAC)])
 
 % MAE (normalized with respect to the standard deviation)
 MAE = sum(abs(xm_ori(vs,:)-xp(vs,:)))/size(xm_ori,2)/std(xp(vs,:));

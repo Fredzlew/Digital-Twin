@@ -52,22 +52,22 @@ fs = fs/q # [Hz] Decimated sampling frequency
 np.save("Filtered_data_sim\sim_data",data)
 
 # Filter
-#First 3 modes
-sos = signal.butter(4, 9/fs*2, btype='lowpass', output='sos')
+#First 2 modes
+sos = signal.butter(75, 6.5/fs*2, btype='lowpass', output='sos')
 filtdata_0_cut = signal.sosfiltfilt(sos, data.T) # filtered data
 
-# Last 2 modes
-sos = signal.butter(4, 9/fs*2, btype='highpass', output='sos')
+# Last 3 modes
+sos = signal.butter(75, 6.5/fs*2, btype='highpass', output='sos')
 filtdata_cut_end = signal.sosfiltfilt(sos, data.T) # filtered data
 
 np.save("Filtered_data_sim\data_filt_0_cut_sim",filtdata_0_cut)
 np.save("Filtered_data_sim\data_filt_cut_end_sim",filtdata_cut_end)
 
 
-sos = signal.butter(4, 20/fs*2, btype='lowpass', output='sos')
+sos = signal.butter(75, 20/fs*2, btype='lowpass', output='sos')
 filtdata_20 = signal.sosfiltfilt(sos, data.T) # filtered data
 
-sos = signal.butter(4, 6.5/fs*2, btype='lowpass', output='sos')
+sos = signal.butter(75, 6.5/fs*2, btype='lowpass', output='sos')
 filtdata_9 = signal.sosfiltfilt(sos, data.T) # filtered data
 
 

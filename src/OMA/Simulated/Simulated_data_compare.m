@@ -1,7 +1,7 @@
 
 % parameters
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
+addpath(genpath('..\..\data'),genpath('..\..\npy-matlab-master'))
 % Loading modal parameters from OMA simulation
 SSIphi = readNPY('..\..\data\simulated_data\Modal_par\SSIcovmodes.npy');
 SSIFreq = readNPY('..\..\data\simulated_data\Modal_par\SSIcovfreq.npy');
@@ -27,11 +27,11 @@ fn = filename.fn;
 U = filename.U;
 
 % simulated damping
-for i = 1:100
+for i = 1:1
 sim = load([num2str(i) '_sim_data.mat']);
 simdamp1(:,i) = sim.zetas;
 end
-simdamp = mean(simpdamp);
+simdamp = (simdamp1);
 
 
 % dimensions in meters

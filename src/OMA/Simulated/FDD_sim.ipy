@@ -31,7 +31,7 @@ data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tek
 Omega = []
 Modes = []
 Damp = []
-for i in range(1):
+for i in range(100):
     data_sim = pjoin(data_dir, f'{i+1}_sim_data.mat')
 
     # Loading simulated data instead:

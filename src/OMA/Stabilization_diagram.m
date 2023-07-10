@@ -1,11 +1,22 @@
 % parameters
 clc; clear; close all;
-addpath(genpath('data'),genpath('functions'),genpath('OMA'),genpath('python'),genpath('npy-matlab-master'))
+addpath(genpath('..\data'),genpath('..\npy-matlab-master'))
 % Loading modal parameters from OMA 
-% SSI
-SSIstab2 = readNPY('.\data\Modal_parameters_anela\SSIstab_nodamp.npy');
-% FDD
-FDDPSD = readNPY('.\data\Modal_parameters_anela\FDDPSD_no_damp.npy');
+promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
+xx = input(promptt);
+if xx == 1
+    % SSI
+    SSIstab2 = readNPY('..\data\experimental_data\Modal_par\SSIstab_5_2_1.npy');
+    % FDD
+    FDDPSD = readNPY('..\data\experimental_data\Modal_par\FDDPSD_5_2_1.npy');
+    FDDPSDfreq = readNPY('..\data\experimental_data\Modal_par\FDDPSDfreq_5_2_1.npy');
+elseif xx == 2
+    % SSI
+    SSIstab2 = readNPY('..\data\experimental_data\Modal_par\SSIstab_no_damp.npy');
+    % FDD
+    FDDPSD = readNPY('..\data\experimental_data\Modal_par\FDDPSD_no_damp.npy');
+    FDDPSDfreq = readNPY('..\data\experimental_data\Modal_par\FDDPSDfreq_no_damp.npy');
+end
 % definition:
 % freq = SSIstab(:,1);
 % modelorder = SSIstab(:,2);
@@ -82,7 +93,6 @@ for i = 1:length(FDDPSD)
 end
 
 % load frequencies
-FDDPSDfreq = readNPY('FDDPSDfreq_no_damp.npy');
 f_ = FDDPSDfreq(1:length(FDDPSD));
 
 %plotting all figure together
@@ -96,12 +106,22 @@ scatter(freq3,modelorder3*2,'b','filled')
 scatter(freq4,modelorder4*2,'g','filled')
 % plot PSD
 for i = 1:5
-plot(f_,10*log10(PSD(:,i))+20)
+plot(f_,10*log10(PSD(:,i))+35)
 end
 hold off
 
 legend('Unstable pole','Stable for frequency','Stable for frequency and damping','Stable for frequency and mode shape','Stable pole','FontSize', 12)
 xlabel('Frequency [Hz]','FontSize', 14)
 ylabel('Model order','FontSize', 14)
-xlim([0 20])
+xlim([0 12])
 ylim([0 100])
+
+if xx == 1
+    T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
+    T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_highdamp.xlsm')
+elseif xx == 2
+    T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
+    T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_nodamp.xlsm')
+end

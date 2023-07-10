@@ -1,6 +1,6 @@
 %% Script that investigate each sensor %%
 clear;clc;close all
-data = readmatrix('data\Anela\data.txt')'; % Loading displacement data
+data = readmatrix('.\data\experimental_data\data.txt')'; % Loading displacement data
 fss = data(2:6,:); % [mm]
 xm = flip(fss,1); % Swap rows due to sensor
 
