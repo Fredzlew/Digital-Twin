@@ -117,11 +117,41 @@ xlim([0 12])
 ylim([0 100])
 
 if xx == 1
-    T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
-    T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_highdamp.xlsm')
+    T = array2table([num2cell(f_),num2cell(PSD)]);
+    T1 = array2table([num2cell(freq0'),num2cell((modelorder0*2)'),num2cell(damp0')]);
+    T2 = array2table([num2cell(freq1'),num2cell((modelorder1*2)'),num2cell(damp1')]);
+    T3 = array2table([num2cell(freq2'),num2cell((modelorder2*2)'),num2cell(damp2')]);
+    T4 = array2table([num2cell(freq3'),num2cell((modelorder3*2)'),num2cell(damp3')]);
+    T5 = array2table([num2cell(freq4'),num2cell((modelorder4*2)'),num2cell(damp4')]);
+    T.Properties.VariableNames(1:6) = {'f_','PSD1','PSD2','PSD3','PSD4','PSD5'};
+    T1.Properties.VariableNames(1:3) = {'freq0','modelorder0','damp0'};
+    T2.Properties.VariableNames(1:3) = {'freq1','modelorder1','damp1'};
+    T3.Properties.VariableNames(1:3) = {'freq2','modelorder2','damp2'};
+    T4.Properties.VariableNames(1:3) = {'freq3','modelorder3','damp3'};
+    T5.Properties.VariableNames(1:3) = {'freq4','modelorder4','damp4'};
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_PSD_highdamp.csv','Delimiter',';')
+    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab1_highdamp.xlsm')
+    writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab2_highdamp.csv','Delimiter',';')
+    writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab3_highdamp.csv','Delimiter',';')
+    writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_highdamp.csv','Delimiter',';')
+    writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_highdamp.csv','Delimiter',';')
 elseif xx == 2
-    T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
-    T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_nodamp.xlsm')
+    T = array2table([num2cell(f_),num2cell(PSD)]);
+    T1 = array2table([num2cell(freq0'),num2cell((modelorder0*2)'),num2cell(damp0')]);
+    T2 = array2table([num2cell(freq1'),num2cell((modelorder1*2)'),num2cell(damp1')]);
+    T3 = array2table([num2cell(freq2'),num2cell((modelorder2*2)'),num2cell(damp2')]);
+    T4 = array2table([num2cell(freq3'),num2cell((modelorder3*2)'),num2cell(damp3')]);
+    T5 = array2table([num2cell(freq4'),num2cell((modelorder4*2)'),num2cell(damp4')]);
+    T.Properties.VariableNames(1:6) = {'f_','PSD1','PSD2','PSD3','PSD4','PSD5'};
+    T1.Properties.VariableNames(1:3) = {'freq0','modelorder0','damp0'};
+    T2.Properties.VariableNames(1:3) = {'freq1','modelorder1','damp1'};
+    T3.Properties.VariableNames(1:3) = {'freq2','modelorder2','damp2'};
+    T4.Properties.VariableNames(1:3) = {'freq3','modelorder3','damp3'};
+    T5.Properties.VariableNames(1:3) = {'freq4','modelorder4','damp4'};
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_PSD_nodamp.csv','Delimiter',';')
+    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab1_nodamp.xlsm')
+    writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab2_nodamp.csv','Delimiter',';')
+    writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab3_nodamp.csv','Delimiter',';')
+    writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_nodamp.csv','Delimiter',';')
+    writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_nodamp.csv','Delimiter',';')
 end
