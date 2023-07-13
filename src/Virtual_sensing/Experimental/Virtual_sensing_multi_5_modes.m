@@ -2,7 +2,7 @@
 clear;clc;close all
 
 % Adding path to data
-addpath(genpath('..\..\data'),genpath('.\Filtered_data'),genpath('..\function'),genpath('..\..\Model_updating\Sensitivity_method\data_updated_par_sens'))
+addpath(genpath('..\..\data'),genpath('..\..\npy-matlab-master'),genpath('.\Filtered_data'),genpath('..\function'),genpath('..\..\Model_updating\Sensitivity_method\data_updated_par_sens'))
 
 promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
 q = input(promptt);
@@ -179,3 +179,15 @@ title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
+%% save the predicted displacement as txt
+%{
+if q == 1
+    T1 = array2table(num2cell(xp(1,:)'));
+    T1.Properties.VariableNames(1) = {'x_pred'};
+    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_high.txt','Delimiter',' ')
+elseif q == 2
+    T1 = array2table(num2cell(xp(1,:)'));
+    T1.Properties.VariableNames(1) = {'x_pred'};
+    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_nodamp.txt','Delimiter',' ')
+end
+%}
