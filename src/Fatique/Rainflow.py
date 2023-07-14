@@ -28,17 +28,14 @@ data_pr=data_pr[:,0]
 data_me=data_me.T
 data_me=data_me[:,0]
 
-#data=np.array(data).tolist()
-
-
-rain_pr_nbin = rainflow.count_cycles(data_pr,nbins=30)
-rain_me_nbin = rainflow.count_cycles(data_me,nbins=30)
-
 rain_pr_binsize = rainflow.count_cycles(data_pr,binsize=1)
 rain_me_binsize = rainflow.count_cycles(data_me,binsize=1)
 
-rain_pr_ndig = rainflow.count_cycles(data_pr,ndigits=0)
-rain_me_ndig = rainflow.count_cycles(data_me,ndigits=0)
 
-#for rng, mean, count, i_start, i_end in rainflow.extract_cycles(data): 
-    #print(1)
+
+if dataset == 1:
+    np.savetxt('.\Rainflow_data\pr_rainflow_high.csv', rain_pr_binsize, delimiter=';')
+    np.savetxt(".\Rainflow_data\me_rainflow_high.csv", rain_me_binsize, delimiter=';')
+elif dataset == 2:
+    np.savetxt('.\Rainflow_data\pr_rainflow_nodamp.csv', rain_pr_binsize, delimiter=';')
+    np.savetxt('.\Rainflow_data\me_rainflow_nodamp.csv', rain_me_binsize, delimiter=';')
