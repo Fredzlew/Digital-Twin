@@ -83,7 +83,12 @@ Res_SSIcov = oma.SSIModEX(FreQ, Result)
 # =============================================================================
 # Make some plots
 # =============================================================================
-MS_SSIcov = Res_SSIcov['Mode Shapes'].real
+MS_SSIcov2 = Res_SSIcov['Mode Shapes'].real
+
+MS_SSIcov = np.empty((3,5))
+for x in range(5):
+    for i in range(3):
+        MS_SSIcov[i,x] = MS_SSIcov2[i,x]/MS_SSIcov2[2,x]
 
 # Saving the parameters
 if dataset == 1:

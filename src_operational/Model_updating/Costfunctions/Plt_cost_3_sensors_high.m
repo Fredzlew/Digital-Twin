@@ -134,7 +134,16 @@ for i=1:length(omegas)
     subplot(1,length(omegas),i)
     hold on
     plot(phi(:,i),x,'-m')
-    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+    if OMAphi(3,i) * phi(6,i) < 0
+        plot(-OMAphi(1,i),x(3),'b.','markersize',30)
+        plot(-OMAphi(2,i),x(4),'b.','markersize',30)
+        plot(-OMAphi(3,i),x(6),'b.','markersize',30)
+    else
+        plot(OMAphi(1,i),x(3),'b.','markersize',30)
+        plot(OMAphi(2,i),x(4),'b.','markersize',30)
+        plot(OMAphi(3,i),x(6),'b.','markersize',30)
+    end
+    %plot(phi(2:end,i),x(2:end),'b.','markersize',30)
     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
@@ -143,15 +152,7 @@ for i=1:length(omegas)
         legend('Numerical','SSI','Location','northwest')
     end
 end
-for i = 1:3
-    if phi(2,i)*OMAphi(1,i) < 0 % Swap sign on mode shape
-        plot([0  ;-OMAphi(:,i)],x,'go-.');
-        plot(-OMAphi(1:end,i),x(2:end),'g.','markersize',30)
-    else
-        plot([0  ;OMAphi(:,i)],x,'go-.');
-        plot(OMAphi(1:end,i),x(2:end),'g.','markersize',30)
-    end
-end
+
 sgtitle('Numerical mode shapes, calibrated by SSI','FontSize',20)
 
 han=axes(fig,'visible','off'); 

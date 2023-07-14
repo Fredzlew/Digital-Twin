@@ -179,7 +179,12 @@ for j = 1:5
         mxVec_x(j) = mVec_x(j);
     end
     for l = 1:5
-        U(l,j) = Us(l,j)/mxVec_x(j);
+        Uss(l,j) = Us(l,j)/mxVec_x(j);
+    end
+end % end normalization
+for j = 1:5
+    for l = 1:5
+        U(l,j) = Uss(l,j)/Uss(5,j);
     end
 end % end normalization
 
