@@ -7,14 +7,14 @@ f = getGlobalx;
 % SSI
 if f == 1
     % High damping
-    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_5_2_1.npy');
+    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSIfreq_5_2_1.npy');
     omegaOMA = SSIFreq * 2 * pi;
-    phiOMA = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_5_2_1.npy');
+    phiOMA = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_5_2_1.npy');
 elseif f == 2
     % No damping
-    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_no_damp.npy');
+    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSIfreq_no_damp.npy');
     omegaOMA = SSIFreq * 2 * pi;
-    phiOMA = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_no_damp.npy');
+    phiOMA = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_no_damp.npy');
 end
 
 % story heights [m] (from ground to mid floor)
@@ -97,5 +97,6 @@ for j = 1:5
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-J=sum((omegas-omegaOMA).^2)*1+sum(sum((abs(U)-abs(phiOMA)).^2))*1;
+U_3_sensors=[U(2,:);U(3,:);U(5,:)];
+J=sum((omegas-omegaOMA).^2)*1+sum(sum((abs(U_3_sensors)-abs(phiOMA)).^2))*1;
 end

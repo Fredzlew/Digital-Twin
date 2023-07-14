@@ -1,18 +1,18 @@
 % parameters
 clc; clear; close all;
-addpath(genpath('..\..\data'),genpath('functions'),genpath('..\..\npy-matlab-master'))
+addpath(genpath('..\..\data'),genpath('.\functions'),genpath('..\..\npy-matlab-master'))
 % Loading modal parameters from OMA 
 promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
 x = input(promptt);
 setGlobalx(x)
 if x == 1
-    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_5_2_1.npy');
+    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSIfreq_5_2_1.npy');
     SSIomega = SSIFreq * 2 * pi;
-    SSIphi = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_5_2_1.npy');
+    SSIphi = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_5_2_1.npy');
 elseif x == 2
-    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_no_damp.npy');
+    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSIfreq_no_damp.npy');
     SSIomega = SSIFreq * 2 * pi;
-    SSIphi = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_no_damp.npy');
+    SSIphi = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_no_damp.npy');
 end
 
 for loop = 1:5
@@ -87,15 +87,15 @@ Km(5,5) = k2(5);
 
 
 if loop == 1
-    Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
+    Stiff = fminsearch(@costfunSSIfreq_3_sensors,k2); % SSI, frequency
 elseif loop == 2
-    Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
+    Stiff = fminsearch(@costfunSSImode_3_sensors,k2); % SSI, mode shape
 elseif loop == 3
-    Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
+    Stiff = fminsearch(@costfunSSIfreqmode_3_sensors,k2); % SSI, frequency + mode shape
 elseif loop == 4
-    Stiff = fminsearch(@costfunSSIfreqmodeEIL,EIL); % SSI (JAN), EI + L
+    Stiff = fminsearch(@costfunSSIfreqmodeEIL_3_sensors,EIL); % SSI (JAN), EI + L
 elseif loop == 5
-    Stiff = fminsearch(@costfunSSImode_mac,k2); % SSI, mode shape
+    Stiff = fminsearch(@costfunSSImode_mac_3_sensors,k2); % SSI, mode shape
 end
 
 if loop == 4
@@ -188,27 +188,27 @@ OMAfreq=SSIFreq;
 OMAphi=SSIphi;
 if x == 1
 if loop == 1
-    save('.\data_updated_par\SSIfreq_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreq_3_sensors_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 2
-    save('.\data_updated_par\SSImode_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
+    save('.\data_updated_par_3_sensors\SSImode_3_sensors_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 elseif loop == 3
-    save('.\data_updated_par\SSIfreqmode_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreqmode_3_sensors_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 4
-    save('.\data_updated_par\SSIfreqmodeEIL_high.mat','OMAphi','OMAfreq','K','L','EI','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreqmodeEIL_3_sensors_high.mat','OMAphi','OMAfreq','K','L','EI','Km','U','fn','k');
 elseif loop == 5
-    save('.\data_updated_par\SSImode_mac_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
+    save('.\data_updated_par_3_sensors\SSImode_mac_3_sensors_high.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 end
 elseif x == 2
 if loop == 1
-    save('.\data_updated_par\SSIfreq_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreq__3_sensorsno_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 2
-    save('.\data_updated_par\SSImode_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
+    save('.\data_updated_par_3_sensors\SSImode_3_sensors_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 elseif loop == 3
-    save('.\data_updated_par\SSIfreqmode_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreqmode_3_sensors_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 4
-    save('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat','OMAphi','OMAfreq','K','L','EI','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreqmodeEIL_3_sensors_no_damp.mat','OMAphi','OMAfreq','K','L','EI','Km','U','fn','k');
 elseif loop == 5
-    save('.\data_updated_par\SSImode_mac_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
+    save('.\data_updated_par_3_sensors\SSImode_mac_3_sensors_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 end
 end
 end

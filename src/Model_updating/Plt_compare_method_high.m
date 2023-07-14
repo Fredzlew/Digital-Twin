@@ -71,4 +71,7 @@ yticklabels({'(freq)','freq sens',' (mode)',' (mode mac)','mode sens',' (freq+mo
     ' EIL (freq+mode)','Global stiffness','FontSize',14})
 zlabel('Stiffness [N/m]','FontSize',14)
 
-
+%% download plot
+T_stiff = array2table([num2cell(y)]);
+T_stiff.Properties.VariableNames(1:5) = {'k1','k2','k3','k4','k5'};
+writetable(T_stiff,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_compare_sens_cost_stiff_highdamp.csv','Delimiter',';')

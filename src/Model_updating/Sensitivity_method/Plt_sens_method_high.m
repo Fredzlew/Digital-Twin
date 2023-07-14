@@ -68,18 +68,18 @@ OMAphi = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_5_2_1.npy');
 
 promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode) " + ...
     " 3=SSI (freq+mode)? ";
-x = input(promptt);
-if x == 1
+xx = input(promptt);
+if xx == 1
     data = load('.\data_updated_par_sens\Eigenvalue_residual_high.mat'); % SSI FREQ
     fn = data.fn;
     K = data.Knew;
     U = data.U;
-elseif x == 2
+elseif xx == 2
     data = load('.\data_updated_par_sens\Mode_shape_residual_high.mat'); % SSI modes
     fn = data.fn;
     K = data.Knew;
     U = data.U;
-elseif x == 3
+elseif xx == 3
     data = load('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat'); % SSI EIL  FREQ and modes
     fn = data.fn;
     K = data.Knew;
@@ -93,6 +93,13 @@ x = [0, H];
 phi = [zeros(1,length(U)); U];
 fig = figure;
 fig.Position=[100 100 1600 700];
+
+for i = 1:5
+    if phi(2,i)*OMAphi(1,i) < 0 
+        phi(:,i) = phi(:,i)*-1;
+    end
+end
+
 for i=1:length(omegas)
     subplot(1,length(omegas),i)
     hold on
@@ -177,3 +184,46 @@ yticks([1,2,3,4,5])
 yticklabels(string(OMAfreq'))
 box on
 
+%% Download plot
+% PLotting the stiffness
+if xx == 1
+k1 = y(:,1);
+k2 = y(:,2);
+k3 = y(:,3);
+k4 = y(:,4);
+k5 = y(:,5);
+%T_stiff = array2table([num2cell(y)]);
+T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
+T_mac = array2table([num2cell(mac)]);
+
+stiff= {'Freq';'Mode';'Freq + mode';'Global stiffness'};
+T_stiff = table(k1,k2,k3,k4,k5, 'RowNames',stiff);
+
+%T_stiff.Properties.VariableNames(1:6) = {'','k1','k2','k3','k4','k5'};
+T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
+T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
+
+
+writetable(T_stiff,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_stiff_highdamp.csv','Delimiter',';')
+writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes1_highdamp.csv','Delimiter',';')
+writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_mac1_highdamp.csv','Delimiter',';')
+
+elseif xx == 2
+T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
+T_mac = array2table([num2cell(mac)]);
+
+T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
+T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
+
+writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes2_highdamp.csv','Delimiter',';')
+writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_mac2_highdamp.csv','Delimiter',';')
+elseif xx == 3
+T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
+T_mac = array2table([num2cell(mac)]);
+
+T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
+T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
+
+writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes3_highdamp.csv','Delimiter',';')
+writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_mac3_highdamp.csv','Delimiter',';')
+end

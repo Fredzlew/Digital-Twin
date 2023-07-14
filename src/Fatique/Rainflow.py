@@ -34,8 +34,8 @@ data_me=data_me[:,0]
 rain_pr_nbin = rainflow.count_cycles(data_pr,nbins=30)
 rain_me_nbin = rainflow.count_cycles(data_me,nbins=30)
 
-rain_pr_binsize = rainflow.count_cycles(data_pr,binsize=0.5)
-rain_me_binsize = rainflow.count_cycles(data_me,binsize=0.5)
+rain_pr_binsize = rainflow.count_cycles(data_pr,binsize=1)
+rain_me_binsize = rainflow.count_cycles(data_me,binsize=1)
 
 rain_pr_ndig = rainflow.count_cycles(data_pr,ndigits=0)
 rain_me_ndig = rainflow.count_cycles(data_me,ndigits=0)

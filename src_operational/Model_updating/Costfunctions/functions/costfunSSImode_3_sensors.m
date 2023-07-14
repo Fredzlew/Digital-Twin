@@ -1,4 +1,4 @@
-function J=costfunSSIfreqmode(k)
+function J=costfunSSImode(k)
 % Mass matrix
 M = [2.3553        0         0         0         0
          0    2.3690         0         0         0
@@ -6,19 +6,16 @@ M = [2.3553        0         0         0         0
          0         0         0    2.3690         0
          0         0         0         0    2.4467];
 f = getGlobalx;
-% Natural frequencies and normalized mode shapes from relevant OMA method 
+% Normalized mode shapes from relevant OMA method 
 % SSI
 if f == 1
     % High damping
-    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_5_2_1.npy');
-    omegaOMA = SSIFreq * 2 * pi;
-    phiOMA = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_5_2_1.npy');
+    phiOMA = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_5_2_1.npy');
 elseif f == 2
     % No damping
-    SSIFreq = readNPY('..\..\data\experimental_data\Modal_par\SSIfreq_no_damp.npy');
-    omegaOMA = SSIFreq * 2 * pi;
-    phiOMA = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_no_damp.npy');
+    phiOMA = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_no_damp.npy');
 end
+
 % Stiffness matrix
 for i = 1:4
     K(i,i) = k(i)+k(i+1);
@@ -32,8 +29,6 @@ K(5,5) = k(5);
 omega = real(sqrt(diag(D)));
 % sort frequencies and mode shapes
 [~,iw] = sort(omega);
-% natural frequencies [rad/s]
-omegas = omega(iw);
 % mode shapes
 Us = U(:,iw);
 % normalization
@@ -49,5 +44,6 @@ for j = 1:5
         U(l,j) = Us(l,j)/mxVec_x(j);
     end
 end % end normalization
-J=sum((omegas-omegaOMA).^2)*1+sum(sum((abs(U)-abs(phiOMA)).^2))*1;
+U_3_sensors=[U(2,:);U(3,:);U(5,:)];
+J=sum(sum((abs(U_3_sensors)-abs(phiOMA)).^2));
 end

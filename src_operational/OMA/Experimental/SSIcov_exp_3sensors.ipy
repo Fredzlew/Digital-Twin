@@ -71,11 +71,11 @@ SSIcov,Result = oma.SSIcovStaDiag(filtdata.T, fs, br, ordmax=100)
 # Frequencies ccoming from the stability diagram
 if dataset == 1:
     # Anela data_5_2_1
-    FreQ = [1.65586 , 5.0253, 7.89873, 10.1134, 11.5872]
+    FreQ = [1.65598 , 5.0244, 7.8989, 10.1127, 11.5872]
 
 elif dataset == 2:
     # Anela data
-    FreQ = [1.65586 , 5.02282, 7.89718] #, 10.1111, 11.5861]
+    FreQ = [1.65586 , 5.02282, 7.89718, 10.1111, 11.5861] #, 10.1111, 11.5861]
 
 # Extract the modal properties
 Res_SSIcov = oma.SSIModEX(FreQ, Result)
