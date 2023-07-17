@@ -2,7 +2,7 @@
 %%% 5 storey frame eigenvalue and mode shape residual %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all;clear;clc
-addpath(genpath('npy-matlab-master'),genpath('..\..\data'),genpath('..\Costfunctions\functions'))
+addpath(genpath('..\..\npy-matlab-master'),genpath('..\..\data'),genpath('..\Costfunctions\functions'))
 promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
 q = input(promptt);
 
@@ -230,7 +230,8 @@ for ii = 1:ni
             plot(SSIphi(1:end,i),x(2:end),'g.','markersize',30)
         end
         plot(phi(2:end,i),x(2:end),'b.','markersize',30)
-        title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        title(['Freq. Approx = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        subtitle(['(FE freq. = ' num2str(SSIFreq(i)) ' Hz)'])
         xline(0.0,'--')
         xlim([-1.1,1.1])
         ylim([0,x(end)])
@@ -238,10 +239,13 @@ for ii = 1:ni
             legend('Numerical','SSI','Location','northwest')
         end
     end
+    sgtitle(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
     if q == 1
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
     elseif q == 2
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
     end
     close
 end
@@ -250,37 +254,68 @@ req = rank(G'*Weps*G) == size(G,2);
 disp(req);
 
 % Convergence plot for the relative failure for frequencies
-figure (1)
-hold on
-for j = 1:5
-    err(j,:) = abs(r(j,:))/omegasq_m(j)*100;
-    plot(err(j,:))
+for ii = 1:ni
+    figure (1)
+    hold on
+    for j = 1:5
+        err(j,ii) = abs(r(j,ii))/omegasq_m(j);
+    end
+    plot(err(1,1:ii)','r')
+    plot(err(2,1:ii)','g')
+    plot(err(3,1:ii)','b')
+    plot(err(4,1:ii)','c')
+    plot(err(5,1:ii)','m')
+    xlim([0 100])
+    ylim([0 0.1])
+    title(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
+    legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
+    xlabel('Iterations [-]')
+    ylabel('Relative error [-]')
+    hold off
+    if q == 1
+        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
+    elseif q == 2
+        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
+    end
 end
-legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
-xlabel('Iterations [-]')
-ylabel('Relative error [%]')
-hold off
 
 
 % Display accuracy of mode shapes
 % CrossMAC plot of mode shapes
 for i = 1:ni
-    mac=crossMACnm(SSIphi,Umac(:,:,i));
+    mac=crossMAC(SSIphi,Umac(:,:,i));
     for j = 1:5
         dmac = diag(mac);
-        acc(j,i) = dmac(j)*100;
+        acc(j,i) = dmac(j);
     end
 end
+
 % Convergence plot for the relative failure for mode shapes
-figure (2)
-hold on
-for j = 1:5
-    plot(acc(j,:))
+for ii = 1:ni
+    figure (2)
+    hold on
+    plot(acc(1,1:ii)','r')
+    plot(acc(2,1:ii)','g')
+    plot(acc(3,1:ii)','b')
+    plot(acc(4,1:ii)','c')
+    plot(acc(5,1:ii)','m')
+    xlim([0 100])
+    ylim([0.98 1])
+    title(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
+    legend('Mode shape 1', 'Mode shape 2','Mode shape 3', 'Mode shape 4','Mode shape 5','Location','southwest')
+    xlabel('Iterations [-]')
+    ylabel('MAC [-]')
+    hold off
+    if q == 1
+        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
+    elseif q == 2
+        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
+    end
 end
-legend('Mode shape 1', 'Mode shape 2','Mode shape 3', 'Mode shape 4','Mode shape 5')
-xlabel('Iterations [-]')
-ylabel('MAC [%]')
-hold off
 
 %% Calculating new frequencies with the stiffness changes
 
