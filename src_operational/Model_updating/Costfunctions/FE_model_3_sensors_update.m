@@ -205,7 +205,7 @@ elseif loop == 5
 end
 elseif x == 2
 if loop == 1
-    save('.\data_updated_par_3_sensors\SSIfreq__3_sensorsno_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
+    save('.\data_updated_par_3_sensors\SSIfreq_3_sensors_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k');
 elseif loop == 2
     save('.\data_updated_par_3_sensors\SSImode_3_sensors_no_damp.mat','OMAphi','OMAfreq','K','Km','U','fn','k')
 elseif loop == 3

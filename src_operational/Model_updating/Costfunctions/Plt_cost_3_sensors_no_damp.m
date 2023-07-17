@@ -1,8 +1,8 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Plotting the model update no damp %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc; clear; close all;
-addpath(genpath('..\..\data'),genpath('.\data_updated_par'),genpath('.\functions'))
+addpath(genpath('..\..\data'),genpath('.\data_updated_par_3_sensors'),genpath('.\functions'))
 
 % Loading stiffness for all OMA costfunction and numerical model
 filename = load('..\..\data\modelprop.mat'); % omegas from numericla model
@@ -12,20 +12,20 @@ EI_fe = filename.EI;
 H = filename.H;
 Globalstiff = filename.k;
 
-dataSSIFreq = load('.\data_updated_par\SSIfreq_no_damp.mat'); % SSI FREQ
+dataSSIFreq = load('.\data_updated_par_3_sensors\SSIfreq_3_sensors_no_damp.mat'); % SSI FREQ
 K_SSI_freq = dataSSIFreq.k;
 
-dataSSImode = load('.\data_updated_par\SSImode_no_damp.mat'); % SSI modes
+dataSSImode = load('.\data_updated_par_3_sensors\SSImode_3_sensors_no_damp.mat'); % SSI modes
 K_SSI_mode = dataSSImode.k;
 
-dataSSImodemac = load('.\data_updated_par\SSImode_mac_no_damp.mat'); % SSI modes
+dataSSImodemac = load('.\data_updated_par_3_sensors\SSImode_mac_3_sensors_no_damp.mat'); % SSI modes
 K_SSI_mode_mac = dataSSImodemac.k;
 
 
-dataSSIFreqmode = load('.\data_updated_par\SSIfreqmode_no_damp.mat'); % SSI FREQ and modes
+dataSSIFreqmode = load('.\data_updated_par_3_sensors\SSIfreqmode_3_sensors_no_damp.mat'); % SSI FREQ and modes
 K_SSI_freq_mode = dataSSIFreqmode.k;
 
-dataSSIfreqmodeEIL = load('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat'); % SSI modes
+dataSSIfreqmodeEIL = load('.\data_updated_par_3_sensors\SSIfreqmodeEIL_3_sensors_no_damp.mat'); % SSI modes
 K_SSI_freqmodeEIL = dataSSIfreqmodeEIL.k;
 L = dataSSIfreqmodeEIL.L;
 EI = dataSSIfreqmodeEIL.EI;
@@ -73,7 +73,7 @@ promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode), 3=SSI (mode m
     " 5=SSI EIL (freq+mode)? ";
 x = input(promptt);
 if x == 1
-    data = load('.\data_updated_par\SSIfreq_no_damp.mat'); % SSI FREQ
+    data = load('.\data_updated_par_3_sensors\SSIfreq_3_sensors_no_damp.mat'); % SSI FREQ
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -81,7 +81,7 @@ if x == 1
     Km = data.Km;
     U = data.U;
 elseif x == 2
-    data = load('.\data_updated_par\SSImode_no_damp.mat'); % SSI modes
+    data = load('.\data_updated_par_3_sensors\SSImode_3_sensors_no_damp.mat'); % SSI modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -89,7 +89,7 @@ elseif x == 2
     Km = data.Km;
     U = data.U;
 elseif x == 3
-    data = load('.\data_updated_par\SSImode_mac_no_damp.mat'); % SSI EIL  FREQ and modes
+    data = load('.\data_updated_par_3_sensors\SSImode_mac_3_sensors_no_damp.mat'); % SSI EIL  FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -97,7 +97,7 @@ elseif x == 3
     Km = data.Km;
     U = data.U;
 elseif x == 4
-    data = load('.\data_updated_par\SSIfreqmode_no_damp.mat'); % SSI FREQ and modes
+    data = load('.\data_updated_par_3_sensors\SSIfreqmode_3_sensors_no_damp.mat'); % SSI FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -105,7 +105,7 @@ elseif x == 4
     Km = data.Km;
     U = data.U;
 elseif x == 5
-    data = load('.\data_updated_par\SSIfreqmodeEIL_no_damp.mat'); % SSI EIL  FREQ and modes
+    data = load('.\data_updated_par_3_sensors\SSIfreqmodeEIL_3_sensors_no_damp.mat'); % SSI EIL  FREQ and modes
     OMAphi = data.OMAphi;
     OMAfreq = data.OMAfreq;
     fn = data.fn;
@@ -134,14 +134,16 @@ for i=1:length(omegas)
     subplot(1,length(omegas),i)
     hold on
     plot(phi(:,i),x,'-m')
-    if phi(2,i)*OMAphi(1,i) < 0 % Swap sign on mode shape
-        plot([0  ;-OMAphi(:,i)],x,'go-.');
-        plot(-OMAphi(1:end,i),x(2:end),'g.','markersize',30)
+    if OMAphi(3,i) * phi(6,i) < 0
+        plot(-OMAphi(1,i),x(3),'b.','markersize',30)
+        plot(-OMAphi(2,i),x(4),'b.','markersize',30)
+        plot(-OMAphi(3,i),x(6),'b.','markersize',30)
     else
-        plot([0  ;OMAphi(:,i)],x,'go-.');
-        plot(OMAphi(1:end,i),x(2:end),'g.','markersize',30)
+        plot(OMAphi(1,i),x(3),'b.','markersize',30)
+        plot(OMAphi(2,i),x(4),'b.','markersize',30)
+        plot(OMAphi(3,i),x(6),'b.','markersize',30)
     end
-    plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+    %plot(phi(2:end,i),x(2:end),'b.','markersize',30)
     title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
     xline(0.0,'--')
     xlim([-1.1,1.1])
@@ -181,7 +183,8 @@ disp(strcat(num2str(sum(sum(abs(abs(K)-abs(Km)))))));
 disp('----------------------------------------------------------------------')
 
 % CrossMAC plot of mode shapes
-mac=crossMAC(U,OMAphi);
+U_3_sensors=[U(2,:);U(3,:);U(5,:)];
+mac=crossMAC(U_3_sensors,OMAphi);
 dmac = diag(mac);
 
 disp('Modal Assurance Criterion between Numerical modeshapes and SSI  : ')
@@ -205,7 +208,7 @@ for k = 1:length(barMAC)
 end
 colormap(jet);
 colorbar
-title('MAC - Numerical compared to SSI no damp damp')
+title('MAC - Numerical compared to SSI no damp')
 xlabel('FE-model frequencies [Hz]')
 ylabel('OMA frequencies [Hz]')
 xticks([1,2,3,4,5])
