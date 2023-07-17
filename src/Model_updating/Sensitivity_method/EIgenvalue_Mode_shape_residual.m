@@ -42,6 +42,9 @@ k = filename.k';
 % Mass matrix
 M = filename.M;
 
+% Height of building
+H = filename.H;
+
 % reshape mode shapes
 SSIphi_re = reshape(SSIphi,25,1);
 
@@ -83,6 +86,9 @@ for ii = 1:ni
 
     % natural frequencies [rad/s]
     omegas = omega(iw);
+    
+    % Frequency [Hz]
+    fn = omegas/(2*pi);
     
     % natural frequencies squared
     omega_squared = omegas.^2.;
@@ -204,6 +210,40 @@ for ii = 1:ni
     % the difference with regularization
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r(:,ii);
     GNEW(:,:,ii) = G;
+
+
+    % plotting the mode shapes
+    x = [0, H];
+    phi = [zeros(1,length(U)); U];
+    fig = figure;
+    fig.Position=[100 100 1600 700];
+    
+    for i=1:length(omegas)
+        subplot(1,length(omegas),i)
+        hold on
+        plot(phi(:,i),x,'-m')
+        if phi(2,i)*SSIphi(1,i) < 0 % Swap sign on mode shape
+            plot([0  ;-SSIphi(:,i)],x,'go-.');
+            plot(-SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+        else
+            plot([0  ;SSIphi(:,i)],x,'go-.');
+            plot(SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+        end
+        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+        title(['f = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
+        xline(0.0,'--')
+        xlim([-1.1,1.1])
+        ylim([0,x(end)])
+        if i==1 
+            legend('Numerical','SSI','Location','northwest')
+        end
+    end
+    if q == 1
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+    elseif q == 2
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+    end
+    close
 end
 % requirement
 req = rank(G'*Weps*G) == size(G,2);
@@ -289,9 +329,9 @@ end % end normalization
 
 % Save updated system matrices
 if q == 1
-    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat','knew','Knew','U','fn');
+    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat','knew','Knew','U','fn','acc','err');
 elseif q == 2
-    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat','knew','Knew','U','fn');
+    save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat','knew','Knew','U','fn','acc','err');
 end
 %% Plotting L curve only for the first iteration
 
