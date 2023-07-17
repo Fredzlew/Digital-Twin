@@ -256,15 +256,16 @@ disp(req);
 % Convergence plot for the relative failure for frequencies
 for ii = 1:ni
     figure (1)
+    colororder(gcf,[0.0,0.4470,0.7410;0.8500,0.3250,0.0980;0.9290,0.6940,0.1250;0.4940,0.1840,0.5560;0.4660,0.6740,0.1880])
     hold on
     for j = 1:5
         err(j,ii) = abs(r(j,ii))/omegasq_m(j);
     end
-    plot(err(1,1:ii)','r')
-    plot(err(2,1:ii)','g')
-    plot(err(3,1:ii)','b')
-    plot(err(4,1:ii)','c')
-    plot(err(5,1:ii)','m')
+    plot(err(1,1:ii)')%,'r')
+    plot(err(2,1:ii)')%,'g')
+    plot(err(3,1:ii)')%,'b')
+    plot(err(4,1:ii)')%,'c')
+    plot(err(5,1:ii)')%,'m')
     xlim([0 100])
     ylim([0 0.1])
     title(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
@@ -295,12 +296,13 @@ end
 % Convergence plot for the relative failure for mode shapes
 for ii = 1:ni
     figure (2)
+    colororder(gcf,[0.0,0.4470,0.7410;0.8500,0.3250,0.0980;0.9290,0.6940,0.1250;0.4940,0.1840,0.5560;0.4660,0.6740,0.1880])
     hold on
-    plot(acc(1,1:ii)','r')
-    plot(acc(2,1:ii)','g')
-    plot(acc(3,1:ii)','b')
-    plot(acc(4,1:ii)','c')
-    plot(acc(5,1:ii)','m')
+    plot(acc(1,1:ii)')%,'r')
+    plot(acc(2,1:ii)')%,'g')
+    plot(acc(3,1:ii)')%,'b')
+    plot(acc(4,1:ii)')%,'c')
+    plot(acc(5,1:ii)')%,'m')
     xlim([0 100])
     ylim([0.98 1])
     title(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
