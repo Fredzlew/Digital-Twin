@@ -30,7 +30,7 @@ dx = zeros(3,1);
 dxt = dx;
 k0 = [k1;k2;k3];
 
-for ii=1:20
+for ii=1:1
 % The updated stiffnesses
 k1 = k1+dx(1);
 k2 = k2+dx(2);
@@ -94,7 +94,7 @@ dx = zeros(3,1);
 dxt = dx;
 k0 = [k1;k2;k3];
 
-for ii=1:20
+for ii=1:1
 % The updated stiffnesses
 k1 = k1+dx(1);
 k2 = k2+dx(2);
@@ -268,10 +268,10 @@ kf = k0+dxt
 
 % plotting
 q = 1;
-for i = linspace(0.01,25,100000)
+for i = linspace(0.0001,10,100000)
     lambda = i;
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
-    eps = r-G*dx; % fortegn + eller -?
+    eps = r-G*dx;
     Jeps(q) = sqrt(eps'*Weps*eps);
     Jthe(q)  = sqrt(dx'*Wtheta*dx);
     q = q + 1;
@@ -280,28 +280,28 @@ end
 figure (1)
 loglog(Jeps,Jthe)
 grid on
-xlim([10^-4 10^-1+10^-1/2])
-ylim([10^-3 10^-0+10^-0/1.5])
+%xlim([10^-4 10^-1+10^-1/2])
+%ylim([10^-3 10^-0+10^-0/1.5])
 xlabel('norm (Residual)')
 ylabel('norm (Stiffness Change)')
 title('L-curve')
 
 % plotting the  norm to the regularization parameter
 % lambda square:
-lam2 = linspace(10^-10,10^0,100000);
+%lam2 = linspace(10^-10,10^0,100000);
 
 
-q = 1;
-for ii = lam2
-    stiffdx(:,q) = ((G'*Weps*G)+(ii*Wtheta))^(-1)*G'*Weps*r;
-    q = q + 1;
-end
+%q = 1;
+%for ii = lam2
+    %stiffdx(:,q) = ((G'*Weps*G)+(ii*Wtheta))^(-1)*G'*Weps*r;
+    %q = q + 1;
+%end
 
 % plotting the  stiffness change to the reqularization parameter
-figure (2)
-semilogx(lam2,stiffdx(1,:),lam2,stiffdx(2,:),lam2,stiffdx(3,:))
-xlim([10^-10 10^0])
-ylim([-1.5 1.5])
-grid on
-xlabel('Regularization Parameter, lambda^2')
-ylabel('Stiffness Change')
+%figure (2)
+%semilogx(lam2,stiffdx(1,:),lam2,stiffdx(2,:),lam2,stiffdx(3,:))
+%xlim([10^-10 10^0])
+%ylim([-1.5 1.5])
+%grid on
+%xlabel('Regularization Parameter, lambda^2')
+%ylabel('Stiffness Change')
