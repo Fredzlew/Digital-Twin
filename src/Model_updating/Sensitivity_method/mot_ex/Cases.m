@@ -268,7 +268,7 @@ kf = k0+dxt
 
 % plotting
 q = 1;
-for i = linspace(0.0001,10,100000)
+for i = linspace(0.0001,25,100000)
     lambda = i;
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
     eps = r-G*dx;
@@ -280,8 +280,8 @@ end
 figure (1)
 loglog(Jeps,Jthe)
 grid on
-%xlim([10^-4 10^-1+10^-1/2])
-%ylim([10^-3 10^-0+10^-0/1.5])
+xlim([10^-4 10^-1+10^-1/2])
+ylim([10^-3 10^-0+10^-0/1.5])
 xlabel('norm (Residual)')
 ylabel('norm (Stiffness Change)')
 title('L-curve')
