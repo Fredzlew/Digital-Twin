@@ -2,11 +2,13 @@ clc; clear; close all;
 addpath(genpath('.\data'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
-for i = 1:100
-%i = 1;
+%for i = 1:100
+i = 1;
 % Set global random seed
 rng(i)
 filename = load('.\data\modelprop.mat'); % Loads mass and stiffness matrices
+q = readmatrix('.\data\experimental_data\data.txt'); 
+qb = q(:,7)'; % base displacement
 M=filename.M; % Mass matrix
 K=filename.K; % Stiffness matrix
 [Us, Values]=eig(K,M); % Solve eigenvalue problem
@@ -17,8 +19,7 @@ alpha = zeta_min*omega_min; % Rayleigh damping coefficient
 betas = zeta_min/omega_min; % Rayleigh damping coefficient
 C=(alpha*M+betas*K); % Damping matrix
 zetas = (alpha./omegas + betas.*omegas)./2; % Calculate damping ratios
-f=2e1*randn(1,1.2e7).*ones(5,1);   
- 
+f = -K*ones(5,1).*qb;
 %%%%%%%%%%%%%%%%%%%%%%%%%%% NEWMARK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initial conditions
 x0 = zeros(size(f,1),1);
@@ -50,4 +51,4 @@ save(['.\data\simulated_data\' num2str(i) '_sim_data.mat'],'x','zetas');
 % Periodic error
 PERFEJL = 1/12*(omegas(5)*dt)^2;
 disp(i)
-end
+%end

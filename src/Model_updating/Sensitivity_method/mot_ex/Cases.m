@@ -268,7 +268,7 @@ kf = k0+dxt
 
 % plotting
 q = 1;
-for i = linspace(0.0001,25,100000)
+for i = linspace(0.0001,25,10000)
     lambda = i;
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r;
     eps = r-G*dx;
@@ -285,6 +285,13 @@ ylim([10^-3 10^-0+10^-0/1.5])
 xlabel('norm (Residual)')
 ylabel('norm (Stiffness Change)')
 title('L-curve')
+
+
+T = array2table([num2cell(Jeps'),num2cell(Jthe')]);
+T.Properties.VariableNames(1:2) = {'Jeps','Jthe'};
+writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_Lcurve_case1.csv','Delimiter',';')
+%writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_Lcurve_case2.csv','Delimiter',';')
+
 
 % plotting the  norm to the regularization parameter
 % lambda square:

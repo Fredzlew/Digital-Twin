@@ -20,7 +20,7 @@ if q == 1
     Pxx_3 = readNPY('.\Filtered_data\data_filt_Pxx_3_high.npy');
     Pxx_4 = readNPY('.\Filtered_data\data_filt_Pxx_4_high.npy');
     Pxx_5 = readNPY('.\Filtered_data\data_filt_Pxx_5_high.npy');
-    T = array2table([num2cell(f),num2cell(f_1),num2cell(f_2),num2cell(f_3),num2cell(f_4),num2cell(f_5),num2cell(Pxx),num2cell(Pxx_1),num2cell(Pxx_2),num2cell(Pxx_3),num2cell(Pxx_4),num2cell(Pxx_5)]);
+    T = array2table([num2cell(f(1:2295)),num2cell(f_1(1:2295)),num2cell(f_2(1:2295)),num2cell(f_3(1:2295)),num2cell(f_4(1:2295)),num2cell(f_5(1:2295)),num2cell(Pxx(1:2295)),num2cell(Pxx_1(1:2295)),num2cell(Pxx_2(1:2295)),num2cell(Pxx_3(1:2295)),num2cell(Pxx_4(1:2295)),num2cell(Pxx_5(1:2295))]);
     T.Properties.VariableNames(1:12) = {'f','f_1','f_2','f_3','f_4','f_5','Pxx','Pxx_1','Pxx_2','Pxx_3','Pxx_4','Pxx_5'};
     writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_multi5_data_highdamp.csv','Delimiter',';')
 elseif q == 2
@@ -37,7 +37,7 @@ elseif q == 2
     Pxx_3 = readNPY('.\Filtered_data\data_filt_Pxx_3_no_damp.npy');
     Pxx_4 = readNPY('.\Filtered_data\data_filt_Pxx_4_no_damp.npy');
     Pxx_5 = readNPY('.\Filtered_data\data_filt_Pxx_5_no_damp.npy');
-    T = array2table([num2cell(f),num2cell(f_1),num2cell(f_2),num2cell(f_3),num2cell(f_4),num2cell(f_5),num2cell(Pxx),num2cell(Pxx_1),num2cell(Pxx_2),num2cell(Pxx_3),num2cell(Pxx_4),num2cell(Pxx_5)]);
+    T = array2table([num2cell(f(1:2295)),num2cell(f_1(1:2295)),num2cell(f_2(1:2295)),num2cell(f_3(1:2295)),num2cell(f_4(1:2295)),num2cell(f_5(1:2295)),num2cell(Pxx(1:2295)),num2cell(Pxx_1(1:2295)),num2cell(Pxx_2(1:2295)),num2cell(Pxx_3(1:2295)),num2cell(Pxx_4(1:2295)),num2cell(Pxx_5(1:2295))]);
     T.Properties.VariableNames(1:12) = {'f','f_1','f_2','f_3','f_4','f_5','Pxx','Pxx_1','Pxx_2','Pxx_3','Pxx_4','Pxx_5'};
     writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_multi5_data_nodamp.csv','Delimiter',';')
 end
