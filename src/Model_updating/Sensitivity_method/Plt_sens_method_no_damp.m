@@ -78,7 +78,7 @@ if xx == 1
     Jeps = L_data.Jeps;
     Jthe = L_data.Jthe;
     err = data.err;
-    figure (1)
+    figure 
     hold on
     for j = 1:5
         plot(err(j,:))
@@ -97,7 +97,7 @@ elseif xx == 2
     Jthe = L_data.Jthe;
     acc = data.acc;
         % Convergence plot for the relative failure for mode shapes
-    figure (2)
+    figure 
     hold on
     for j = 1:5
         plot(acc(j,:))
@@ -117,7 +117,7 @@ elseif xx == 3
     acc = data.acc;
     err = data.err;
         % Convergence plot for the relative failure for mode shapes
-    figure (1)
+    figure 
     hold on
     for j = 1:5
         plot(acc(j,:))
@@ -127,7 +127,7 @@ elseif xx == 3
     ylabel('MAC [%]')
     hold off
       
-    figure (2)
+    figure 
     hold on
     for j = 1:5
         plot(err(j,:))
@@ -237,7 +237,7 @@ yticklabels(string(OMAfreq'))
 box on
 
 % plotting the L curve
-figure (4)
+figure 
 loglog(Jeps,Jthe)
 grid on
 xlabel('norm (Residual)')
@@ -265,13 +265,13 @@ T_stiff = table(k1,k2,k3,k4,k5, 'RowNames',stiff);
 T_L_curve = array2table([num2cell(Jeps'),num2cell(Jthe')]);
 T_L_curve.Properties.VariableNames(1:2) = {'Jeps','Jthe'};
 
-T_err = array2table([num2cell(err)]);
-T_err.Properties.VariableNames(1:5) = {'errfreq1','errfreq2','errfreq3','errfreq4','errfreq5'};
+T_err = array2table([num2cell(linspace(1,100,100)'),num2cell(err'/100)]);
+T_err.Properties.VariableNames(1:6) = {'iter','errfreq1','errfreq2','errfreq3','errfreq4','errfreq5'};
 
 writetable(T_stiff,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_stiff_nodamp.csv','Delimiter',';')
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes1_nodamp.csv','Delimiter',';')
 writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_mac1_nodamp.csv','Delimiter',',')
-%writetable(T_L_curve,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_L_curve1_nodamp.csv','Delimiter',';')
+writetable(T_L_curve,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_L_curve1_nodamp.csv','Delimiter',';')
 writetable(T_err,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_err1_nodamp.csv','Delimiter',';')
 
 elseif xx == 2
@@ -282,12 +282,12 @@ T_L_curve = array2table([num2cell(Jeps'),num2cell(Jthe')]);
 T_L_curve.Properties.VariableNames(1:2) = {'Jeps','Jthe'};
 
 
-T_acc = array2table([num2cell(acc')]);
-T_acc.Properties.VariableNames(1:5) = {'accmode1','accmode2','accmode3','accmode4','accmode5'};
+T_acc = array2table([num2cell(linspace(1,100,100)'),num2cell(acc'/100)]);
+T_acc.Properties.VariableNames(1:6) = {'iter','accmode1','accmode2','accmode3','accmode4','accmode5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes2_nodamp.csv','Delimiter',';')
 writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_mac2_nodamp.csv','Delimiter',',')
-%writetable(T_L_curve,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_L_curve2_nodamp.csv','Delimiter',';')
+writetable(T_L_curve,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_L_curve2_nodamp.csv','Delimiter',';')
 writetable(T_acc,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_acc2_nodamp.csv','Delimiter',';')
 elseif xx == 3
 T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
@@ -296,11 +296,11 @@ T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','nump
 T_L_curve = array2table([num2cell(Jeps'),num2cell(Jthe')]);
 T_L_curve.Properties.VariableNames(1:2) = {'Jeps','Jthe'};
 
-T_acc = array2table([num2cell(acc')]);
-T_acc.Properties.VariableNames(1:5) = {'accmode1','accmode2','accmode3','accmode4','accmode5'};
+T_acc = array2table([num2cell(linspace(1,100,100)'),num2cell(acc')]);
+T_acc.Properties.VariableNames(1:6) = {'iter','accmode1','accmode2','accmode3','accmode4','accmode5'};
 
-T_err = array2table([num2cell(err)]);
-T_err.Properties.VariableNames(1:5) = {'errfreq1','errfreq2','errfreq3','errfreq4','errfreq5'};
+T_err = array2table([num2cell(linspace(1,100,100)'),num2cell(err')]);
+T_err.Properties.VariableNames(1:6) = {'iter','errfreq1','errfreq2','errfreq3','errfreq4','errfreq5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes3_nodamp.csv','Delimiter',';')
 writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_mac3_nodamp.csv','Delimiter',',')

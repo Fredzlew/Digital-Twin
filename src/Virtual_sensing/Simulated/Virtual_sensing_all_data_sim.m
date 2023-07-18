@@ -53,7 +53,7 @@ end
 hold off
 title(['Displacements at virtual sensor:',num2str(vs)],'FontSize',20)
 xlabel('Time [s]','FontSize',14)
-ylabel('Displacement [m]','FontSize',14)
+ylabel('Displacement [mm]','FontSize',14)
 
 %%% Calculate quality indicators %%%
 % TRAC
@@ -81,25 +81,43 @@ figure
 plot(f,P1) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
-xlim([0 20])
+xlim([0 14])
 ylabel("|P1(f)|")
-%% xm ori modal coordinates
-% Calculate the psuedo-inverse of the measured mode shapes
-U_inv = (U'*U)^-1*U';
-% phi_minv = phi_m'*inv(phi_m*phi_m')
-% phi_minv = pinv(phi_m)
 
-% Calculate modal coordinates
-qt = U_inv*xm_ori;
+
 % Plots
-Y = fft(qt(4,:)); % mode vi plotter
-P2 = abs(Y/L);
-P1 = P2(1:L/2+1);
-P1(2:end-1) = 2*P1(2:end-1);
+Y = fft(xp(1,:)); % mode vi plotter
+P22 = abs(Y/L);
+P11 = P22(1:L/2+1);
+P11(2:end-1) = 2*P11(2:end-1);
 
 figure
-plot(f,P1) 
+plot(f,P11) 
+title("Single-Sided Amplitude Spectrum of S(t)")
+xlabel("f (Hz)")
+xlim([0 14])
+ylabel("|P1(f)|")
+
+% Plots pred - ori
+xx = xp(1,:)-xm_ori(1,:);
+Y = fft(xx); % mode vi plotter
+P2 = abs(Y/L);
+P1_pred_meas = P2(1:L/2+1);
+P1_pred_meas(2:end-1) = 2*P1_pred_meas(2:end-1);
+
+figure
+plot(f,P1_pred_meas) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
+%% download data
+T_pred = array2table([num2cell(t(1:5000)'),num2cell(xp(1,1:5000)'),num2cell(xm_ori(1,1:5000)')]);
+T_fft = array2table([num2cell(decimate(f(1:180001)',17)),num2cell(decimate(P1(1:180001)',17)),num2cell(decimate(P11(1:180001)',17)),num2cell(decimate(P1_pred_meas(1:180001)',17))]);
+
+T_pred.Properties.VariableNames(1:3) = {'data','pred','meas'};
+T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
+
+
+writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_all_data_sim.csv','Delimiter',';')
+writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_all_data_sim.csv','Delimiter',';')

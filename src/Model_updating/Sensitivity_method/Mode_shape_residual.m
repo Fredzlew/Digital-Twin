@@ -48,7 +48,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 100;
+ni = 1;
 
 % Iterazation over the stiffness
 for ii = 1:ni
@@ -238,7 +238,7 @@ end % end normalization
 % plotting
 if ni == 1
     qq = 1;
-    for i = linspace(0.0000000000000000000001,1000,1000000)
+    for i = linspace(0.00000001,1000,10000)
         lambda(qq) = i;
         dx = ((G'*Weps*G)+(lambda(qq)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
         eps = r(:,end)-G*dx; 
@@ -264,7 +264,7 @@ if ni == 1
     end
 end
 
-if ni == 100
+if ni == 200
     if q == 1
         save('.\data_updated_par_sens\Mode_shape_residual_high.mat','knew','Knew','U','fn','acc','con');
     elseif q == 2

@@ -89,7 +89,7 @@ disp(['ME value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(xp(1,:)); % mode vi plotter
+Y = fft(xm_ori(1,:)); % mode vi plotter
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
@@ -98,22 +98,56 @@ figure
 plot(f,P1) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
-xlim([0 20])
+xlim([0 14])
 ylabel("|P1(f)|")
 
-
-%%
 % Plots
+Y = fft(xp(1,:)); % mode vi plotter
+P22 = abs(Y/L);
+P11 = P22(1:L/2+1);
+P11(2:end-1) = 2*P11(2:end-1);
 
+figure
+plot(f,P11) 
+title("Single-Sided Amplitude Spectrum of S(t)")
+xlabel("f (Hz)")
+xlim([0 14])
+ylabel("|P1(f)|")
+
+% Plots pred - ori
 xx = xp(1,:)-xm_ori(1,:);
 Y = fft(xx); % mode vi plotter
 P2 = abs(Y/L);
-P1 = P2(1:L/2+1);
-P1(2:end-1) = 2*P1(2:end-1);
+P1_pred_meas = P2(1:L/2+1);
+P1_pred_meas(2:end-1) = 2*P1_pred_meas(2:end-1);
 
 figure
-plot(f,P1) 
+plot(f,P1_pred_meas) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
+
+%% download data
+if q == 1
+    T_pred = array2table([num2cell(t(1:500)'),num2cell(xp(1,1:500)'),num2cell(xm_ori(1,1:500)')]);
+    T_fft = array2table([num2cell(decimate(f(1:604801)',60)),num2cell(decimate(P1(1:604801)',60)),num2cell(decimate(P11(1:604801)',60)),num2cell(decimate(P1_pred_meas(1:604801)',60))]);
+    
+    T_pred.Properties.VariableNames(1:3) = {'data','pred','meas'};
+    T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
+    
+    
+    writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_first_modes_highdamp.csv','Delimiter',';')
+    writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_first_modes_highdamp.csv','Delimiter',';')
+elseif q == 2
+
+    T_pred = array2table([num2cell(t(1:500)'),num2cell(xp(1,1:500)'),num2cell(xm_ori(1,1:500)')]);
+    T_fft = array2table([num2cell(decimate(f(1:604801)',60)),num2cell(decimate(P1(1:604801)',60)),num2cell(decimate(P11(1:604801)',60)),num2cell(decimate(P1_pred_meas(1:604801)',60))]);
+    
+    T_pred.Properties.VariableNames(1:3) = {'data','pred','meas'};
+    T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
+    
+    
+    writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_first_modes_nodamp.csv','Delimiter',';')
+    writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_first_modes_nodamp.csv','Delimiter',';')
+end
