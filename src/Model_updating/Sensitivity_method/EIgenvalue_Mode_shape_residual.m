@@ -63,7 +63,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 1;
+ni = 100;
 % Iterazation over the stiffness
 for ii = 1:ni
     k = k+dx;
@@ -370,7 +370,7 @@ end % end normalization
 % plotting
 if ni == 1
     qq = 1;
-    for i = linspace(0.0001,10000,100000)
+    for i = linspace(0.00000001,1000,10000)
         lambda(qq) = i;
         dx = ((G'*Weps*G)+(lambda(qq)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
         eps = r(:,end)-G*dx; 
