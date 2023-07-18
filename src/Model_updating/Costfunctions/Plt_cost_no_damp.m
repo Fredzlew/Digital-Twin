@@ -225,61 +225,45 @@ box on
 %% Download plot
 % PLotting the stiffness
 if xx == 1
+interval = [1;2;3;4;5;6];
 k1 = y(:,1);
 k2 = y(:,2);
 k3 = y(:,3);
 k4 = y(:,4);
 k5 = y(:,5);
-%T_stiff = array2table([num2cell(y)]);
+
 T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
-T_mac = array2table([num2cell(mac)]);
-
-stiff= {'Freq';'Mode';'Mode mac';'Freq + mode';'Fred + mode EI L';'Global stiffness'};
-T_stiff = table(k1,k2,k3,k4,k5, 'RowNames',stiff);
-
-%T_stiff.Properties.VariableNames(1:6) = {'','k1','k2','k3','k4','k5'};
 T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
-T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
+stiff= {'Freq';'Mode';'Mode mac';'Freq + mode';'Fred + mode EI L';'Global stiffness'};
+T_stiff = table(interval,k1,k2,k3,k4,k5, 'RowNames',stiff);
 
 
 writetable(T_stiff,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_stiff_nodamp.csv','Delimiter',';')
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_modeshapes1_nodamp.csv','Delimiter',';')
-writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac1_nodamp.csv','Delimiter',';')
+writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac1_nodamp.csv','Delimiter',',')
 
 elseif xx == 2
 T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
-T_mac = array2table([num2cell(mac)]);
-
 T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
-T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_modeshapes2_nodamp.csv','Delimiter',';')
-writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac2_nodamp.csv','Delimiter',';')
+writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac2_nodamp.csv','Delimiter',',')
 elseif xx == 3
 T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
-T_mac = array2table([num2cell(mac)]);
-
 T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
-T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_modeshapes3_nodamp.csv','Delimiter',';')
-writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac3_nodamp.csv','Delimiter',';')
+writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac3_nodamp.csv','Delimiter',',')
 elseif xx == 4
 T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
-T_mac = array2table([num2cell(mac)]);
-
 T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
-T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_modeshapes4_nodamp.csv','Delimiter',';')
-writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac4_nodamp.csv','Delimiter',';')
+writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac4_nodamp.csv','Delimiter',',')
 elseif xx == 5
 T_modeshapes = array2table([num2cell(x'),num2cell(phi),num2cell([0;fn])]);
-T_mac = array2table([num2cell(mac)]);
-
 T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','numfreq'};
-T_mac.Properties.VariableNames(1:5) = {'mac1','mac2','mac3','mac4','mac5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_modeshapes5_nodamp.csv','Delimiter',';')
-writetable(T_mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac5_nodamp.csv','Delimiter',';')
+writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac5_nodamp.csv','Delimiter',',')
 end

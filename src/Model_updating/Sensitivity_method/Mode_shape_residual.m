@@ -2,7 +2,7 @@
 %%% 5 storey frame mode_shape residual %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all;clear;clc
-addpath(genpath('..\costfunctions\functions'),genpath('npy-matlab-master'),genpath('..\..\data'))
+addpath(genpath('..\costfunctions\functions'),genpath('..\..\npy-matlab-master'),genpath('..\..\data'))
 promptt = "High damping or no damping? (1 = High and 2 = no damp): ";
 q = input(promptt);
 
@@ -39,16 +39,19 @@ Weps = diag(SSIphi_re)^-2;
 
 % Difne lambda value:
 if q == 1
-    lambda =  sqrt(0.0777);  
+    lambda =  sqrt(2.2250);  
 elseif q == 2
-    lambda =  sqrt(0.0615); 
+    lambda =  sqrt(1.0960); 
 end
 
 % initial condition
 dx = zeros(length(k),1);
 
+% number of iterations
+ni = 100;
+
 % Iterazation over the stiffness
-for ii = 1:100
+for ii = 1:ni
     k = k+dx;
 
     for i = 1:4
@@ -91,7 +94,7 @@ for ii = 1:100
     end % end normalization
     Umac(:,:,ii) = U;
     % Residual
-    r(:,ii) = SSIphi_re - reshape(U,25,1);
+    r(:,ii) = (SSIphi_re) - (reshape(U,25,1));
     disp(sum(abs(r(:,ii))))
 
     % New sensitivity matrix
@@ -167,8 +170,8 @@ end
 
 % Display accuracy of mode shapes
 % CrossMAC plot of mode shapes
-for i = 1:1
-    mac=crossMACnm(SSIphi,Umac(:,:,i));
+for i = 1:ni
+    mac=crossMAC(SSIphi,Umac(:,:,i));
     for j = 1:5
         dmac = diag(mac);
         acc(j,i) = dmac(j)*100;
@@ -229,32 +232,42 @@ for j = 1:length(omegas)
     end
 end % end normalization
 
-if q == 1
-    save('.\data_updated_par_sens\Mode_shape_residual_high.mat','knew','Knew','U','fn');
-elseif q == 2
-    save('.\data_updated_par_sens\Mode_shape_residual_no_damp.mat','knew','Knew','U','fn');
-end
 
 %% Plotting L curve only for the first iteration
 
 % plotting
-q = 1;
-for i = linspace(0.0000000000000000001,100,1000000)
-    lambda(q) = i;
-    dx = ((G'*Weps*G)+(lambda(q)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
-    eps = r(:,end)-G*dx; % fortegn + eller -?
-    Jeps(q) = sqrt(eps'*Weps*eps);
-    Jthe(q)  = sqrt(dx'*Wtheta*dx);
-    q = q + 1;
+if ni == 1
+    qq = 1;
+    for i = linspace(0.0000000000000000000001,1000,1000000)
+        lambda(qq) = i;
+        dx = ((G'*Weps*G)+(lambda(qq)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
+        eps = r(:,end)-G*dx; 
+        Jeps(qq) = sqrt(eps'*Weps*eps);
+        Jthe(qq)  = sqrt(dx'*Wtheta*dx);
+        qq = qq + 1;
+    end
+    % plotting the L curve
+    figure (4)
+    loglog(Jeps,Jthe)
+    grid on
+    xlabel('norm (Residual)')
+    ylabel('norm (Stiffness Change)')
+    title('L-curve')
+    % Finding the optimal value for lambda
+    Val = 0.65737;
+    index = find(Jeps >= Val,1);
+    lamopt = lambda(index);
+    if q == 1
+        save('.\data_updated_par_sens\Mode_shape_residual_L_curve_high.mat','Jeps','Jthe');
+    elseif q == 2
+        save('.\data_updated_par_sens\Mode_shape_residual_L_curve_no_damp.mat','Jeps','Jthe');
+    end
 end
-% plotting the L curve
-figure (4)
-loglog(Jeps,Jthe)
-grid on
-xlabel('norm (Residual)')
-ylabel('norm (Stiffness Change)')
-title('L-curve')
-% Finding the optimal value for lambda
-Val = 0.285548;
-index = find(Jeps >= Val,1);
-lamopt = lambda(index);
+
+if ni == 100
+    if q == 1
+        save('.\data_updated_par_sens\Mode_shape_residual_high.mat','knew','Knew','U','fn','acc','con');
+    elseif q == 2
+        save('.\data_updated_par_sens\Mode_shape_residual_no_damp.mat','knew','Knew','U','fn','acc','con');
+    end
+end

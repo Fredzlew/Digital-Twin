@@ -63,7 +63,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 100;
+ni = 1;
 % Iterazation over the stiffness
 for ii = 1:ni
     k = k+dx;
@@ -240,13 +240,13 @@ for ii = 1:ni
         end
     end
     sgtitle(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
-    if q == 1
+    %if q == 1
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-    elseif q == 2
+      %  saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+   % elseif q == 2
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-    end
+      %  saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+    %end
     close
 end
 % requirement
@@ -273,13 +273,13 @@ for ii = 1:ni
     xlabel('Iterations [-]')
     ylabel('Relative error [-]')
     hold off
-    if q == 1
+    %if q == 1
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
-    elseif q == 2
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
+    %elseif q == 2
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
-    end
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
+    %end
 end
 
 
@@ -310,13 +310,13 @@ for ii = 1:ni
     xlabel('Iterations [-]')
     ylabel('MAC [-]')
     hold off
-    if q == 1
+    %if q == 1
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
-    elseif q == 2
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
+    %elseif q == 2
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
-    end
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
+    %end
 end
 
 %% Calculating new frequencies with the stiffness changes
@@ -364,34 +364,46 @@ for j = 1:length(omegas)
     end
 end % end normalization
 
-% Save updated system matrices
+
+%% Plotting L curve only for the first iteration
+
+% plotting
+if ni == 1
+    qq = 1;
+    for i = linspace(0.0001,10000,100000)
+        lambda(qq) = i;
+        dx = ((G'*Weps*G)+(lambda(qq)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
+        eps = r(:,end)-G*dx; 
+        Jeps(qq) = sqrt(eps'*Weps*eps);
+        Jthe(qq)  = sqrt(dx'*Wtheta*dx);
+        qq = qq + 1;
+    end
+    % plotting the L curve
+    figure (4)
+    loglog(Jeps,Jthe)
+    grid on
+    % xlim([10^-4 10^-1+10^-1/2])
+    % ylim([10^-3 10^-0+10^-0/1.5])
+    xlabel('norm (Residual)')
+    ylabel('norm (Stiffness Change)')
+    title('L-curve')
+    % Finding the optimal value for lambda
+    Val = 823.941;
+    index = find(Jeps >= Val,1);
+    lamopt = lambda(index);
+    if q == 1
+        save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_L_curve_high.mat','Jeps','Jthe');
+    elseif q == 2
+        save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_L_curve_no_damp.mat','Jeps','Jthe');
+    end
+end
+
+
+if ni == 100
+    % Save updated system matrices
 if q == 1
     save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat','knew','Knew','U','fn','acc','err');
 elseif q == 2
     save('.\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat','knew','Knew','U','fn','acc','err');
 end
-%% Plotting L curve only for the first iteration
-
-% plotting
-q = 1;
-for i = linspace(0.0000000000000000001,100,1000000)
-    lambda(q) = i;
-    dx = ((G'*Weps*G)+(lambda(q)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
-    eps = r(:,end)-G*dx; % fortegn + eller -?
-    Jeps(q) = sqrt(eps'*Weps*eps);
-    Jthe(q)  = sqrt(dx'*Wtheta*dx);
-    q = q + 1;
 end
-% plotting the L curve
-figure (4)
-loglog(Jeps,Jthe)
-grid on
-% xlim([10^-4 10^-1+10^-1/2])
-% ylim([10^-3 10^-0+10^-0/1.5])
-xlabel('norm (Residual)')
-ylabel('norm (Stiffness Change)')
-title('L-curve')
-% Finding the optimal value for lambda
-Val = 823.941;
-index = find(Jeps >= Val,1);
-lamopt = lambda(index);
