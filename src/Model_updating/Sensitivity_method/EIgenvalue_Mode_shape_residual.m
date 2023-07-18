@@ -63,7 +63,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 1;
+ni = 100;
 % Iterazation over the stiffness
 for ii = 1:ni
     k = k+dx;
@@ -216,20 +216,21 @@ for ii = 1:ni
     x = [0, H];
     phi = [zeros(1,length(U)); U];
     fig = figure;
+    colororder(gcf,[153/255,0,0;0,204/255,204/255;0,204/255,204/255;153/255,0,0;153/255,51/255,255/255])
     fig.Position=[100 100 1600 700];
     
     for i=1:length(omegas)
         subplot(1,length(omegas),i)
         hold on
-        plot(phi(:,i),x,'-m')
+        plot(phi(:,i),x,'-')
         if phi(2,i)*SSIphi(1,i) < 0 % Swap sign on mode shape
-            plot([0  ;-SSIphi(:,i)],x,'go-.');
-            plot(-SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+            plot([0  ;-SSIphi(:,i)],x,'-.');
+            plot(-SSIphi(1:end,i),x(2:end),'.','markersize',30)
         else
-            plot([0  ;SSIphi(:,i)],x,'go-.');
-            plot(SSIphi(1:end,i),x(2:end),'g.','markersize',30)
+            plot([0  ;SSIphi(:,i)],x,'-.');
+            plot(SSIphi(1:end,i),x(2:end),'.','markersize',30)
         end
-        plot(phi(2:end,i),x(2:end),'b.','markersize',30)
+        plot(phi(2:end,i),x(2:end),'.','markersize',30)
         title(['Freq. Approx = ' num2str(fn(i)) ' Hz'],sprintf('Mode shape %d',i),'FontSize',14)
         subtitle(['(FE freq. = ' num2str(SSIFreq(i)) ' Hz)'])
         xline(0.0,'--')
@@ -240,13 +241,13 @@ for ii = 1:ni
         end
     end
     sgtitle(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
-    %if q == 1
+    if q == 1
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-      %  saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-   % elseif q == 2
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+    elseif q == 2
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-      %  saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-    %end
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+    end
     close
 end
 % requirement
@@ -256,7 +257,8 @@ disp(req);
 % Convergence plot for the relative failure for frequencies
 for ii = 1:ni
     figure (1)
-    colororder(gcf,[0.0,0.4470,0.7410;0.8500,0.3250,0.0980;0.9290,0.6940,0.1250;0.4940,0.1840,0.5560;0.4660,0.6740,0.1880])
+    %colororder(gcf,[0.0,0.4470,0.7410;0.8500,0.3250,0.0980;0.9290,0.6940,0.1250;0.4940,0.1840,0.5560;0.4660,0.6740,0.1880])
+    colororder(gcf,[153/255,0,0;0,204/255,204/255;255/255,128/255,0;0,153/255,0;153/255,51/255,255/255])
     hold on
     for j = 1:5
         err(j,ii) = abs(r(j,ii))/omegasq_m(j);
@@ -273,13 +275,13 @@ for ii = 1:ni
     xlabel('Iterations [-]')
     ylabel('Relative error [-]')
     hold off
-    %if q == 1
+    if q == 1
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
-    %elseif q == 2
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
+    elseif q == 2
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
-    %end
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
+    end
 end
 
 
@@ -296,7 +298,7 @@ end
 % Convergence plot for the relative failure for mode shapes
 for ii = 1:ni
     figure (2)
-    colororder(gcf,[0.0,0.4470,0.7410;0.8500,0.3250,0.0980;0.9290,0.6940,0.1250;0.4940,0.1840,0.5560;0.4660,0.6740,0.1880])
+    colororder(gcf,[153/255,0,0;0,204/255,204/255;255/255,128/255,0;0,153/255,0;153/255,51/255,255/255])
     hold on
     plot(acc(1,1:ii)')%,'r')
     plot(acc(2,1:ii)')%,'g')
@@ -310,13 +312,13 @@ for ii = 1:ni
     xlabel('Iterations [-]')
     ylabel('MAC [-]')
     hold off
-    %if q == 1
+    if q == 1
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
-    %elseif q == 2
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
+    elseif q == 2
         %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
-    %end
+        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
+    end
 end
 
 %% Calculating new frequencies with the stiffness changes
