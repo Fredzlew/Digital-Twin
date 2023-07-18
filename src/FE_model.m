@@ -130,3 +130,8 @@ han.XLabel.Visible='on';
 han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
+
+T = array2table([num2cell(x'),num2cell(phi)]);
+T.Properties.VariableNames(1:6) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5'};
+writetable(T,'C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\Data\Kap2_FE_modeshapes.csv')
+

@@ -85,17 +85,18 @@ for i = 1:4
 end
 Km(5,5) = k2(5);
 
+options = optimset('Display','iter','MaxIter',10000,'MaxFunEvals',10000);
 
 if loop == 1
-    Stiff = fminsearch(@costfunSSIfreq,k2); % SSI, frequency
+    [Stiff,fval,exitflag,output] = fminsearch(@costfunSSIfreq,k2,options); % SSI, frequency
 elseif loop == 2
-    Stiff = fminsearch(@costfunSSImode,k2); % SSI, mode shape
+    [Stiff,fval,exitflag,output] = fminsearch(@costfunSSImode,k2,options); % SSI, mode shape
 elseif loop == 3
-    Stiff = fminsearch(@costfunSSIfreqmode,k2); % SSI, frequency + mode shape
+    [Stiff,fval,exitflag,output] = fminsearch(@costfunSSIfreqmode,k2,options); % SSI, frequency + mode shape
 elseif loop == 4
-    Stiff = fminsearch(@costfunSSIfreqmodeEIL,EIL); % SSI (JAN), EI + L
+    [Stiff,fval,exitflag,output] = fminsearch(@costfunSSIfreqmodeEIL,EIL,options); % SSI (JAN), EI + L
 elseif loop == 5
-    Stiff = fminsearch(@costfunSSImode_mac,k2); % SSI, mode shape
+    [Stiff,fval,exitflag,output] = fminsearch(@costfunSSImode_mac,k2,options); % SSI, mode shape
 end
 
 if loop == 4
