@@ -26,7 +26,7 @@ import scipy.io as sio
 
 # To open a .txt file create a variable containing the path to the file
 
-data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\data\simulated_data")
+data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\Speciale\Digital-Twin\src\data\simulated_data")
 
 # open the file with pandas and create a dataframe
 # N.B. whatchout for header, separator and remove time column if present
@@ -57,14 +57,14 @@ sos = signal.butter(75, 6.5/fs*2, btype='lowpass', output='sos')
 filtdata_0_cut = signal.sosfiltfilt(sos, data.T) # filtered data
 
 # Last 3 modes
-sos = signal.butter(75, 6.5/fs*2, btype='highpass', output='sos')
+sos = signal.butter(75, [6.5/fs*2, 14/fs*2], btype='bandpass', output='sos')
 filtdata_cut_end = signal.sosfiltfilt(sos, data.T) # filtered data
 
 np.save("Filtered_data_sim\data_filt_0_cut_sim",filtdata_0_cut)
 np.save("Filtered_data_sim\data_filt_cut_end_sim",filtdata_cut_end)
 
 
-sos = signal.butter(75, 20/fs*2, btype='lowpass', output='sos')
+sos = signal.butter(75, 14/fs*2, btype='lowpass', output='sos')
 filtdata_20 = signal.sosfiltfilt(sos, data.T) # filtered data
 
 sos = signal.butter(75, 6.5/fs*2, btype='lowpass', output='sos')

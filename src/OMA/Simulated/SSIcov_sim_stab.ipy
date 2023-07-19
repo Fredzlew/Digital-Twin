@@ -23,7 +23,7 @@ import scipy.io as sio
 
 
 #Finding the file
-data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\data\simulated_data")
+data_dir = pjoin(dirname(sio.__file__), r"C:\Users\Frede\Speciale\Digital-Twin\src\data\simulated_data")
 
 
 
@@ -44,7 +44,7 @@ for i in range(2):
     # decimation, trend removal and filtering. 
     # Detrend and decimate
     data = signal.detrend(data, axis=0) # Trend rmoval
-    q = 5 # Decimation factor
+    q = 10 # Decimation factor
     data = signal.decimate(data,  q, ftype='fir', axis=0) # Decimation
     fs = fs/q # [Hz] Decimated sampling frequency
     

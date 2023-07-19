@@ -2,8 +2,8 @@ clc; clear; close all;
 addpath(genpath('.\data'))
 %Model Parameters and excitation
 %--------------------------------------------------------------------------
-%for i = 1:100
-i = 1;
+for i = 1:100
+%i = 1;
 % Set global random seed
 rng(i)
 filename = load('.\data\modelprop.mat'); % Loads mass and stiffness matrices
@@ -51,4 +51,4 @@ save(['.\data\simulated_data\' num2str(i) '_sim_data.mat'],'x','zetas');
 % Periodic error
 PERFEJL = 1/12*(omegas(5)*dt)^2;
 disp(i)
-%end
+end

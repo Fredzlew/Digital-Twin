@@ -12,11 +12,11 @@ import rainflow
 dataset = float(input('Which data set (1 (data_5_2_1)? and 2 (data_nodamp)? '))
 # To open a .txt file create a variable containing the path to the file
 if dataset == 1:
-    data_me = np.load('C:/Users/Frede/OneDrive - Danmarks Tekniske Universitet/Speciale/Digital-Twin/src/Virtual_sensing/Experimental/Filtered_data/data_filt_all_high.npy')
-    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_high.txt" # Path to the txt file 
+    data_me = np.load('C:/Users/\Frede/Speciale/Digital-Twin/src/Virtual_sensing/Experimental/Filtered_data/data_filt_all_high.npy')
+    _file = r"C:\Users\Frede\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_high.txt" # Path to the txt file 
 elif dataset == 2:
-    data_me = np.load('C:/Users/Frede/OneDrive - Danmarks Tekniske Universitet/Speciale/Digital-Twin/src/Virtual_sensing/Experimental/Filtered_data/data_filt_all_no_damp.npy')
-    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_nodamp.txt" # Path to the txt file     
+    data_me = np.load('C:/Users/\Frede/Speciale/Digital-Twin/src/Virtual_sensing/Experimental/Filtered_data/data_filt_all_no_damp.npy')
+    _file = r"C:\Users\Frede\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_nodamp.txt" # Path to the txt file     
 # open the file with pandas and create a dataframe
 # N.B. whatchout for header, separator and remove time column if present
 

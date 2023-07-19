@@ -5,7 +5,7 @@ clear;clc;close all
 addpath(genpath('..\..\data'),genpath('.\Filtered_data_sim'),genpath('..\function'))
 % Load data
 xm_9 = readNPY('.\Filtered_data_sim\data_filtdata_first_modes_sim.npy');
-xm_ori = readNPY('.\Filtered_data_sim\sim_data.npy')';
+xm_ori = readNPY('.\Filtered_data_sim\data_filtdata_first_modes_sim.npy');
 
 % Make a time vector
 Fs = 500;            % Sampling frequency                    

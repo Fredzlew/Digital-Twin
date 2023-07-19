@@ -1,6 +1,7 @@
 
 % parameters
 clc; clear; close all;
+format shortG
 addpath(genpath('..\..\data'),genpath('..\..\npy-matlab-master'))
 % Loading modal parameters from OMA simulation
 SSIphi = readNPY('..\..\data\simulated_data\Modal_par\SSIcovmodes.npy');
@@ -201,7 +202,7 @@ han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
-S = [{'height','numphi1','numphi2','numphi3','numphi4','numphi5','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};num2cell(x'),num2cell(phi),num2cell([zeros(1,length(OMAphi))  ;OMAphi]),num2cell([0;OMAfreq])];
+
 T = array2table([num2cell(x'),num2cell(phi),num2cell([zeros(1,length(OMAphi))  ;OMAphi]),num2cell([0;OMAfreq])]);
 T.Properties.VariableNames(1:12) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
 
@@ -214,20 +215,20 @@ disp(strcat('Frequency accuracy,5 : ',num2str(min(OMAfreq(5),fn(5))/max(OMAfreq(
 disp(strcat('Mean frequency accuracy : ',num2str(mean(min(OMAfreq,fn)./max(OMAfreq,fn)*100)),'%'));
 
 % CrossMAC plot of mode shapes
-mac=crossMAC(U,OMAphi,MODE,[OMAfreq,fn]);
+mac=crossMAC(U,OMAphi);
 dmac = diag(mac);
 if MODE==1
     disp('Modal Assurance Criterion between Numerical modeshapes and SSIcov  : ')
     disp(strcat(num2str(mac)));
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_vs_simulated.xlsm')
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_vs_simulated.csv','Delimiter',';')
 elseif MODE==2
     disp('Modal Assurance Criterion between Numerical modeshapes and SSIdat  : ')
     disp(strcat(num2str(mac)));
-    writecell(S,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIdat_vs_simulated.xlsm')
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIdat_vs_simulated.csv','Delimiter',';')
 elseif MODE == 3
     disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
     disp(strcat(num2str(mac)));
-    writecell(S,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_FDD_vs_simulated.xlsm')
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_FDD_vs_simulated.csv','Delimiter',';')
 end
 disp('----------------------------------------------------------------------')
 disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));

@@ -167,6 +167,7 @@ han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
+
 disp(strcat('Frequency accuracy,1 : ',num2str(min(OMAfreq(1),fn(1))/max(OMAfreq(1),fn(1))*100),'%'));
 disp(strcat('Frequency accuracy,2 : ',num2str(min(OMAfreq(2),fn(2))/max(OMAfreq(2),fn(2))*100),'%'));
 disp(strcat('Frequency accuracy,3 : ',num2str(min(OMAfreq(3),fn(3))/max(OMAfreq(3),fn(3))*100),'%'));

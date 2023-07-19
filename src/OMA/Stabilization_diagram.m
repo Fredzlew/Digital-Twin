@@ -85,11 +85,11 @@ close all
 % Taking the PSD out of the 3D matrix
 for i = 1:length(FDDPSD)
     PSD1 = diag(FDDPSD(:,:,i));
-    PSD(i,1) = PSD1(1);
-    PSD(i,2) = PSD1(2);
-    PSD(i,3) = PSD1(3);
-    PSD(i,4) = PSD1(4);
-    PSD(i,5) = PSD1(5);
+    PSD(i,1) = 10*log10(PSD1(1))+35;
+    PSD(i,2) = 10*log10(PSD1(2))+35;
+    PSD(i,3) = 10*log10(PSD1(3))+35;
+    PSD(i,4) = 10*log10(PSD1(4))+35;
+    PSD(i,5) = 10*log10(PSD1(5))+35;
 end
 
 % load frequencies
@@ -106,7 +106,7 @@ scatter(freq3,modelorder3*2,'b','filled')
 scatter(freq4,modelorder4*2,'g','filled')
 % plot PSD
 for i = 1:5
-plot(f_,10*log10(PSD(:,i))+35)
+plot(f_,(PSD(:,i)))
 end
 hold off
 
@@ -130,11 +130,11 @@ if xx == 1
     T4.Properties.VariableNames(1:3) = {'freq3','modelorder3','damp3'};
     T5.Properties.VariableNames(1:3) = {'freq4','modelorder4','damp4'};
     writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_PSD_highdamp.csv','Delimiter',';')
-    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab1_highdamp.xlsm')
-    writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab2_highdamp.csv','Delimiter',';')
-    writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab3_highdamp.csv','Delimiter',';')
-    writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_highdamp.csv','Delimiter',';')
-    writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_highdamp.csv','Delimiter',';')
+    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab1_highdamp.txt','Delimiter',' ')
+    writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab2_highdamp.txt','Delimiter',' ')
+    writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab3_highdamp.txt','Delimiter',' ')
+    writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_highdamp.txt','Delimiter',' ')
+    writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_highdamp.txt','Delimiter',' ')
 elseif xx == 2
     T = array2table([num2cell(f_),num2cell(PSD)]);
     T1 = array2table([num2cell(freq0'),num2cell((modelorder0*2)'),num2cell(damp0')]);
@@ -148,10 +148,10 @@ elseif xx == 2
     T3.Properties.VariableNames(1:3) = {'freq2','modelorder2','damp2'};
     T4.Properties.VariableNames(1:3) = {'freq3','modelorder3','damp3'};
     T5.Properties.VariableNames(1:3) = {'freq4','modelorder4','damp4'};
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_PSD_nodamp.csv','Delimiter',';')
-    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab1_nodamp.xlsm')
-    writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab2_nodamp.csv','Delimiter',';')
-    writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab3_nodamp.csv','Delimiter',';')
-    writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_nodamp.csv','Delimiter',';')
-    writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_nodamp.csv','Delimiter',';')
+    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_PSD_noamp.csv','Delimiter',';')
+    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab1_nodamp.txt','Delimiter',' ')
+    writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab2_nodamp.txt','Delimiter',' ')
+    writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab3_nodamp.txt','Delimiter',' ')
+    writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_nodamp.txt','Delimiter',' ')
+    writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_nodamp.txt','Delimiter',' ')
 end

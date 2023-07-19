@@ -29,6 +29,7 @@ elseif q == 2
     xm_data =  readNPY('.\Filtered_data\data_filt_no_damp.npy')';
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat');
+    %filename = load('..\..\Model_updating\Costfunctions\data_updated_par\SSIfreqmode_no_damp.mat');
     %filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Mode_shape_residual_no_damp.mat');
     %filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_residual_no_damp.mat');
     U = filename.U;

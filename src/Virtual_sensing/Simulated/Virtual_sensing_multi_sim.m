@@ -8,7 +8,7 @@ addpath(genpath('..\..\data'),genpath('.\Filtered_data_sim'),genpath('..\functio
 xm_0_cut = readNPY('.\Filtered_data_sim\data_filt_0_cut_sim.npy');
 xm_cut_end = readNPY('.\Filtered_data_sim\data_filt_cut_end_sim.npy');
 
-xm_ori = readNPY('.\Filtered_data_sim\sim_data.npy')';
+xm_ori = readNPY('.\Filtered_data_sim\data_filtdata_all_sim.npy');
 
 % Make a time vector
 Fs = 500;            % Sampling frequency                    
