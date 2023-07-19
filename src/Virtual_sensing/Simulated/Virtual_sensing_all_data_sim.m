@@ -68,6 +68,10 @@ disp(['FRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',nu
 MAE = sum(abs(xm_ori(vs,:)-xp(vs,:)))/size(xm_ori,2)/std(xp(vs,:));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
 
+% ME (mean error)
+ME = sum(xm_ori(vs,:)-xp(vs,:))/size(xm_ori,2);
+disp(['ME value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(ME)]) 
+
 % Plot the modal coordinates in the frequency domain
 f = Fs*(0:(L/2))/L;
 

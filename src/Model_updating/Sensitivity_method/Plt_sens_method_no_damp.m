@@ -2,7 +2,7 @@
 %%% Plotting the model update no damp %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc; clear; close all;
-addpath(genpath('..\..\data'),genpath('.\data_updated_par_sens'),genpath('..\Costfunctions\functions'))
+addpath(genpath('..\..\data'),genpath('..\..\npy-matlab-master'),genpath('.\data_updated_par_sens'),genpath('..\Costfunctions\functions'))
 
 
 % Loading stiffness for all OMA sens and numerical model

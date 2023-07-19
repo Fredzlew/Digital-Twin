@@ -97,6 +97,10 @@ disp(['FRAC value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',nu
 MAE = sum(abs(xm_ori(vs,:)-xp(vs,:)))/size(xm_ori,2)/std(xp(vs,:));
 disp(['MAE value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(MAE)])
 
+% ME (mean error)
+ME = sum(xm_ori(vs,:)-xp(vs,:))/size(xm_ori,2);
+disp(['ME value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2str(ME)]) 
+
 % Plot the modal coordinates in the frequency domain
 f = Fs*(0:(L/2))/L;
 
@@ -139,10 +143,10 @@ xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
 %% download data
-T_pred = array2table([num2cell(t(1:5000)'),num2cell(xp(1,1:5000)'),num2cell(xm_ori(1,1:5000)')]);
+T_pred = array2table([num2cell(t(1:5000)'),num2cell(xp(1,1:5000)'),num2cell(xm_ori(1,1:5000)'),num2cell(xm_filt(1,1:5000)')]);
 T_fft = array2table([num2cell(decimate(f(1:180001)',17)),num2cell(decimate(P1(1:180001)',17)),num2cell(decimate(P11(1:180001)',17)),num2cell(decimate(P1_pred_meas(1:180001)',17))]);
 
-T_pred.Properties.VariableNames(1:3) = {'data','pred','meas'};
+T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','filt'};
 T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
 
 

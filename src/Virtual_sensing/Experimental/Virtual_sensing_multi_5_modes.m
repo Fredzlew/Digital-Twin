@@ -14,7 +14,7 @@ if q == 1
     xm_mode4 = readNPY('.\Filtered_data\data_filt_mode4_high.npy');
     xm_mode5 = readNPY('.\Filtered_data\data_filt_mode5_high.npy');
     xm_filt = readNPY('.\Filtered_data\data_filt_all_high.npy');
-    xm_data =  readNPY('.\Filtered_data\data_filt_high.npy')';
+    xm_data =  xm_mode1+xm_mode2+xm_mode3+xm_mode4+xm_mode5;
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat');
     U = filename.U;
@@ -26,7 +26,7 @@ elseif q == 2
     xm_mode4 = readNPY('.\Filtered_data\data_filt_mode4_no_damp.npy');
     xm_mode5 = readNPY('.\Filtered_data\data_filt_mode5_no_damp.npy');
     xm_filt = readNPY('.\Filtered_data\data_filt_all_no_damp.npy');
-    xm_data =  readNPY('.\Filtered_data\data_filt_no_damp.npy')';
+    xm_data =  xm_mode1+xm_mode2+xm_mode3+xm_mode4+xm_mode5;
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat');
     %filename = load('..\..\Model_updating\Costfunctions\data_updated_par\SSIfreqmode_no_damp.mat');

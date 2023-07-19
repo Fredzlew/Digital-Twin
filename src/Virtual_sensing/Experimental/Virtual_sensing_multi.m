@@ -11,7 +11,7 @@ if q == 1
     xm_0_cut = readNPY('.\Filtered_data\data_filt_0_cut_high.npy');
     xm_cut_end = readNPY('.\Filtered_data\data_filt_cut_end_high.npy');
     xm_filt = readNPY('.\Filtered_data\data_filt_all_high.npy');
-    xm_data = readNPY('.\Filtered_data\data_filt_all_high.npy');
+    xm_data = xm_0_cut+xm_cut_end;
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_high.mat');
     U = filename.U;
@@ -20,7 +20,7 @@ elseif q == 2
     xm_0_cut = readNPY('.\Filtered_data\data_filt_0_cut_no_damp.npy');
     xm_cut_end = readNPY('.\Filtered_data\data_filt_cut_end_no_damp.npy');
     xm_filt = readNPY('.\Filtered_data\data_filt_all_no_damp.npy');
-    xm_data = readNPY('.\Filtered_data\data_filt_no_damp.npy')';
+    xm_data = xm_0_cut+xm_cut_end;
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat');
     U = filename.U;
