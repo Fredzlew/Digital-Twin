@@ -196,13 +196,13 @@ ylabel("|P1(f)|")
 %% save the predicted displacement as txt
 %{
 if q == 1
-    T1 = array2table(num2cell(xp(1,:)'));
-    T1.Properties.VariableNames(1) = {'x_pred'};
-    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_high.txt','Delimiter',' ')
+    T1 = array2table([num2cell(xp(1,:)'),num2cell(xm_filt(1,:)')]);
+    T1.Properties.VariableNames(1:2) = {'x_pred','x_meas'};
+    writetable(T1,'.\Filtered_data\data_predicted_high.txt','Delimiter',' ')
 elseif q == 2
-    T1 = array2table(num2cell(xp(1,:)'));
-    T1.Properties.VariableNames(1) = {'x_pred'};
-    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src\Virtual_sensing\Experimental\Filtered_data\data_predicted_nodamp.txt','Delimiter',' ')
+    T1 = array2table([num2cell(xp(1,:)'),num2cell(xm_filt(1,:)')]);
+    T1.Properties.VariableNames(1:2) = {'x_pred','x_meas'};
+    writetable(T1,'.\Filtered_data\data_predicted_nodamp.txt','Delimiter',' ')
 end
 %}
 

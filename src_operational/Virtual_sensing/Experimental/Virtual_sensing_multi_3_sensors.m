@@ -11,6 +11,7 @@ if q == 1
     xm_0_cut = readNPY('.\Filtered_data_3_sensors\data_filt_0_cut_3_sensors_high.npy');
     xm_cut_end = readNPY('.\Filtered_data_3_sensors\data_filt_cut_end_3_sensors_high.npy');
     xm_ori = readNPY('.\Filtered_data_3_sensors\data_filt_all_sensors_high.npy');
+    xm_ori2 = readNPY('.\Filtered_data_3_sensors\data_filt_all_3_sensors_high.npy');
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_high.mat');
     U = filename.U;
@@ -19,6 +20,7 @@ elseif q == 2
     xm_0_cut = readNPY('.\Filtered_data_3_sensors\data_filt_0_cut_3_sensors_no_damp.npy');
     xm_cut_end = readNPY('.\Filtered_data_3_sensors\data_filt_cut_end_3_sensors_no_damp.npy');
     xm_ori = readNPY('.\Filtered_data_3_sensors\data_filt_all_sensors_no_damp.npy');
+    xm_ori2 = readNPY('.\Filtered_data_3_sensors\data_filt_all_3_sensors_no_damp.npy');
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_no_damp.mat');
     U = filename.U;
@@ -42,11 +44,11 @@ nt = 500;
 vs = 1;
 
 hold on 
-plot(t(1:nt),xm_ori(vs,1:nt),'b.-')
+plot(t(1:nt),xm_ori2(vs,1:nt),'b.-')
 plot(t(1:nt),xm_filt(vs,1:nt),'r.-')
 hold off
 % TRAC
-TRAC = (xm_ori(vs,:)*xm_filt(vs,:)')^2/((xm_ori(vs,:)*xm_ori(vs,:)')*(xm_filt(vs,:)*xm_filt(vs,:)'));
+TRAC = (xm_ori2(vs,:)*xm_filt(vs,:)')^2/((xm_ori2(vs,:)*xm_ori2(vs,:)')*(xm_filt(vs,:)*xm_filt(vs,:)'));
 disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(0),' modes:',num2str(TRAC)])
 %% Virtual sensing part 1
 %close all;
@@ -123,7 +125,7 @@ disp(['ME value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(xp(1,:)); % mode vi plotter
+Y = fft(xm_ori(1,:)); % mode vi plotter
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
@@ -132,19 +134,31 @@ figure
 plot(f,P1) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
-xlim([0 20])
+xlim([0 14])
 ylabel("|P1(f)|")
 
-%%
 % Plots
+Y = fft(xp(1,:)); % mode vi plotter
+P22 = abs(Y/L);
+P11 = P22(1:L/2+1);
+P11(2:end-1) = 2*P11(2:end-1);
+
+figure
+plot(f,P11) 
+title("Single-Sided Amplitude Spectrum of S(t)")
+xlabel("f (Hz)")
+xlim([0 14])
+ylabel("|P1(f)|")
+
+% Plots pred - ori
 xx = xp(1,:)-xm_ori(1,:);
 Y = fft(xx); % mode vi plotter
 P2 = abs(Y/L);
-P1 = P2(1:L/2+1);
-P1(2:end-1) = 2*P1(2:end-1);
+P1_pred_meas = P2(1:L/2+1);
+P1_pred_meas(2:end-1) = 2*P1_pred_meas(2:end-1);
 
 figure
-plot(f,P1) 
+plot(f,P1_pred_meas) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])

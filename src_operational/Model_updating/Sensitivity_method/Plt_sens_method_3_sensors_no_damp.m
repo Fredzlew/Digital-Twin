@@ -68,22 +68,74 @@ OMAphi = readNPY('..\..\data\experimental_data\Modal_par_3_sensors\SSImodes_5_2_
 
 promptt = "Which do you want to plot? (1=SSI (freq), 2=SSI (mode) " + ...
     " 3=SSI (freq+mode)? ";
-x = input(promptt);
-if x == 1
+xx = input(promptt);
+if xx == 1
     data = load('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_3_sensors_no_damp.mat'); % SSI FREQ
     fn = data.fn;
     K = data.Knew;
     U = data.U;
-elseif x == 2
+    L_data = load('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_L_curve_3_sensors_no_damp.mat');
+    Jeps = L_data.Jeps;
+    Jthe = L_data.Jthe;
+    err = data.err;
+    figure 
+    hold on
+    for j = 1:5
+        plot(err(j,:))
+    end
+    legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
+    xlabel('Iterations [-]')
+    ylabel('Relative error [%]')
+    hold off
+elseif xx == 2
     data = load('.\data_updated_par_sens_3_sensors\Mode_shape_residual_3_sensors_no_damp.mat'); % SSI modes
     fn = data.fn;
     K = data.Knew;
     U = data.U;
-elseif x == 3
+    L_data = load('.\data_updated_par_sens_3_sensors\Mode_shape_residual_L_curve_3_sensors_no_damp.mat');
+    Jeps = L_data.Jeps;
+    Jthe = L_data.Jthe;
+    acc = data.acc;
+        % Convergence plot for the relative failure for mode shapes
+    figure 
+    hold on
+    for j = 1:5
+        plot(acc(j,:))
+    end
+    legend('Mode shape 1', 'Mode shape 2','Mode shape 3', 'Mode shape 4','Mode shape 5')
+    xlabel('Iterations [-]')
+    ylabel('MAC [%]')
+    hold off
+elseif xx == 3
     data = load('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_no_damp.mat'); % SSI EIL  FREQ and modes
     fn = data.fn;
     K = data.Knew;
     U = data.U;
+    L_data = load('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_L_curve_3_sensors_no_damp.mat');
+    Jeps = L_data.Jeps;
+    Jthe = L_data.Jthe;
+    acc = data.acc;
+    err = data.err;
+        % Convergence plot for the relative failure for mode shapes
+    figure 
+    hold on
+    for j = 1:5
+        plot(acc(j,:))
+    end
+    legend('Mode shape 1', 'Mode shape 2','Mode shape 3', 'Mode shape 4','Mode shape 5')
+    xlabel('Iterations [-]')
+    ylabel('MAC [%]')
+    hold off
+      
+    figure 
+    hold on
+    for j = 1:5
+        plot(err(j,:))
+    end
+    legend('Frequency 1', 'Frequency 2','Frequency 3', 'Frequency 4','Frequency 5')
+    xlabel('Iterations [-]')
+    ylabel('Relative error [%]')
+    hold off
 end
 
 disp('----------------------------------------------------------------------')
@@ -180,3 +232,14 @@ yticks([1,2,3,4,5])
 yticklabels(string(OMAfreq'))
 box on
 
+% plotting the L curve
+figure 
+loglog(Jeps,Jthe)
+grid on
+xlabel('norm (Residual)')
+ylabel('norm (Stiffness Change)')
+title('L-curve')
+% Finding the optimal value for lambda
+% Val = 4.44;
+% index = find(Jeps >= Val,1);
+% lamopt = lambda;

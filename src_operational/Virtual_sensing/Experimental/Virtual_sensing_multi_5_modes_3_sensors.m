@@ -14,7 +14,8 @@ if q == 1
     xm_mode4 = readNPY('.\Filtered_data_3_sensors\data_filt_mode4_3_sensors_high.npy');
     xm_mode5 = readNPY('.\Filtered_data_3_sensors\data_filt_mode5_3_sensors_high.npy');
     xm_filt = readNPY('.\Filtered_data_3_sensors\data_filt_all_sensors_high.npy');
-    xm_data =  readNPY('.\Filtered_data_3_sensors\data_filt_3_sensors_high.npy')';
+    xm_filt2 = readNPY('.\Filtered_data_3_sensors\data_filt_all_3_sensors_high.npy');
+    xm_data =  xm_mode1+xm_mode2+xm_mode3+xm_mode4+xm_mode5;
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_high.mat');
     U = filename.U;
@@ -26,7 +27,8 @@ elseif q == 2
     xm_mode4 = readNPY('.\Filtered_data_3_sensors\data_filt_mode4_3_sensors_no_damp.npy');
     xm_mode5 = readNPY('.\Filtered_data_3_sensors\data_filt_mode5_3_sensors_no_damp.npy');
     xm_filt = readNPY('.\Filtered_data_3_sensors\data_filt_all_sensors_no_damp.npy');
-    xm_data =  readNPY('.\Filtered_data_3_sensors\data_filt_3_sensors_no_damp.npy')';
+    xm_filt2 = readNPY('.\Filtered_data_3_sensors\data_filt_all_3_sensors_no_damp.npy');
+    xm_data =  xm_mode1+xm_mode2+xm_mode3+xm_mode4+xm_mode5;
     % loading mode shapes
     filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_no_damp.mat');
     %filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens_3_sensors\Mode_shape_residual_3_sensors_no_damp.mat');
@@ -52,10 +54,10 @@ vs = 1;
 
 hold on 
 plot(t(1:nt),xm_data(vs,1:nt),'b.-')
-plot(t(1:nt),xm_filt(vs,1:nt),'r.-')
+plot(t(1:nt),xm_filt2(vs,1:nt),'r.-')
 hold off
 % TRAC
-TRAC = (xm_data(vs,:)*xm_filt(vs,:)')^2/((xm_data(vs,:)*xm_data(vs,:)')*(xm_filt(vs,:)*xm_filt(vs,:)'));
+TRAC = (xm_data(vs,:)*xm_filt2(vs,:)')^2/((xm_data(vs,:)*xm_data(vs,:)')*(xm_filt2(vs,:)*xm_filt2(vs,:)'));
 disp(['TRAC value for sensor ',num2str(vs),' with ',num2str(0),' modes:',num2str(TRAC)])
 %% Virtual sensing part 1
 %close all;
@@ -172,42 +174,77 @@ disp(['ME value for sensor ',num2str(vs),' with ',num2str(num_ms),' modes:',num2
 f = Fs*(0:(L/2))/L;
 
 % Plots
-Y = fft(xp(1,:)); % mode vi plotter
+Y = fft(xm_filt(1,:)); % mode vi plotter
 P2 = abs(Y/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
 
 figure
 plot(f,P1) 
+title("Single-Sided Amplitude Spectrum of S(t)")
+xlabel("f (Hz)")
+xlim([0 20])
+ylabel("|P1(f)|")
+
+% Plots
+Y = fft(xp(1,:)); % mode vi plotter
+P2 = abs(Y/L);
+P11 = P2(1:L/2+1);
+P11(2:end-1) = 2*P11(2:end-1);
+
+figure
+plot(f,P11) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
 
 %%
-% Plots
+% Plots meaasered - ori data
 xx = xp(1,:)-xm_filt(1,:);
 Y = fft(xx); % mode vi plotter
 P2 = abs(Y/L);
-P1 = P2(1:L/2+1);
-P1(2:end-1) = 2*P1(2:end-1);
+P1_pred_meas = P2(1:L/2+1);
+P1_pred_meas(2:end-1) = 2*P1_pred_meas(2:end-1);
 
 figure
-plot(f,P1) 
+plot(f,P1_pred_meas) 
 title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
-
 %% save the predicted displacement as txt
 %{
 if q == 1
-    T1 = array2table(num2cell(xp(1,:)'));
-    T1.Properties.VariableNames(1) = {'x_pred'};
-    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src_operational\Virtual_sensing\Experimental\Filtered_data_3_sensors\data_predicted_3_sensors_high.txt','Delimiter',' ')
+    T1 = array2table([num2cell(xp(1,:)'),num2cell(xm_filt(1,:)')]);
+    T1.Properties.VariableNames(1:2) = {'x_pred','x_meas'};
+    writetable(T1,'.\Filtered_data_3_sensors\data_predicted_3_sensors_high.txt','Delimiter',' ')
 elseif q == 2
-    T1 = array2table(num2cell(xp(1,:)'));
-    T1.Properties.VariableNames(1) = {'x_pred'};
-    writetable(T1,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src_operational\Virtual_sensing\Experimental\Filtered_data_3_sensors\data_predicted_3_sensors_nodamp.txt','Delimiter',' ')
+    T1 = array2table([num2cell(xp(1,:)'),num2cell(xm_filt(1,:)')]);
+    T1.Properties.VariableNames(1:2) = {'x_pred','x_meas'};
+    writetable(T1,'.\Filtered_data_3_sensors\data_predicted_3_sensors_nodamp.txt','Delimiter',' ')
 end
 %}
+
+%% download data
+if q == 1
+    T_pred = array2table([num2cell(t(1:500)'),num2cell(xp(1,1:500)'),num2cell(xm_filt(1,1:500)'),num2cell(xm_data(1,1:500)')]);
+    T_fft = array2table([num2cell(decimate(f(1:604801)',60)),num2cell(decimate(P1(1:604801)',60)),num2cell(decimate(P11(1:604801)',60)),num2cell(decimate(P1_pred_meas(1:604801)',60))]);
+    
+    T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','ori'};
+    T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
+    
+    
+    writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi5_3_sensors_highdamp.csv','Delimiter',';')
+    writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi5_3_sensors_highdamp.csv','Delimiter',';')
+elseif q == 2
+    T_pred = array2table([num2cell(t(1:500)'),num2cell(xp(1,1:500)'),num2cell(xm_filt(1,1:500)'),num2cell(xm_data(1,1:500)')]);
+    T_fft = array2table([num2cell(decimate(f(1:604801)',60)),num2cell(decimate(P1(1:604801)',60)),num2cell(decimate(P11(1:604801)',60)),num2cell(decimate(P1_pred_meas(1:604801)',60))]);
+    
+    T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','ori'};
+    T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
+    
+    
+    writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi5_3_sensors_nodamp.csv','Delimiter',';')
+    writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi5_3_sensors_nodamp.csv','Delimiter',';')
+end

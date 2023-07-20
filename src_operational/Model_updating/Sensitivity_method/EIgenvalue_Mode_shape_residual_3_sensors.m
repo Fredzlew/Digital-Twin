@@ -306,34 +306,45 @@ for j = 1:5
 end % end normalization
 
 
-% Save updated system matrices
-if q == 1
-    save('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_high.mat','knew','Knew','U','fn','err','acc');
-elseif q == 2
-    save('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_no_damp.mat','knew','Knew','U','fn','err','acc');
-end
 %% Plotting L curve only for the first iteration
 
 % plotting
-q = 1;
-for i = linspace(0.0000000000000000001,100,1000000)
-    lambda(q) = i;
-    dx = ((G'*Weps*G)+(lambda(q)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
-    eps = r(:,end)-G*dx; % fortegn + eller -?
-    Jeps(q) = sqrt(eps'*Weps*eps);
-    Jthe(q)  = sqrt(dx'*Wtheta*dx);
-    q = q + 1;
+if ni == 1
+    qq = 1;
+    for i = linspace(0.0000000001,1000,100000)
+        lambda(qq) = i;
+        dx = ((G'*Weps*G)+(lambda(qq)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
+        eps = r(:,end)-G*dx; 
+        Jeps(qq) = sqrt(eps'*Weps*eps);
+        Jthe(qq)  = sqrt(dx'*Wtheta*dx);
+        qq = qq + 1;
+    end
+    % plotting the L curve
+    figure (4)
+    loglog(Jeps,Jthe)
+    grid on
+    % xlim([10^-4 10^-1+10^-1/2])
+    % ylim([10^-3 10^-0+10^-0/1.5])
+    xlabel('norm (Residual)')
+    ylabel('norm (Stiffness Change)')
+    title('L-curve')
+    % Finding the optimal value for lambda
+    Val = 823.941;
+    index = find(Jeps >= Val,1);
+    lamopt = lambda(index);
+    if q == 1
+        save('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_L_curve_3_sensors_high.mat','Jeps','Jthe');
+    elseif q == 2
+        save('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_L_curve_3_sensors_no_damp.mat','Jeps','Jthe');
+    end
 end
-% plotting the L curve
-figure (4)
-loglog(Jeps,Jthe)
-grid on
-% xlim([10^-4 10^-1+10^-1/2])
-% ylim([10^-3 10^-0+10^-0/1.5])
-xlabel('norm (Residual)')
-ylabel('norm (Stiffness Change)')
-title('L-curve')
-% Finding the optimal value for lambda
-Val = 823.941;
-index = find(Jeps >= Val,1);
-lamopt = lambda(index);
+
+
+if ni == 100
+    % Save updated system matrices
+if q == 1
+    save('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_high.mat','knew','Knew','U','fn','acc','err');
+elseif q == 2
+    save('.\data_updated_par_sens_3_sensors\Eigenvalue_Mode_shape_residual_3_sensors_no_damp.mat','knew','Knew','U','fn','acc','err');
+end
+end

@@ -37,7 +37,7 @@ SSIphi_re = reshape(SSIphi,25,1);
 %Weps = eye(size(G,1));
 Weps = diag(SSIphi_re)^-2;
 
-% Difne lambda value:
+% Difine lambda value:
 if q == 1
     lambda =  sqrt(2.2250);  
 elseif q == 2

@@ -27,10 +27,10 @@ import scipy.io as sio
 dataset = float(input('Which data set (1 (data_5_2_1)? and 2 (data_nodamp)? '))
 # To open a .txt file create a variable containing the path to the file
 if dataset == 1:
-    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src_operational\data\experimental_data\data_5_2_1.txt" # Path to the txt file
+    _file = r"C:\Users\Frede\Speciale\Digital-Twin\src_operational\data\experimental_data\data_5_2_1.txt" # Path to the txt file
 
 elif dataset == 2:
-    _file = r"C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Speciale\Digital-Twin\src_operational\data\experimental_data\data.txt" # Path to the txt file
+    _file = r"C:\Users\Frede\Speciale\Digital-Twin\src_operational\data\experimental_data\data.txt" # Path to the txt file
 
 
 
@@ -187,3 +187,38 @@ plt.ylabel('PSD [dB rel. to unit^2]')
 plt.xlabel('Frequency [Hz]')
 plt.legend()
 plt.grid(True)
+
+Pxx = 20*np.log10(Pxx)
+Pxx_1 = 20*np.log10(Pxx_1)
+Pxx_2 = 20*np.log10(Pxx_2)
+Pxx_3 = 20*np.log10(Pxx_3)
+Pxx_4 = 20*np.log10(Pxx_4)
+Pxx_5 = 20*np.log10(Pxx_5)
+
+if dataset == 1:
+    np.save("Filtered_data_3_sensors\data_filt_f_3_sensors_high",f)
+    np.save("Filtered_data_3_sensors\data_filt_f_1_3_sensors_high",f_1)
+    np.save("Filtered_data_3_sensors\data_filt_f_2_3_sensors_high",f_2)
+    np.save("Filtered_data_3_sensors\data_filt_f_3_3_sensors_high",f_3)
+    np.save("Filtered_data_3_sensors\data_filt_f_4_3_sensors_high",f_4)
+    np.save("Filtered_data_3_sensors\data_filt_f_5_3_sensors_high",f_5)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_3_sensors_high",Pxx)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_1_3_sensors_high",Pxx_1)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_2_3_sensors_high",Pxx_2)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_3_3_sensors_high",Pxx_3)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_4_3_sensors_high",Pxx_4)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_5_3_sensors_high",Pxx_5)
+elif dataset == 2:
+    np.save("Filtered_data_3_sensors\data_filt_f_3_sensors_no_damp",f)
+    np.save("Filtered_data_3_sensors\data_filt_f_1_3_sensors_no_damp",f_1)
+    np.save("Filtered_data_3_sensors\data_filt_f_2_3_sensors_no_damp",f_2)
+    np.save("Filtered_data_3_sensors\data_filt_f_3_3_sensors_no_damp",f_3)
+    np.save("Filtered_data_3_sensors\data_filt_f_4_3_sensors_no_damp",f_4)
+    np.save("Filtered_data_3_sensors\data_filt_f_5_3_sensors_no_damp",f_5)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_3_sensors_no_damp",Pxx)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_1_3_sensors_no_damp",Pxx_1)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_2_3_sensors_no_damp",Pxx_2)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_3_3_sensors_no_damp",Pxx_3)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_4_3_sensors_no_damp",Pxx_4)
+    np.save("Filtered_data_3_sensors\data_filt_Pxx_5_3_sensors_no_damp",Pxx_5)
+    

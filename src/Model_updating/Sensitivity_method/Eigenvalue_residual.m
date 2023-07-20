@@ -145,9 +145,6 @@ for ii = 1:ni
     
     % the difference with regularization
     dx = ((G'*Weps*G)+(lambda^2*Wtheta))^(-1)*G'*Weps*r(:,ii);
-
-
-
 end
 
 

@@ -57,8 +57,11 @@ end
 % initial conditions
 dx = zeros(length(k),1);
 
+% number of iterations
+ni = 100;
+
 % Iterazation over the stiffness
-for ii = 1:1
+for ii = 1:ni
     k = k+dx;
 
     for i = 1:4
@@ -217,32 +220,41 @@ for j = 1:5
 end % end normalization
 
 
-
-if q == 1
-    save('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_3_sensors_high.mat','knew','Knew','U','fn','err');
-elseif q == 2
-    save('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_3_sensors_no_damp.mat','knew','Knew','U','fn','err');
-end
 %% Plotting L curve only for the first iteration
 
 % plotting
-q = 1;
-for i = linspace(0.0000000000000000001,1000000,1000000)
-    lambda(q) = i;
-    dx = ((G'*Weps*G)+(lambda(q)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
-    eps = r(:,end)-G*dx; % fortegn + eller -?
-    Jeps(q) = sqrt(eps'*Weps*eps);
-    Jthe(q)  = sqrt(dx'*Wtheta*dx);
-    q = q + 1;
+if ni == 1
+    qq = 1;
+    for i = linspace(0.00000001,1000,100000)
+        lambda(qq) = i;
+        dx = ((G'*Weps*G)+(lambda(qq)^2*Wtheta))^(-1)*G'*Weps*r(:,end);
+        eps = r(:,end)-G*dx; 
+        Jeps(qq) = sqrt(eps'*Weps*eps);
+        Jthe(qq)  = sqrt(dx'*Wtheta*dx);
+        qq = qq + 1;
+    end
+    % plotting the L curve
+    figure (1)
+    loglog(Jeps,Jthe)
+    grid on
+    xlabel('norm (Residual)','FontSize',14)
+    ylabel('norm (Stiffness Change)','FontSize',14)
+    title('L-curve','FontSize',20)
+    % Finding the optimal value for lambda
+    Val = 154.603; % X-vlaue
+    index = find(Jeps >= Val,1);
+    lamopt = lambda(index);
+    if q == 1
+        save('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_L_curve_3_sensors_high.mat','Jeps','Jthe');
+    elseif q == 2
+        save('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_L_curve_3_sensors_no_damp.mat','Jeps','Jthe');
+    end
 end
-% plotting the L curve
-figure (1)
-loglog(Jeps,Jthe)
-grid on
-xlabel('norm (Residual)','FontSize',14)
-ylabel('norm (Stiffness Change)','FontSize',14)
-title('L-curve','FontSize',20)
-% Finding the optimal value for lambda
-Val = 0.027849; % X-vlaue
-index = find(Jeps >= Val,1);
-lamopt = lambda(index);
+
+if ni == 100
+    if q == 1
+        save('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_3_sensors_high.mat','knew','Knew','U','fn','err');
+    elseif q == 2
+        save('.\data_updated_par_sens_3_sensors\Eigenvalue_residual_3_sensors_no_damp.mat','knew','Knew','U','fn','err');
+    end
+end
