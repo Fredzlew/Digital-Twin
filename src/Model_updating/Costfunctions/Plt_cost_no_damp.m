@@ -221,7 +221,8 @@ yticks([1,2,3,4,5])
 yticklabels(string(OMAfreq'))
 box on
 
-
+% table with mac
+T_mac = array2table([num2cell([fn';mac])]);
 %% Download plot
 % PLotting the stiffness
 if xx == 1
