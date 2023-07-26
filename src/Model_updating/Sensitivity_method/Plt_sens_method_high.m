@@ -283,7 +283,7 @@ T_L_curve = array2table([num2cell(Jeps'),num2cell(Jthe')]);
 T_L_curve.Properties.VariableNames(1:2) = {'Jeps','Jthe'};
 
 
-T_acc = array2table([num2cell(linspace(1,200,200)'),num2cell(acc'/100)]);
+T_acc = array2table([num2cell(linspace(1,100,100)'),num2cell(acc'/100)]);
 T_acc.Properties.VariableNames(1:6) = {'iter','accmode1','accmode2','accmode3','accmode4','accmode5'};
 
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_modeshapes2_highdamp.csv','Delimiter',';')

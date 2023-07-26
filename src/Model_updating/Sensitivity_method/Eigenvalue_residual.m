@@ -49,7 +49,7 @@ Weps = diag(omegasq_m./max(omegasq_m))^-2;
 
 % Difine lambda value:
 if q == 1
-    lambda =  sqrt(0.3385); 
+    lambda =  sqrt(0.4000); 
 elseif q == 2
     lambda =  sqrt(0.2779); 
 end
@@ -58,7 +58,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 1;
+ni = 100;
 
 % Iterazation over the stiffness
 for ii = 1:ni
@@ -228,7 +228,7 @@ if ni == 1
     ylabel('norm (Stiffness Change)','FontSize',14)
     title('L-curve','FontSize',20)
     % Finding the optimal value for lambda
-    Val = 154.603; % X-vlaue
+    Val = 210.161; % X-vlaue
     index = find(Jeps >= Val,1);
     lamopt = lambda(index);
     if q == 1

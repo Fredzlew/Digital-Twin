@@ -63,7 +63,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 1;
+ni = 100;
 % Iterazation over the stiffness
 for ii = 1:ni
     k = k+dx;
@@ -242,11 +242,11 @@ for ii = 1:ni
     end
     sgtitle(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
     if q == 1
-        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
     elseif q == 2
-        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
     end
     close
 end
@@ -276,11 +276,11 @@ for ii = 1:ni
     ylabel('Relative error [-]')
     hold off
     if q == 1
-        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
     elseif q == 2
-        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
     end
 end
 
@@ -313,11 +313,11 @@ for ii = 1:ni
     ylabel('MAC [-]')
     hold off
     if q == 1
-        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
     elseif q == 2
-        %saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
-        saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
     end
 end
 
@@ -390,7 +390,7 @@ if ni == 1
     ylabel('norm (Stiffness Change)')
     title('L-curve')
     % Finding the optimal value for lambda
-    Val = 823.941;
+    Val = 627.028;
     index = find(Jeps >= Val,1);
     lamopt = lambda(index);
     if q == 1

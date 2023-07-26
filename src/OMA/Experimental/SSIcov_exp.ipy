@@ -63,7 +63,7 @@ filtdata = signal.sosfiltfilt(sos, data.T) # filtered data
 
 # ======== ANALYSIS ===========================================================
 # Run SSI
-br = 350
+br = 1000
 SSIcov,Result = oma.SSIcovStaDiag(filtdata.T, fs, br, ordmax=100)
 
 # Frequencies ccoming from the stability diagram

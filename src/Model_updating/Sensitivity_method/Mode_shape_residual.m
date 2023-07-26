@@ -39,16 +39,16 @@ Weps = diag(SSIphi_re)^-2;
 
 % Difine lambda value:
 if q == 1
-    lambda =  sqrt(2.2250);  
+    lambda =  sqrt(1.0001);  
 elseif q == 2
-    lambda =  sqrt(1.0960); 
+    lambda =  sqrt(1.4001); 
 end
 
 % initial condition
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 1;
+ni = 100;
 
 % Iterazation over the stiffness
 for ii = 1:ni
@@ -254,7 +254,7 @@ if ni == 1
     ylabel('norm (Stiffness Change)')
     title('L-curve')
     % Finding the optimal value for lambda
-    Val = 0.65737;
+    Val = 0.748157;
     index = find(Jeps >= Val,1);
     lamopt = lambda(index);
     if q == 1
@@ -264,7 +264,7 @@ if ni == 1
     end
 end
 
-if ni == 200
+if ni == 100
     if q == 1
         save('.\data_updated_par_sens\Mode_shape_residual_high.mat','knew','Knew','U','fn','acc','con');
     elseif q == 2
