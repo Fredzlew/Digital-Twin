@@ -29,9 +29,9 @@ SHARING/ACCESS INFORMATION
 FOLDER & FILE OVERVIEW
 ---------------------
 
-1. src - folder containing files for five sensor setup.
-	1.1. data - folder coantining data files from experimental setup, simulated data and OMA data
-		1.1.1. experimental_data - data files done on the experimental data
+1 src - folder containing files for five sensor setup.
+	1.1 data - folder coantining data files from experimental setup, simulated data and OMA data
+		1.1.1 experimental_data - data files done on the experimental data
 			1.1.1.1 Modal_par - data files coantining the modal parameters from OMA 
 				1.1.1.1.1 FDDdamp_5_2_1.npy - damping ratio from EFDD for experimental data set with high damping
 				1.1.1.1.2 FDDdamp_no_damp.npy - damping ratio from EFDD for experimental data set with no damping

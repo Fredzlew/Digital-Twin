@@ -5,7 +5,7 @@
 /src/data/experimental_data/Data_high.npy
 /src/data/experimental_data/Data_nodamp.npy
 /src/data/simulated_data/*.mat
-\Data_visualization.m
+/src/Data_visualization.m
 /src/Data_indicator.m
 /src/Virtual_sensing/Experimental/multiband_5_modes_data.m
 /src/Virtual_sensing/Experimental/Filtered_data/data_filt_f_no_damp.npy
