@@ -29,7 +29,7 @@ SHARING/ACCESS INFORMATION
 FOLDER & FILE OVERVIEW
 ---------------------
 
-1 src - folder containing files for five sensor setup.
+#### 1 src - folder containing files for five sensor setup.
 	1.1 data - folder coantining data files from experimental setup, simulated data and OMA data
 		1.1.1 experimental_data - data files done on the experimental data
 			1.1.1.1 Modal_par - data files coantining the modal parameters from OMA 
@@ -197,7 +197,7 @@ FOLDER & FILE OVERVIEW
     1.8 Exp_data.ipy - file comparing raw experimental data to the data after filtering, detrending and down-sampling has been applied
     1.9 FE_model.m - file containing the FE-model
 
-2 src_operational - folder containing files for three sensor setup.
+#### 2 src_operational - folder containing files for three sensor setup.
 	2.1 data - folder coantining data files from experimental setup, simulated data and OMA data
 		2.1.1 experimental_data - data files done on the experimental data
 			2.1.1.1 Modal_par_3_sensors - data files coantining the modal parameters from OMA 
