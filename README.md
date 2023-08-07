@@ -29,7 +29,7 @@ SHARING/ACCESS INFORMATION
 FOLDER & FILE OVERVIEW
 ---------------------
 
-1 src - folder containing files for five sensor setup.
+1. src - folder containing files for five sensor setup.
 	1.1 data - folder coantining data files from experimental setup, simulated data and OMA data
 		1.1.1 experimental_data - data files done on the experimental data
 			1.1.1.1 Modal_par - data files coantining the modal parameters from OMA 
