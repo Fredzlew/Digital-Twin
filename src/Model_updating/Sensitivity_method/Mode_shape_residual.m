@@ -48,7 +48,7 @@ end
 dx = zeros(length(k),1);
 
 % number of iterations
-ni = 100;
+ni = 1;
 
 % Iterazation over the stiffness
 for ii = 1:ni

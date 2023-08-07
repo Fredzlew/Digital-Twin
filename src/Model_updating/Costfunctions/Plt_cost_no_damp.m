@@ -223,7 +223,9 @@ box on
 
 % table with mac
 T_mac = array2table([num2cell([fn';mac])]);
-%% Download plot
+
+%% Download the file to plot in latex
+%{
 % PLotting the stiffness
 if xx == 1
 interval = [1;2;3;4;5;6];
@@ -268,3 +270,4 @@ T_modeshapes.Properties.VariableNames(1:7) = {'height','numphi1','numphi2','nump
 writetable(T_modeshapes,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_modeshapes5_nodamp.csv','Delimiter',';')
 writematrix(mac,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap8_costfunction_mac5_nodamp.csv','Delimiter',',')
 end
+%}

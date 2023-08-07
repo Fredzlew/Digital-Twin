@@ -156,14 +156,14 @@ xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
 
-%% download data
+%% Download the file to plot in latex
+%{
 if q == 1
     T_pred = array2table([num2cell(t(1:500)'),num2cell(xp(1,1:500)'),num2cell(xm_filt(1,1:500)'),num2cell(xm_data(1,1:500)')]);
     T_fft = array2table([num2cell(decimate(f(1:604801)',60)),num2cell(decimate(P1(1:604801)',60)),num2cell(decimate(P11(1:604801)',60)),num2cell(decimate(P1_pred_meas(1:604801)',60))]);
     
     T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','ori'};
     T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
-    
     
     writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi_highdamp.csv','Delimiter',';')
     writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi_highdamp.csv','Delimiter',';')
@@ -174,7 +174,7 @@ elseif q == 2
     T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','ori'};
     T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
     
-    
     writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi_nodamp.csv','Delimiter',';')
     writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi_nodamp.csv','Delimiter',';')
 end
+%}

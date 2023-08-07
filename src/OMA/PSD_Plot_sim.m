@@ -24,6 +24,9 @@ end
 xlim([0 12])
 hold off
 
+%% Download the file to plot in latex
+%{
 T = array2table([num2cell(f_(1:1201)),num2cell(PSD(1:1201,:))]);
 T.Properties.VariableNames(1:6) = {'f_','PSD1','PSD2','PSD3','PSD4','PSD5'};
 writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap4_FDD_PSD_sim.csv','Delimiter',';')
+%}

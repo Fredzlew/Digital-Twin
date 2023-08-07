@@ -249,7 +249,8 @@ title('L-curve')
 % index = find(Jeps >= Val,1);
 % lamopt = lambda;
 
-%% Download plot
+%% Download the file to plot in latex
+%{
 % PLotting the stiffness
 if xx == 1
 k1 = y(:,1);
@@ -309,3 +310,4 @@ writetable(T_L_curve,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Ka
 writetable(T_err,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_err3_highdamp.csv','Delimiter',';')
 writetable(T_acc,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap9_sens_acc3_highdamp.csv','Delimiter',';')
 end
+%}

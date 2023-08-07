@@ -66,6 +66,9 @@ ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 OMAfreq = SSIFreq;
 
+
+%% Download the file to plot in latex
+%{
 if xx == 1
     T = array2table([num2cell(x'),num2cell(phi),num2cell([0;OMAfreq])]);
     T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
@@ -75,3 +78,4 @@ elseif xx == 2
     T.Properties.VariableNames(1:7) = {'height','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
     writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_on_experimental_data_nodamp.csv','delimiter',';')
 end
+%}

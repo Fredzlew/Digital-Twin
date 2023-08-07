@@ -10,7 +10,7 @@ xm_cut_end = readNPY('.\Filtered_data_sim\data_filt_cut_end_sim.npy');
 
 xm_ori = readNPY('.\Filtered_data_sim\data_filtdata_all_sim.npy');
 
-% Make a time vector
+% Time vector
 Fs = 500;            % Sampling frequency                    
 T = 1/Fs;            % Sampling period       
 L = size(xm_ori,2);  % Length of signal
@@ -142,13 +142,14 @@ title("Single-Sided Amplitude Spectrum of S(t)")
 xlabel("f (Hz)")
 xlim([0 20])
 ylabel("|P1(f)|")
-%% download data
+%% Download the file to plot in latex
+%{
 T_pred = array2table([num2cell(t(1:5000)'),num2cell(xp(1,1:5000)'),num2cell(xm_ori(1,1:5000)'),num2cell(xm_filt(1,1:5000)')]);
 T_fft = array2table([num2cell(decimate(f(1:180001)',17)),num2cell(decimate(P1(1:180001)',17)),num2cell(decimate(P11(1:180001)',17)),num2cell(decimate(P1_pred_meas(1:180001)',17))]);
 
 T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','filt'};
 T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
 
-
 writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi_sim.csv','Delimiter',';')
 writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi_sim.csv','Delimiter',';')
+%}

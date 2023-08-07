@@ -242,10 +242,10 @@ for ii = 1:ni
     end
     sgtitle(['Iteration: ' num2str(ii)],'FontSize',20,'FontWeight','Bold');
     if q == 1
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF2\GIF_high_' num2str(ii) '.png']);
         %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
     elseif q == 2
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF2\GIF_no_damp_' num2str(ii) '.png']);
         %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
     end
     close
@@ -276,10 +276,10 @@ for ii = 1:ni
     ylabel('Relative error [-]')
     hold off
     if q == 1
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF2\GIF_error_high_' num2str(ii) '.png']);
         %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_high_' num2str(ii) '.png']);
     elseif q == 2
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF2\GIF_error_low_' num2str(ii) '.png']);
         %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_error_low_' num2str(ii) '.png']);
     end
 end
@@ -313,10 +313,10 @@ for ii = 1:ni
     ylabel('MAC [-]')
     hold off
     if q == 1
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_high_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF2\GIF_mac_high_' num2str(ii) '.png']);
         %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_high_' num2str(ii) '.png']);
     elseif q == 2
-        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF\GIF_no_damp_' num2str(ii) '.png']);
+        saveas(gcf,['C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\GIF2\GIF_mac_low_' num2str(ii) '.png']);
         %saveas(gcf,['C:\Users\User\Danmarks Tekniske Universitet\Frederik Emil Serritzlew - Kandidat\GIF\GIF_mac_low_' num2str(ii) '.png']);
     end
 end

@@ -26,10 +26,10 @@ import scipy.io as sio
 dataset = float(input('Which data set (1 (data_5_2_1)? and 2 (data_nodamp)? '))
 # To open a .txt file create a variable containing the path to the file
 if dataset == 1:
-    _file = r"C:\Users\Frede\Speciale\Digital-Twin\src\data\experimental_data\data_5_2_1.txt" # Path to the txt file
+    _file = r"..\..\data\experimental_data\data_5_2_1.txt" # Path to the txt file
 
 elif dataset == 2:
-    _file = r"C:\Users\Frede\Speciale\Digital-Twin\src\data\experimental_data\data.txt" # Path to the txt file
+    _file = r"..\..\data\experimental_data\data.txt" # Path to the txt file
 
 
 # open the file with pandas and create a dataframe

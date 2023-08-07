@@ -48,6 +48,8 @@ for i = 1:length(SSIstab)
     end
 end
 
+%% Download the file to plot in latex
+%{
 T1 = array2table([num2cell(freq0'),num2cell((modelorder0*2)'),num2cell(damp0')]);
 T2 = array2table([num2cell(freq1'),num2cell((modelorder1*2)'),num2cell(damp1')]);
 T3 = array2table([num2cell(freq2'),num2cell((modelorder2*2)'),num2cell(damp2')]);
@@ -65,3 +67,4 @@ writetable(T2,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\
 writetable(T3,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap4_SSIcov_on_stab3_sim.txt','Delimiter',' ')
 writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap4_SSIcov_on_stab4_sim.txt','Delimiter',' ')
 writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap4_SSIcov_on_stab5_sim.txt','Delimiter',' ')
+%}

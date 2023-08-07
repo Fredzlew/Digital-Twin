@@ -111,28 +111,28 @@ end
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
 damp = table(simdamp,SSIcovmu_damp,SSIdatdamp,FDDmu_damp,...
     'RowNames',modes);
-disp('Mean damping from each method over 1000 simulations :')
+disp('Mean damping from each method over 100 simulations :')
 disp(damp)
 
 % damping
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
 damp = table(SSIcovsd_Damp,FDDsd_Damp,...
     'RowNames',modes);
-disp('standard deviation damping from each method over 1000 simulations :')
+disp('standard deviation damping from each method over 100 simulations :')
 disp(damp)
 
 % frekvens
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
 damp = table(fn,SSIcovmu_freq,SSIdatFreq,FDDmu_freq,...
     'RowNames',modes);
-disp('Mean frequenzy from each method over 1000 simulations :')
+disp('Mean frequenzy from each method over 100 simulations :')
 disp(damp)
 
 % frekvens
 modes = {'Mode 1';'Mode 2';'Mode 3';'Mode 4';'Mode 5'};
 damp = table(SSIcovsd_freq,FDDsd_freq,...
     'RowNames',modes);
-disp('standard deviation frequenzy from each method over 1000 simulations :')
+disp('standard deviation frequenzy from each method over 100 simulations :')
 disp(damp)
 
 
@@ -202,9 +202,9 @@ han.YLabel.Visible='on';
 ylabel(han,'Height [m]','FontSize',14);
 xlabel(han,'Deflection [-]','FontSize',14);
 
-
-T = array2table([num2cell(x'),num2cell(phi),num2cell([zeros(1,length(OMAphi))  ;OMAphi]),num2cell([0;OMAfreq])]);
-T.Properties.VariableNames(1:12) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
+% Download the file to plot in latex
+% T = array2table([num2cell(x'),num2cell(phi),num2cell([zeros(1,length(OMAphi))  ;OMAphi]),num2cell([0;OMAfreq])]);
+% T.Properties.VariableNames(1:12) = {'height','numphi1','numphi2','numphi3','numphi4','numphi5','OMAphi1','OMAphi2','OMAphi3','OMAphi4','OMAphi5','OMAfreq'};
 
 % Frequency accaruancy
 disp(strcat('Frequency accuracy,1 : ',num2str(min(OMAfreq(1),fn(1))/max(OMAfreq(1),fn(1))*100),'%'));
@@ -220,15 +220,18 @@ dmac = diag(mac);
 if MODE==1
     disp('Modal Assurance Criterion between Numerical modeshapes and SSIcov  : ')
     disp(strcat(num2str(mac)));
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_vs_simulated.csv','Delimiter',';')
+    % Download the file to plot in latex
+    % writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIcov_vs_simulated.csv','Delimiter',';')
 elseif MODE==2
     disp('Modal Assurance Criterion between Numerical modeshapes and SSIdat  : ')
     disp(strcat(num2str(mac)));
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIdat_vs_simulated.csv','Delimiter',';')
+    % Download the file to plot in latex
+    % writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_SSIdat_vs_simulated.csv','Delimiter',';')
 elseif MODE == 3
     disp('Modal Assurance Criterion between Numerical modeshapes and FDD  :' )
     disp(strcat(num2str(mac)));
-    writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_FDD_vs_simulated.csv','Delimiter',';')
+    % Download the file to plot in latex
+    % writetable(T,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap5_FDD_vs_simulated.csv','Delimiter',';')
 end
 disp('----------------------------------------------------------------------')
 disp(strcat('Mode shape accuracy (MAC),1 : ',num2str(dmac(1)*100),'%'));

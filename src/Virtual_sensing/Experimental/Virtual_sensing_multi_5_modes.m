@@ -28,11 +28,10 @@ elseif q == 2
     xm_filt = readNPY('.\Filtered_data\data_filt_all_no_damp.npy');
     xm_data =  xm_mode1+xm_mode2+xm_mode3+xm_mode4+xm_mode5;
     % loading mode shapes
-    filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat');
-    %filename = load('..\..\Model_updating\Costfunctions\data_updated_par\SSIfreqmode_no_damp.mat');
-    %filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Mode_shape_residual_no_damp.mat');
-    %filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_residual_no_damp.mat');
-    U = filename.U;
+    U = readNPY('..\..\data\experimental_data\Modal_par\SSImodes_no_damp.npy');
+    %filename = load('..\..\Model_updating\Sensitivity_method\data_updated_par_sens\Eigenvalue_Mode_shape_residual_no_damp.mat');
+    %U = readNPY('..\..\data\experimental_data\Modal_par\FDDmodes_no_damp.npy');
+    %U = filename.U;
 end
 
 % Make a time vector
@@ -206,14 +205,14 @@ elseif q == 2
 end
 %}
 
-%% download data
+%% Download the file to plot in latex
+%{
 if q == 1
     T_pred = array2table([num2cell(t(1:500)'),num2cell(xp(1,1:500)'),num2cell(xm_filt(1,1:500)'),num2cell(xm_data(1,1:500)')]);
     T_fft = array2table([num2cell(decimate(f(1:604801)',60)),num2cell(decimate(P1(1:604801)',60)),num2cell(decimate(P11(1:604801)',60)),num2cell(decimate(P1_pred_meas(1:604801)',60))]);
     
     T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','ori'};
     T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
-    
     
     writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi5_highdamp.csv','Delimiter',';')
     writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi5_highdamp.csv','Delimiter',';')
@@ -224,7 +223,7 @@ elseif q == 2
     T_pred.Properties.VariableNames(1:4) = {'data','pred','meas','ori'};
     T_fft.Properties.VariableNames(1:4) = {'f','P1_meas','P1_pred','P1_pred_meas'};
     
-    
     writetable(T_pred,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_pred_multi5_nodamp.csv','Delimiter',';')
     writetable(T_fft,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap10_virtuel_sensing_fft_multi5_nodamp.csv','Delimiter',';')
 end
+%}

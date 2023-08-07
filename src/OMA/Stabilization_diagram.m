@@ -116,6 +116,8 @@ ylabel('Model order','FontSize', 14)
 xlim([0 12])
 ylim([0 100])
 
+%% Download the file to plot in latex
+%{
 if xx == 1
     T = array2table([num2cell(f_),num2cell(PSD)]);
     T1 = array2table([num2cell(freq0'),num2cell((modelorder0*2)'),num2cell(damp0')]);
@@ -155,3 +157,4 @@ elseif xx == 2
     writetable(T4,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab4_nodamp.txt','Delimiter',' ')
     writetable(T5,'C:\Users\Frede\OneDrive - Danmarks Tekniske Universitet\Kandidat\Data\Kap6_SSIcov_on_stab5_nodamp.txt','Delimiter',' ')
 end
+%}
