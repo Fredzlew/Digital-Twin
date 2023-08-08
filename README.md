@@ -19,12 +19,6 @@ GENERAL INFORMATION
            Email: s183535@dtu.dk
 
 
---------------------------
-SHARING/ACCESS INFORMATION
--------------------------- 
-
-1. Licenses/restrictions placed on the code: Non. 
-
 ---------------------
 FOLDER & FILE OVERVIEW
 ---------------------
