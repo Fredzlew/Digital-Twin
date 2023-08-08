@@ -7,6 +7,8 @@
 /src/data/simulated_data/*.mat
 /src/Data_visualization.m
 /src/Data_indicator.m
+/src/Data_filter_matlab.m
+/src/Data_bandpass_matlab.m
 /src/Virtual_sensing/Experimental/multiband_5_modes_data.m
 /src/Virtual_sensing/Experimental/Filtered_data/data_filt_f_no_damp.npy
 /src/Virtual_sensing/Experimental/Filtered_data/data_filt_f_1_no_damp.npy
@@ -32,7 +34,8 @@
 /src/Virtual_sensing/Experimental/Filtered_data/data_filt_Pxx_3_high.npy
 /src/Virtual_sensing/Experimental/Filtered_data/data_filt_Pxx_4_high.npy
 /src/Virtual_sensing/Experimental/Filtered_data/data_filt_Pxx_5_high.npy
-
+/src/Virtual_sensing/Experimental/matlab
+/src/Virtual_sensing/Experimental/Virtual_sensing_multi_5_modes_mat.m
 
 /src_operational/data/experimental_data/data.txt
 /src_operational/data/experimental_data/data_5_2_1.txt
